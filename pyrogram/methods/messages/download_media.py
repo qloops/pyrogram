@@ -43,7 +43,10 @@ class DownloadMedia:
             "types.Video",
             "types.Voice",
             "types.VideoNote",
-            "types.PaidMediaInfo"
+            "types.PaidMediaInfo",
+            "types.Thumbnail",
+            "types.StrippedThumbnail",
+            "types.PaidMediaPreview"
         ],
         file_name: str = DEFAULT_DOWNLOAD_DIR,
         in_memory: bool = False,
@@ -56,7 +59,7 @@ class DownloadMedia:
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
-            message (``str`` | :obj:`~pyrogram.types.Message` | :obj:`~pyrogram.types.Story` | :obj:`~pyrogram.types.Audio` | :obj:`~pyrogram.types.Document` | :obj:`~pyrogram.types.Photo` | :obj:`~pyrogram.types.Sticker` | :obj:`~pyrogram.types.Animation` | :obj:`~pyrogram.types.Video` | :obj:`~pyrogram.types.Voice` | :obj:`~pyrogram.types.VideoNote` | :obj:`~pyrogram.types.PaidMediaInfo`):
+            message (``str`` | :obj:`~pyrogram.types.Message` | :obj:`~pyrogram.types.Story` | :obj:`~pyrogram.types.Audio` | :obj:`~pyrogram.types.Document` | :obj:`~pyrogram.types.Photo` | :obj:`~pyrogram.types.Sticker` | :obj:`~pyrogram.types.Animation` | :obj:`~pyrogram.types.Video` | :obj:`~pyrogram.types.Voice` | :obj:`~pyrogram.types.VideoNote` | :obj:`~pyrogram.types.PaidMediaInfo` | :obj:`~pyrogram.types.Thumbnail` | :obj:`~pyrogram.types.StrippedThumbnail` | :obj:`~pyrogram.types.PaidMediaPreview`):
                 Pass a object containing the media, the media itself (message.audio, message.video, ...) or a file id
                 as string.
 
