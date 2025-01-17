@@ -38,7 +38,7 @@ class DownloadMedia:
             "types.Audio",
             "types.Document",
             "types.Photo",
-            "types.Sticker"
+            "types.Sticker",
             "types.Animation",
             "types.Video",
             "types.Voice",

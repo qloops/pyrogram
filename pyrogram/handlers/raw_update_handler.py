@@ -35,7 +35,7 @@ class RawUpdateHandler(Handler):
             a detailed description).
 
         filters (:obj:`Filters`):
-            Pass one or more filters to allow only a subset of callback queries to be passed
+            Pass one or more filters to allow only a subset of updates to be passed
             in your callback function.
 
     Other Parameters:
@@ -58,7 +58,7 @@ class RawUpdateHandler(Handler):
             by using the IDs you find in the *update* argument (e.g.: *chats[1701277281]*).
 
     .. note::
-    
+
         The following Empty or Forbidden types may exist inside the *users* and *chats* dictionaries.
         They mean you have been blocked by the user or banned from the group/channel.
 
