@@ -75,6 +75,9 @@ class Story(Object, Update):
         video (:obj:`~pyrogram.types.Video`, *optional*):
             Story is a video, information about the video.
 
+        alternative_videos (List of :obj:`~pyrogram.types.Video`, *optional*):
+            Alternative qualities of the video, if the story is a video.
+
         edited (``bool``, *optional*):
            True, if the Story has been edited.
 
@@ -105,6 +108,11 @@ class Story(Object, Update):
         forwards (``int``, *optional*):
             Stories forwards.
 
+        outgoing (``bool``, *optional*):
+            Whether the story is incoming or outgoing.
+            Story received from others are incoming (*outgoing* is False).
+            Story sent from yourself are outgoing (*outgoing* is True).
+
         privacy (:obj:`~pyrogram.enums.StoriesPrivacyRules`, *optional*):
             Story privacy.
 
@@ -116,6 +124,9 @@ class Story(Object, Update):
 
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this story.
+
+        reactions_count (``int``, *optional*):
+            Reactions count.
 
         skipped (``bool``, *optional*):
             The story is skipped.
@@ -150,6 +161,7 @@ class Story(Object, Update):
         has_protected_content: Optional[bool] = None,
         photo: Optional["types.Photo"] = None,
         video: Optional["types.Video"] = None,
+        alternative_videos: Optional[List["types.Video"]] = None,
         edited: Optional[bool] = None,
         pinned: Optional[bool] = None,
         public: Optional[bool] = None,
@@ -160,10 +172,12 @@ class Story(Object, Update):
         caption_entities: Optional[List["types.MessageEntity"]] = None,
         views: Optional[int] = None,
         forwards: Optional[int] = None,
+        outgoing: Optional[bool] = None,
         privacy: Optional["enums.StoriesPrivacyRules"] = None,
         allowed_users: Optional[List[Union[int, str]]] = None,
         disallowed_users: Optional[List[Union[int, str]]] = None,
         reactions: Optional[List["types.Reaction"]] = None,
+        reactions_count: Optional[int] = None,
         skipped: Optional[bool] = None,
         deleted: Optional[bool] = None,
         media_areas: Optional[List["types.MediaArea"]] = None,
@@ -185,6 +199,7 @@ class Story(Object, Update):
         self.has_protected_content = has_protected_content
         self.photo = photo
         self.video = video
+        self.alternative_videos = alternative_videos
         self.edited = edited
         self.pinned = pinned
         self.public = public
@@ -195,10 +210,12 @@ class Story(Object, Update):
         self.caption_entities = caption_entities
         self.views = views
         self.forwards = forwards
+        self.outgoing = outgoing
         self.privacy = privacy
         self.allowed_users = allowed_users
         self.disallowed_users = disallowed_users
         self.reactions = reactions
+        self.reactions_count = reactions_count
         self.skipped = skipped
         self.deleted = deleted
         self.media_areas = media_areas
@@ -318,6 +335,8 @@ class Story(Object, Update):
         views = None
         forwards = None
         reactions = None
+        reactions_count = None
+        alternative_videos = []
 
         forward_from = None
         forward_sender_name = None
@@ -343,6 +362,7 @@ class Story(Object, Update):
                 types.Reaction._parse_count(client, reaction)
                 for reaction in getattr(story.views, "reactions", [])
             ] or None
+            reactions_count = getattr(story.views, "reactions_count", None)
 
         if isinstance(story.media, raw.types.MessageMediaPhoto):
             photo = types.Photo._parse(client, story.media.photo, story.media.ttl_seconds)
@@ -353,6 +373,16 @@ class Story(Object, Update):
             video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
             video = types.Video._parse(client, doc, video_attributes)
             media_type = enums.MessageMediaType.VIDEO
+
+            for altdoc in getattr(story.media, "alt_documents", []):
+                if isinstance(altdoc, raw.types.Document):
+                    altdoc_attributes = {type(i): i for i in altdoc.attributes}
+                    altdoc_video_attribute = altdoc_attributes.get(raw.types.DocumentAttributeVideo)
+
+                    if altdoc_video_attribute:
+                        alternative_videos.append(
+                            types.Video._parse(client, altdoc, altdoc_video_attribute)
+                        )
 
         privacy_map = {
             raw.types.PrivacyValueAllowAll: enums.StoriesPrivacyRules.PUBLIC,
@@ -390,6 +420,7 @@ class Story(Object, Update):
             has_protected_content=story.noforwards,
             photo=photo,
             video=video,
+            alternative_videos=types.List(alternative_videos) or None,
             edited=story.edited,
             pinned=story.pinned,
             public=story.public,
@@ -400,10 +431,12 @@ class Story(Object, Update):
             caption_entities=entities or None,
             views=views,
             forwards=forwards,
+            outgoing=getattr(story, "out", None),
             privacy=privacy,
             allowed_users=allowed_users,
             disallowed_users=disallowed_users,
             reactions=reactions,
+            reactions_count=reactions_count,
             media_areas=types.List(
                 [
                     await types.MediaArea._parse(client, area, chats)
