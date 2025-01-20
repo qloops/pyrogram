@@ -110,7 +110,7 @@ class Video(Object):
         client,
         video: "raw.types.Document",
         video_attributes: "raw.types.DocumentAttributeVideo",
-        file_name: str,
+        file_name: str = None,
         ttl_seconds: int = None
     ) -> "Video":
         return Video(
@@ -129,7 +129,7 @@ class Video(Object):
             height=getattr(video_attributes, "h", None),
             codec=getattr(video_attributes, "video_codec", None),
             duration=video_attributes.duration,
-            file_name=file_name,
+            file_name=file_name or f"video_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.mp4",
             mime_type=video.mime_type,
             supports_streaming=video_attributes.supports_streaming,
             file_size=video.size,

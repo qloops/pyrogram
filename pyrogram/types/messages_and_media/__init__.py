@@ -42,6 +42,7 @@ from .giveaway_completed import GiveawayCompleted
 from .giveaway_created import GiveawayCreated
 from .giveaway_winners import GiveawayWinners
 from .location import Location
+from .media_area import MediaArea
 from .message import Message
 from .message_entity import MessageEntity
 from .message_reactions import MessageReactions
@@ -97,6 +98,7 @@ __all__ = [
     "GiveawayCreated",
     "GiveawayWinners",
     "Location",
+    "MediaArea",
     "Message",
     "MessageEntity",
     "MessageReactions",

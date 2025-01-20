@@ -448,7 +448,7 @@ class Message(Object, Update):
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this message.
 
-        raw (``pyrogram.raw.types.Message``, *optional*):
+        raw (:obj:`~pyrogram.raw.types.Message`, *optional*):
             The raw message object, as received from the Telegram API.
 
         link (``str``, *property*):
@@ -1097,18 +1097,7 @@ class Message(Object, Update):
                     invoice = types.Invoice._parse(client, media)
                     media_type = enums.MessageMediaType.INVOICE
                 elif isinstance(media, raw.types.MessageMediaStory):
-                    # TODO: refactor story parsing
-                    if media.story:
-                        story = await types.Story._parse(client, media.story, users, chats, media.peer)
-                    elif client.me and not client.me.is_bot:
-                        try:
-                            story = await client.get_stories(utils.get_peer_id(media.peer), media.id)
-                        except ChannelPrivate:
-                            pass
-
-                    if not story:
-                        story = await types.Story._parse(client, media, users, chats, media.peer)
-
+                    story = await types.Story._parse(client, media, users, chats, media.peer)
                     media_type = enums.MessageMediaType.STORY
                 elif isinstance(media, raw.types.MessageMediaDocument):
                     doc = media.document

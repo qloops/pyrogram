@@ -406,6 +406,9 @@ class Chat(Object):
 
     @staticmethod
     def _parse_user_chat(client, user: raw.types.User) -> "Chat":
+        if user is None or isinstance(user, raw.types.UserEmpty):
+            return None
+
         peer_id = user.id
 
         return Chat(
@@ -434,6 +437,9 @@ class Chat(Object):
 
     @staticmethod
     def _parse_chat_chat(client, chat: raw.types.Chat) -> "Chat":
+        if chat is None or isinstance(chat, raw.types.ChatEmpty):
+            return None
+
         peer_id = -chat.id
         usernames = getattr(chat, "usernames", [])
         admin_rights = getattr(chat, "admin_rights", None)
@@ -469,6 +475,9 @@ class Chat(Object):
 
     @staticmethod
     def _parse_channel_chat(client, channel: raw.types.Channel) -> "Chat":
+        if channel is None:
+            return None
+
         peer_id = utils.get_channel_id(channel.id)
         restriction_reason = getattr(channel, "restriction_reason", [])
         usernames = getattr(channel, "usernames", [])

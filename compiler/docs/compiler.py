@@ -526,6 +526,7 @@ def pyrogram_api():
             MessageEntity
             Photo
             Thumbnail
+            StrippedThumbnail
             Audio
             AvailableEffect
             Document
@@ -540,6 +541,7 @@ def pyrogram_api():
             VideoNote
             Contact
             Location
+            MediaArea
             Venue
             Sticker
             Game
@@ -920,6 +922,7 @@ def pyrogram_api():
             StoriesPrivacyRules
             UserStatus
             GiftAttributeType
+            MediaAreaType
         """,
     )
 
