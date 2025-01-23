@@ -94,6 +94,9 @@ class MediaArea(Object):
         color (``int``, *optional*):
             The argb color in decimal format.
             For weather type only.
+
+        gift (:obj:`~pyrogram.types.Gift`, *optional*):
+            Information about this gift.
     """
 
     def __init__(
@@ -118,7 +121,8 @@ class MediaArea(Object):
         venue: Optional["types.Venue"] = None,
         emoji: Optional[str] = None,
         temperature: Optional[float] = None,
-        color: Optional[int] = None
+        color: Optional[int] = None,
+        gift: Optional["types.Gift"] = None
     ):
         super().__init__(client)
 
@@ -141,6 +145,7 @@ class MediaArea(Object):
         self.emoji = emoji
         self.temperature = temperature
         self.color = color
+        self.gift = gift
 
     @staticmethod
     async def _parse(
@@ -160,6 +165,7 @@ class MediaArea(Object):
         emoji = None
         temperature = None
         color = None
+        gift = None
 
         if isinstance(area, raw.types.MediaAreaChannelPost):
             sender_chat = types.Chat._parse_channel_chat(client, chats.get(area.channel_id))
@@ -183,6 +189,8 @@ class MediaArea(Object):
             emoji = area.emoji
             temperature = area.temperature_c
             color = area.color
+        elif isinstance(area, raw.types.MediaAreaStarGift):
+            gift = await client.get_upgraded_gift(area.slug)
 
         return MediaArea(
             x=area.coordinates.x,
@@ -204,6 +212,7 @@ class MediaArea(Object):
             emoji=emoji,
             temperature=temperature,
             color=color,
+            gift=gift,
             client=client
         )
 
@@ -216,6 +225,7 @@ class MediaArea(Object):
             "raw.types.MediaAreaSuggestedReaction",
             "raw.types.MediaAreaUrl",
             "raw.types.MediaAreaWeather",
+            "raw.types.MediaAreaStarGift"
         ]
     ]:
         coordinates = raw.types.MediaAreaCoordinates(
@@ -269,4 +279,9 @@ class MediaArea(Object):
                 emoji=self.emoji,
                 temperature_c=self.temperature,
                 color=self.color
+            )
+        elif self.type == enums.MediaAreaType.GIFT:
+            return raw.types.MediaAreaStarGift(
+                coordinates=coordinates,
+                slug=f"{self.gift.title}-{self.gift.number}".replace(" ", "")
             )

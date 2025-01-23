@@ -41,3 +41,6 @@ class MediaAreaType(AutoName):
 
     WEATHER = raw.types.MediaAreaWeather
     "Weather."
+
+    GIFT = raw.types.MediaAreaStarGift
+    "Gift."
