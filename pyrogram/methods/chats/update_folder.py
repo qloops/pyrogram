@@ -16,11 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List, Union
+from typing import List, Optional, Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import enums
+from pyrogram import raw, utils, types, enums
 
 
 class UpdateFolder:
@@ -28,6 +27,8 @@ class UpdateFolder:
         self: "pyrogram.Client",
         folder_id: int,
         title: str,
+        parse_mode: Optional["enums.ParseMode"] = None,
+        entities: List["types.MessageEntity"] = None,
         included_chats: Union[Union[int, str], List[Union[int, str]]] = None,
         excluded_chats: Union[Union[int, str], List[Union[int, str]]] = None,
         pinned_chats: Union[Union[int, str], List[Union[int, str]]] = None,
@@ -51,7 +52,14 @@ class UpdateFolder:
                 Unique folder identifier.
 
             title (``str``):
-                Folder title.
+                Folder title. As of 2025-01-24, maximum length is 12 characters.
+
+            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
             included_chats (``int`` | ``str`` | List of ``int`` or ``str``, *optional*):
                 Users or chats that should added in the folder
@@ -86,6 +94,9 @@ class UpdateFolder:
             exclude_muted (``bool``, *optional*):
                 Pass True if folder should exclude muted users.
 
+            exclude_read (``bool``, *optional*):
+                Pass True if folder should exclude read users.
+
             exclude_archived (``bool``, *optional*):
                 Pass True if folder should exclude archived users.
 
@@ -113,12 +124,18 @@ class UpdateFolder:
         if not isinstance(pinned_chats, list):
             pinned_chats = [pinned_chats] if pinned_chats else []
 
+        title, title_entities = (await utils.parse_text_entities(self, title, parse_mode, entities)).values()
+        title_entities = title_entities or []  # For some reason, `title_entities` may be `None`
+
         r = await self.invoke(
             raw.functions.messages.UpdateDialogFilter(
                 id=folder_id,
                 filter=raw.types.DialogFilter(
                     id=folder_id,
-                    title=title,
+                    title=raw.types.TextWithEntities(
+                        text=title,
+                        entities=title_entities,
+                    ),
                     pinned_peers=[
                         await self.resolve_peer(user_id)
                         for user_id in pinned_chats
