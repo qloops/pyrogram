@@ -116,16 +116,8 @@ class EmojiStatus(Object):
 
     def write(self):
         if self.collectible_id:
-            return raw.types.EmojiStatusCollectible(
+            return raw.types.InputEmojiStatusCollectible(
                 collectible_id=self.collectible_id,
-                document_id=self.custom_emoji_id,
-                title=self.title,
-                slug=self.name,
-                pattern_document_id=self.pattern_custom_emoji_id,
-                center_color=self.center_color,
-                edge_color=self.edge_color,
-                pattern_color=self.pattern_color,
-                text_color=self.text_color,
                 until=utils.datetime_to_timestamp(self.until_date)
             )
 
