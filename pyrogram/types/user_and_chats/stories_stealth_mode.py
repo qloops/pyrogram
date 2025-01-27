@@ -26,10 +26,10 @@ class StoriesStealthMode(Object):
     """Information about the current stealth mode session.
 
     Parameters:
-        active_until_date (``datetime``, *optional*):
+        active_until_date (:py:obj:`~datetime.datetime`, *optional*):
             The date up to which stealth mode will be active.
 
-        cooldown_until_date (``datetime``, *optional*):
+        cooldown_until_date (:py:obj:`~datetime.datetime`, *optional*):
             The date starting from which the user will be allowed to re-enable stealth mode again.
     """
 

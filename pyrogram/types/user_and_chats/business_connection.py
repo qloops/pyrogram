@@ -36,7 +36,7 @@ class BusinessConnection(Object):
         dc_id (``int``):
             Datacenter identifier of the user.
 
-        date (``datetime``):
+        date (:py:obj:`~datetime.datetime`):
             Date when the user connected to the business.
 
         can_reply (``bool``, *optional*):
