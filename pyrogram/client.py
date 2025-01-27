@@ -230,7 +230,7 @@ class Client(Methods):
     UPDATES_WATCHDOG_INTERVAL = 15 * 60
 
     MAX_CONCURRENT_TRANSMISSIONS = 1
-    MAX_MESSAGE_CACHE_SIZE = 10000
+    MAX_MESSAGE_CACHE_SIZE = 1000
 
     mimetypes = MimeTypes()
     mimetypes.readfp(StringIO(mime_types))
