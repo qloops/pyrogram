@@ -907,7 +907,7 @@ class Message(Object, Update):
                 boosts_applied = action.boosts
                 service_type = enums.MessageServiceType.BOOST_APPLY
             elif isinstance(action, (raw.types.MessageActionStarGift, raw.types.MessageActionStarGiftUnique)):
-                gift = await types.Gift._parse_action(client, message, users)
+                gift = await types.Gift._parse_action(client, message, users, chats)
                 service_type = enums.MessageServiceType.GIFT
             elif isinstance(action, raw.types.MessageActionBotAllowed):
                 connected_website = getattr(action, "domain", None)

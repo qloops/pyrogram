@@ -283,5 +283,5 @@ class MediaArea(Object):
         elif self.type == enums.MediaAreaType.GIFT:
             return raw.types.MediaAreaStarGift(
                 coordinates=coordinates,
-                slug=f"{self.gift.title}-{self.gift.number}".replace(" ", "")
+                slug=self.gift.name
             )

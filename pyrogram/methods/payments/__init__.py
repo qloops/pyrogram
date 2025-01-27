@@ -23,8 +23,8 @@ from .get_payment_form import GetPaymentForm
 from .get_stars_balance import GetStarsBalance
 from .get_upgraded_gift import GetUpgradedGift
 from .get_available_gifts import GetAvailableGifts
-from .get_user_gifts_count import GetUserGiftsCount
-from .get_user_gifts import GetUserGifts
+from .get_chat_gifts_count import GetChatGiftsCount
+from .get_chat_gifts import GetChatGifts
 from .hide_gift import HideGift
 from .send_payment_form import SendPaymentForm
 from .send_gift import SendGift
@@ -40,8 +40,8 @@ class Payments(
     GetStarsBalance,
     GetUpgradedGift,
     GetAvailableGifts,
-    GetUserGiftsCount,
-    GetUserGifts,
+    GetChatGiftsCount,
+    GetChatGifts,
     HideGift,
     SendPaymentForm,
     SendGift,

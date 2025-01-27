@@ -94,6 +94,9 @@ class Chat(Object):
         is_paid_reactions_available (``bool``, *optional*):
             True, if paid reactions enabled in this chat.
 
+        is_gifts_available (``bool``, *optional*):
+            True, if star gifts can be received by this chat.
+
         title (``str``, *optional*):
             Title, for supergroups, channels and basic group chats.
 
@@ -283,6 +286,7 @@ class Chat(Object):
         is_call_not_empty: bool = None,
         is_public: bool = None,
         is_paid_reactions_available: bool = None,
+        is_gifts_available: bool = None,
         title: str = None,
         username: str = None,
         usernames: List["types.Username"] = None,
@@ -355,6 +359,7 @@ class Chat(Object):
         self.is_call_not_empty = is_call_not_empty
         self.is_public = is_public
         self.is_paid_reactions_available = is_paid_reactions_available
+        self.is_gifts_available = is_gifts_available
         self.title = title
         self.username = username
         self.usernames = usernames
@@ -405,7 +410,7 @@ class Chat(Object):
         self.raw = raw
 
     @staticmethod
-    def _parse_user_chat(client, user: raw.types.User) -> "Chat":
+    def _parse_user_chat(client, user: raw.types.User) -> Optional["Chat"]:
         if user is None or isinstance(user, raw.types.UserEmpty):
             return None
 
@@ -436,7 +441,7 @@ class Chat(Object):
         )
 
     @staticmethod
-    def _parse_chat_chat(client, chat: raw.types.Chat) -> "Chat":
+    def _parse_chat_chat(client, chat: raw.types.Chat) -> Optional["Chat"]:
         if chat is None or isinstance(chat, raw.types.ChatEmpty):
             return None
 
@@ -474,7 +479,7 @@ class Chat(Object):
         )
 
     @staticmethod
-    def _parse_channel_chat(client, channel: raw.types.Channel) -> "Chat":
+    def _parse_channel_chat(client, channel: raw.types.Channel) -> Optional["Chat"]:
         if channel is None:
             return None
 
@@ -630,6 +635,8 @@ class Chat(Object):
                 )
                 parsed_chat.can_send_paid_media = getattr(full_chat, "paid_media_allowed", None)
                 parsed_chat.is_paid_reactions_available = getattr(full_chat, "paid_reactions_available", None)
+                parsed_chat.is_gifts_available = getattr(full_chat, "stargifts_available", None)
+                parsed_chat.gifts_count = getattr(full_chat, "stargifts_count", None)
 
                 linked_chat_raw = chats.get(full_chat.linked_chat_id, None)
 
@@ -647,13 +654,12 @@ class Chat(Object):
                     parsed_chat.send_as_chat = Chat._parse_chat(client, send_as_raw)
 
                 if full_chat.stories:
-                    peer_stories: raw.types.PeerStories = full_chat.stories
                     parsed_chat.stories = types.List(
                         [
                             await types.Story._parse(
-                                client, story, users, chats, peer_stories.peer
+                                client, story, users, chats, full_chat.stories.peer
                             )
-                            for story in peer_stories.stories
+                            for story in full_chat.stories.stories
                         ]
                     ) or None
 

@@ -330,8 +330,8 @@ def pyrogram_api():
             get_payment_form
             get_available_gifts
             get_upgraded_gift
-            get_user_gifts_count
-            get_user_gifts
+            get_chat_gifts_count
+            get_chat_gifts
             hide_gift
             send_payment_form
             send_gift
