@@ -1240,7 +1240,10 @@ class Client(Methods):
             except Exception as e:
                 log.exception(e)
 
-    def guess_mime_type(self, filename: str) -> Optional[str]:
+    def guess_mime_type(self, filename: Union[str, BytesIO]) -> Optional[str]:
+        if isinstance(filename, BytesIO):
+            return self.mimetypes.guess_type(filename.name)[0]
+            
         return self.mimetypes.guess_type(filename)[0]
 
     def guess_extension(self, mime_type: str) -> Optional[str]:
