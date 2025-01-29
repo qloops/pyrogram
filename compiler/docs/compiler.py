@@ -857,6 +857,7 @@ def pyrogram_api():
             Gift.convert
             Gift.upgrade
             Gift.transfer
+            Gift.wear
         """,
         animation="""
         Animation
