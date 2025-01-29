@@ -453,6 +453,9 @@ class Message(Object, Update):
 
         link (``str``, *property*):
             Generate a link to this message, only for groups and channels.
+
+        content (``str``, *property*):
+            The text or caption content of the message.
     """
 
     # TODO: Add game missing field
@@ -1396,6 +1399,10 @@ class Message(Object, Update):
             return f"https://t.me/{self.chat.username}/{self.id}"
         else:
             return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}/{self.id}"
+
+    @property
+    def content(self) -> str:
+        return self.text or self.caption or ""
 
     async def get_media_group(self) -> List["types.Message"]:
         """Bound method *get_media_group* of :obj:`~pyrogram.types.Message`.
