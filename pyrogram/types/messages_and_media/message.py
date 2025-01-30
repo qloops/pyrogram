@@ -1402,7 +1402,7 @@ class Message(Object, Update):
 
     @property
     def content(self) -> str:
-        return self.text or self.caption or ""
+        return self.text or self.caption or Str("").init([])
 
     async def get_media_group(self) -> List["types.Message"]:
         """Bound method *get_media_group* of :obj:`~pyrogram.types.Message`.
