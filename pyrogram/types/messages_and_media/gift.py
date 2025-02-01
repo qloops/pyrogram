@@ -263,8 +263,8 @@ class Gift(Object):
     async def _parse_unique(
         client,
         star_gift: "raw.types.StarGiftUnique",
-        users: dict,
-        chats: dict
+        users: dict = {},
+        chats: dict = {}
     ) -> "Gift":
         owner_id = utils.get_raw_peer_id(getattr(star_gift, "owner_id", None))
 
@@ -496,7 +496,7 @@ class Gift(Object):
         """Bound method *wear* of :obj:`~pyrogram.types.Gift`.
 
         .. note::
-        
+
             This works for upgraded gifts only.
 
         Use as a shortcut for:
