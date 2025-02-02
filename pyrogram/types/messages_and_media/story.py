@@ -236,30 +236,21 @@ class Story(Object, Update):
             else:
                 r = await client.invoke(raw.functions.users.GetUsers(id=[raw.types.InputPeerSelf()]))
                 peer_id = r[0].id
+                users.update({r[0].id: r[0]})
+        elif hasattr(peer, "user_id"):
+            peer_id = peer.user_id
+
+            if peer_id not in users:
+                r = await client.invoke(raw.functions.users.GetUsers(id=[raw.types.InputPeerSelf(), peer]))
                 users.update({i.id: i for i in r})
-        elif isinstance(peer, raw.types.InputPeerUser):
-            peer_id = utils.get_raw_peer_id(peer)
-        elif isinstance(peer, raw.types.InputPeerChannel):
-            peer_id = utils.get_raw_peer_id(peer)
+        elif hasattr(peer, "channel_id"):
+            peer_id = peer.channel_id
+
             if peer_id not in chats:
                 r = await client.invoke(raw.functions.channels.GetChannels(id=[peer]))
                 chats.update({peer_id: r.chats[0]})
         else:
-            peer_id = utils.get_raw_peer_id(peer)
-
-        if isinstance(peer, (raw.types.PeerUser, raw.types.InputPeerUser)) and peer_id not in users:
-            try:
-                r = await client.invoke(
-                    raw.functions.users.GetUsers(
-                        id=[
-                            await client.resolve_peer(peer_id)
-                        ]
-                    )
-                )
-            except PeerIdInvalid:
-                pass
-            else:
-                users.update({i.id: i for i in r})
+            raise ValueError(f"Invalid peer type: {type(peer)}")
 
         from_user = types.User._parse(client, users.get(peer_id, None))
         sender_chat = types.Chat._parse_channel_chat(client, chats[peer_id]) if not from_user else None
@@ -325,9 +316,6 @@ class Story(Object, Update):
 
         photo = None
         video = None
-        from_user = None
-        sender_chat = None
-        chat = None
         privacy = None
         allowed_users = None
         disallowed_users = None
