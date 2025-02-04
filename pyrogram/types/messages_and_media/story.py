@@ -270,7 +270,8 @@ class Story(Object, Update):
                 users.update({i.id: i for i in r.users})
                 chats.update({i.id: i for i in r.chats})
 
-                story = r.stories[0]
+                if r.stories:
+                    story = r.stories[0]
             except (ChannelPrivate, ChannelInvalid):
                 return Story(client=client, id=story.id, skipped=True, from_user=from_user, sender_chat=sender_chat, chat=chat)
         if isinstance(story, raw.types.MessageMediaStory):
@@ -289,7 +290,8 @@ class Story(Object, Update):
                     users.update({i.id: i for i in r.users})
                     chats.update({i.id: i for i in r.chats})
 
-                    story = r.stories[0]
+                    if r.stories:
+                        story = r.stories[0]
                 except (ChannelPrivate, ChannelInvalid):
                     pass
             else:
@@ -307,7 +309,8 @@ class Story(Object, Update):
                 users.update({i.id: i for i in r.users})
                 chats.update({i.id: i for i in r.chats})
 
-                story = r.stories[0]
+                if r.stories:
+                    story = r.stories[0]
             except (ChannelPrivate, ChannelInvalid):
                 pass
 
