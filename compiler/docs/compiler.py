@@ -721,6 +721,7 @@ def pyrogram_api():
             Message.download
             Message.forward
             Message.copy
+            Message.copy_media_group
             Message.pin
             Message.unpin
             Message.edit

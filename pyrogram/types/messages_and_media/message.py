@@ -4781,6 +4781,113 @@ class Message(Object, Update):
         else:
             raise ValueError("Can't copy this message")
 
+    async def copy_media_group(
+        self,
+        chat_id: Union[int, str],
+        captions: Union[List[str], str] = None,
+        has_spoilers: Union[List[bool], bool] = None,
+        disable_notification: bool = None,
+        message_thread_id: int = None,
+        reply_to_message_id: int = None,
+        reply_to_chat_id: Union[int, str] = None,
+        reply_to_story_id: int = None,
+        quote_text: str = None,
+        parse_mode: Optional["enums.ParseMode"] = None,
+        quote_entities: List["types.MessageEntity"] = None,
+        quote_offset: int = None,
+        schedule_date: datetime = None,
+        show_caption_above_media: bool = None,
+    ) -> List["types.Message"]:
+        """Bound method *copy_media_group* of :obj:`~pyrogram.types.Message`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.copy_media_group(
+                chat_id=chat_id,
+                from_chat_id=from_chat_id,
+                message_ids=message.id
+            )
+
+        Example:
+            .. code-block:: python
+
+                await message.copy_media_group("me")
+        
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            captions (``str`` | List of ``str`` , *optional*):
+                New caption for media, 0-1024 characters after entities parsing for each media.
+                If not specified, the original caption is kept.
+                Pass "" (empty string) to remove the caption.
+
+                If a ``string`` is passed, it becomes a caption only for the first media.
+                If a list of ``string`` passed, each element becomes caption for each media element.
+                You can pass ``None`` in list to keep the original caption.
+
+            disable_notification (``bool``, *optional*):
+                Sends the message silently.
+                Users will receive a notification with no sound.
+
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread (topic) of the forum.
+                For supergroups only.
+
+            reply_to_message_id (``int``, *optional*):
+                If the message is a reply, ID of the original message.
+
+            reply_to_chat_id (``int``, *optional*):
+                If the message is a reply, ID of the original chat.
+
+            reply_to_story_id (``int``, *optional*):
+                If the message is a reply, ID of the target story.
+
+            quote_text (``str``, *optional*):
+                Text of the quote to be sent.
+
+            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
+                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+
+            quote_offset (``int``, *optional*):
+                Offset for quote in original message.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            show_caption_above_media (``bool``, *optional*):
+                Pass True, if the caption must be shown above the message media.
+
+        Returns:
+            List of :obj:`~pyrogram.types.Message`: On success, a list of copied messages is returned.
+        """
+        return await self._client.copy_media_group(
+            chat_id=chat_id,
+            from_chat_id=self.chat.id,
+            message_id=self.id,
+            captions=captions,
+            has_spoilers=has_spoilers,
+            disable_notification=disable_notification,
+            message_thread_id=message_thread_id,
+            reply_to_message_id=reply_to_message_id,
+            reply_to_chat_id=reply_to_chat_id,
+            reply_to_story_id=reply_to_story_id,
+            quote_text=quote_text,
+            parse_mode=parse_mode,
+            quote_entities=quote_entities,
+            quote_offset=quote_offset,
+            schedule_date=schedule_date,
+            show_caption_above_media=show_caption_above_media
+        )
+
     async def delete(self, revoke: bool = True):
         """Bound method *delete* of :obj:`~pyrogram.types.Message`.
 
