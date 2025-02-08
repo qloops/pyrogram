@@ -172,7 +172,7 @@ class MediaArea(Object):
             message_id = area.msg_id
 
             try:
-                message = await client.get_messages(sender_chat.id, message_id)
+                message = await client.get_messages(chat_id=sender_chat.id, message_ids=message_id)
             except (ChannelPrivate, ChannelInvalid):
                 pass
         elif isinstance(area, raw.types.MediaAreaGeoPoint):

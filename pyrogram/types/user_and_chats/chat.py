@@ -584,14 +584,14 @@ class Chat(Object):
 
             if full_user.pinned_msg_id:
                 parsed_chat.pinned_message = await client.get_messages(
-                    parsed_chat.id,
+                    chat_id=parsed_chat.id,
                     message_ids=full_user.pinned_msg_id
                 )
 
             if full_user.personal_channel_id:
                 parsed_chat.personal_channel = Chat._parse_channel_chat(client, chats[full_user.personal_channel_id])
                 parsed_chat.personal_channel_message = await client.get_messages(
-                    parsed_chat.personal_channel.id,
+                    chat_id=parsed_chat.personal_channel.id,
                     message_ids=full_user.personal_channel_message
                 )
 

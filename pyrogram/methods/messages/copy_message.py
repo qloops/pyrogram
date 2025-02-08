@@ -110,7 +110,7 @@ class CopyMessage:
 
             show_caption_above_media (``bool``, *optional*):
                 If True, caption must be shown above the message media.
-            
+
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
 
@@ -128,7 +128,7 @@ class CopyMessage:
                 await app.copy_message(to_chat, from_chat, 123)
 
         """
-        message: types.Message = await self.get_messages(from_chat_id, message_id)
+        message: types.Message = await self.get_messages(chat_id=from_chat_id, message_ids=message_id)
 
         return await message.copy(
             chat_id=chat_id,
