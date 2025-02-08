@@ -197,7 +197,7 @@ class Client(Methods):
 
         max_message_cache_size (``int``, *optional*):
             Set the maximum size of the message cache.
-            Defaults to 10000.
+            Defaults to 1000.
 
         storage_engine (:obj:`~pyrogram.storage.Storage`, *optional*):
             Pass an instance of your own implementation of session storage engine.
