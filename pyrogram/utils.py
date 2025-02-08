@@ -151,8 +151,9 @@ async def parse_messages(
 
                 if is_all_replies_in_same_chat:
                     reply_messages = await client.get_messages(
-                        chat_id,
-                        reply_to_message_ids=list(messages_with_replies.keys()),
+                        chat_id=chat_id,
+                        message_ids=list(messages_with_replies.keys()),
+                        reply=True,
                         replies=replies - 1
                     )
                 else:

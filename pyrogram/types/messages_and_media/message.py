@@ -983,8 +983,8 @@ class Message(Object, Update):
             if isinstance(action, raw.types.MessageActionPinMessage):
                 try:
                     parsed_message.pinned_message = await client.get_messages(
-                        parsed_message.chat.id,
-                        reply_to_message_ids=message.id,
+                        chat_id=parsed_message.chat.id,
+                        pinned=True,
                         replies=0
                     )
 
@@ -997,8 +997,9 @@ class Message(Object, Update):
                 if message.reply_to and replies:
                     try:
                         parsed_message.reply_to_message = await client.get_messages(
-                            parsed_message.chat.id,
-                            reply_to_message_ids=message.id,
+                            chat_id=parsed_message.chat.id,
+                            message_ids=message.id,
+                            reply=True,
                             replies=0
                         )
 
@@ -1355,7 +1356,7 @@ class Message(Object, Update):
                                 reply_to_params = {"chat_id": key[0], 'message_ids': key[1]}
                             else:
                                 key = (parsed_message.chat.id, parsed_message.reply_to_message_id)
-                                reply_to_params = {'chat_id': key[0], 'reply_to_message_ids': message.id}
+                                reply_to_params = {'chat_id': key[0], 'message_ids': message.id, 'reply': True}
 
                             reply_to_message = client.message_cache[key]
 
@@ -4814,7 +4815,7 @@ class Message(Object, Update):
             .. code-block:: python
 
                 await message.copy_media_group("me")
-        
+
         Parameters:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.

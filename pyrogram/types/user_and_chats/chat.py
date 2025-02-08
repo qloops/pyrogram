@@ -668,10 +668,7 @@ class Chat(Object):
                     parsed_chat.wallpaper = types.Document._parse(client, full_chat.wallpaper.document, "wallpaper.jpg")
 
             if full_chat.pinned_msg_id:
-                parsed_chat.pinned_message = await client.get_messages(
-                    parsed_chat.id,
-                    message_ids=full_chat.pinned_msg_id
-                )
+                parsed_chat.pinned_message = await client.get_messages(chat_id=parsed_chat.id, pinned=True)
 
             if isinstance(full_chat.exported_invite, raw.types.ChatInviteExported):
                 parsed_chat.invite_link = full_chat.exported_invite.link
