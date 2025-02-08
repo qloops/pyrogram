@@ -101,14 +101,18 @@ class GetMessages:
             match = re.match(r"^(?:https?://)?(?:www\.)?(?:t(?:elegram)?\.(?:org|me|dog)/(?:c/)?)([\w]+)(?:/\d+)*/(\d+)/?$", message_ids.lower())
 
             if match:
-                chat_id = match.group(1)
+                try:
+                    chat_id = utils.get_channel_id(int(match.group(1)))
+                except ValueError:
+                    chat_id = match.group(1)
+
                 ids = [_type(id=int(match.group(2)))]
             else:
                 raise ValueError("Invalid message link.")
         else:
             if not chat_id:
                 raise ValueError("Invalid chat_id.")
-            
+
             if pinned:
                 ids = [raw.types.InputMessagePinned()]
             else:
