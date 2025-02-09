@@ -145,9 +145,11 @@ class Session:
             except (AuthKeyDuplicated, Unauthorized) as e:
                 await self.stop()
                 raise e
-            except (OSError, RPCError) as e:
+            except ConnectionError as e:
                 await self.stop()
                 raise e
+            except (OSError, RPCError):
+                await self.stop()
             except Exception as e:
                 await self.stop()
                 raise e
