@@ -85,6 +85,9 @@ class Gift(Object):
         owner_address (``str``, *optional*):
             Address of the gift owner in TON blockchain.
 
+        gift_address (``str``, *optional*):
+            Address of the gift in TON blockchain.
+
         price (``int``, *optional*):
             Price of this gift in stars.
 
@@ -163,6 +166,7 @@ class Gift(Object):
         owner: Optional["types.Chat"] = None,
         owner_name: Optional[str] = None,
         owner_address: Optional[str] = None,
+        gift_address: Optional[str] = None,
         price: Optional[int] = None,
         convert_price: Optional[int] = None,
         upgrade_price: Optional[int] = None,
@@ -201,6 +205,7 @@ class Gift(Object):
         self.owner = owner
         self.owner_name = owner_name
         self.owner_address = owner_address
+        self.gift_address = gift_address
         self.price = price
         self.convert_price = convert_price
         self.upgrade_price = upgrade_price
@@ -281,6 +286,7 @@ class Gift(Object):
             owner=types.Chat._parse_chat(client, users.get(owner_id) or chats.get(owner_id)),
             owner_name=getattr(star_gift, "owner_name", None),
             owner_address=getattr(star_gift, "owner_address", None),
+            gift_address=getattr(star_gift, "gift_address", None),
             is_upgraded=True,
             raw=star_gift,
             client=client
