@@ -315,18 +315,16 @@ class Gift(Object):
         parsed_gift.is_saved = not saved_gift.unsaved if getattr(saved_gift, "unsaved", None) else None
         parsed_gift.is_refunded = getattr(saved_gift, "refunded", None)
         parsed_gift.can_upgrade = getattr(saved_gift, "can_upgrade", None)
-        parsed_gift.from_user = types.User._parse(client, users.get(utils.get_raw_peer_id(saved_gift.from_id), None))
+        parsed_gift.from_user = types.User._parse(client, users.get(utils.get_raw_peer_id(getattr(saved_gift, "from_id", None)), None))
         parsed_gift.caption = caption
         parsed_gift.caption_entities = caption_entities
-        parsed_gift.message_id = getattr(saved_gift, "msg_id", None)
-        parsed_gift.saved_id = getattr(saved_gift, "saved_id", None)
-        parsed_gift.convert_price = getattr(saved_gift, "convert_stars", None)
-        parsed_gift.upgrade_price = getattr(saved_gift, "upgrade_stars", None)
-        parsed_gift.transfer_price = getattr(saved_gift, "transfer_stars", None)
+        parsed_gift.message_id = getattr(saved_gift, "msg_id", None) or getattr(saved_gift, "saved_id", None)
         parsed_gift.can_export_at = utils.timestamp_to_datetime(getattr(saved_gift, "can_export_at", None))
+        parsed_gift.convert_price = parsed_gift.convert_price or getattr(saved_gift, "convert_stars", None)
+        parsed_gift.upgrade_price = parsed_gift.upgrade_price or getattr(saved_gift, "upgrade_stars", None)
+        parsed_gift.transfer_price = parsed_gift.transfer_price or getattr(saved_gift, "transfer_stars", None)
 
         return parsed_gift
-
 
     @staticmethod
     async def _parse_action(
@@ -356,7 +354,6 @@ class Gift(Object):
             parsed_gift.caption_entities = caption_entities
             parsed_gift.convert_price = getattr(action, "convert_stars", None)
             parsed_gift.upgrade_price = getattr(action, "upgrade_stars", None)
-            parsed_gift.message_id = getattr(action, "saved_id", message.id)
             parsed_gift.upgrade_message_id = getattr(action, "upgrade_msg_id", None)
         elif isinstance(action, raw.types.MessageActionStarGiftUnique):
             parsed_gift = await Gift._parse_unique(client, action.gift, users, chats)
@@ -367,10 +364,10 @@ class Gift(Object):
             parsed_gift.is_refunded = getattr(action, "refunded", None)
             parsed_gift.can_export_at = utils.timestamp_to_datetime(getattr(action, "can_export_at", None))
             parsed_gift.transfer_price = getattr(action, "transfer_stars", None)
-            parsed_gift.message_id = getattr(action, "saved_id", None)
             parsed_gift.upgrade_message_id = message.id
 
         parsed_gift.date = utils.timestamp_to_datetime(message.date)
+        parsed_gift.message_id = message.id
 
         return parsed_gift
 
