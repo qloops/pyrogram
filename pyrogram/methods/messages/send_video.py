@@ -43,6 +43,8 @@ class SendVideo:
         duration: int = 0,
         width: int = 0,
         height: int = 0,
+        video_start_timestamp: int = 0,
+        video_cover: Union[str, BinaryIO] = None,
         thumb: Union[str, BinaryIO] = None,
         file_name: str = None,
         supports_streaming: bool = True,
@@ -88,7 +90,7 @@ class SendVideo:
             video (``str`` | ``BinaryIO``):
                 Video to send.
                 Pass a file_id as string to send a video that exists on the Telegram servers,
-                pass an HTTP URL as a string for Telegram to get a video from the Internet,
+                pass a HTTP URL as a string for Telegram to get a video from the Internet,
                 pass a file path as string to upload a new video that exists on your local machine, or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
@@ -118,6 +120,15 @@ class SendVideo:
 
             height (``int``, *optional*):
                 Video height.
+
+            video_start_timestamp (``int``, *optional*):
+                Video startpoint, in seconds.
+
+            video_cover (``str`` | ``BinaryIO``, *optional*):
+                Video cover.
+                Pass a file_id as string to attach a photo that exists on the Telegram servers,
+                pass a file path as string to upload a new photo civer that exists on your local machine, or
+                pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
             thumb (``str`` | ``BinaryIO``, *optional*):
                 Thumbnail of the video sent.
@@ -227,6 +238,9 @@ class SendVideo:
                 # Send self-destructing video
                 await app.send_video("me", "video.mp4", ttl_seconds=10)
 
+                # Add video_cover to the video
+                await app.send_video(channel_id, "video.mp4", video_cover="photo.jpg")
+
                 # Keep track of the progress while uploading
                 async def progress(current, total):
                     print(f"{current * 100 / total:.1f}%")
@@ -234,8 +248,43 @@ class SendVideo:
                 await app.send_video("me", "video.mp4", progress=progress)
         """
         file = None
+        vcover_file = None
+        vcover_media = None
+        peer = await self.resolve_peer(chat_id)
 
         try:
+            if video_cover is not None:
+                if isinstance(video_cover, str):
+                    if os.path.isfile(video_cover):
+                        vcover_media = await self.invoke(
+                            raw.functions.messages.UploadMedia(
+                                peer=peer,
+                                media=raw.types.InputMediaUploadedPhoto(
+                                    file=await self.save_file(video_cover)
+                                )
+                            )
+                        )
+                    elif re.match("^https?://", video_cover):
+                        raise ValueError("Video cover can't be a URL")
+                    else:
+                        vcover_file = utils.get_input_media_from_file_id(video_cover, FileType.PHOTO).id
+                else:
+                    vcover_media = await self.invoke(
+                        raw.functions.messages.UploadMedia(
+                            peer=peer,
+                            media=raw.types.InputMediaUploadedPhoto(
+                                file=await self.save_file(video_cover)
+                            )
+                        )
+                    )
+
+                if vcover_media:
+                    vcover_file = raw.types.InputPhoto(
+                        id=vcover_media.photo.id,
+                        access_hash=vcover_media.photo.access_hash,
+                        file_reference=vcover_media.photo.file_reference
+                    )
+
             if isinstance(video, str):
                 if os.path.isfile(video):
                     thumb = await self.save_file(thumb)
@@ -246,6 +295,8 @@ class SendVideo:
                         ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler,
                         thumb=thumb,
+                        video_cover=vcover_file,
+                        video_timestamp=video_start_timestamp,
                         nosound_video=no_sound,
                         attributes=[
                             raw.types.DocumentAttributeVideo(
@@ -261,7 +312,9 @@ class SendVideo:
                     media = raw.types.InputMediaDocumentExternal(
                         url=video,
                         ttl_seconds=ttl_seconds,
-                        spoiler=has_spoiler
+                        spoiler=has_spoiler,
+                        video_cover=vcover_file,
+                        video_timestamp=video_start_timestamp
                     )
                 else:
                     media = utils.get_input_media_from_file_id(video, FileType.VIDEO, ttl_seconds=ttl_seconds, has_spoiler=has_spoiler)
@@ -274,6 +327,8 @@ class SendVideo:
                     ttl_seconds=ttl_seconds,
                     spoiler=has_spoiler,
                     thumb=thumb,
+                    video_cover=vcover_file,
+                    video_timestamp=video_start_timestamp,
                     nosound_video=no_sound,
                     attributes=[
                         raw.types.DocumentAttributeVideo(
@@ -290,7 +345,6 @@ class SendVideo:
 
             while True:
                 try:
-                    peer = await self.resolve_peer(chat_id)
                     r = await self.invoke(
                         raw.functions.messages.SendMedia(
                             peer=peer,

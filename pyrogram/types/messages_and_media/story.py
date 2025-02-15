@@ -1129,6 +1129,8 @@ class Story(Object, Update):
         duration: int = 0,
         width: int = 0,
         height: int = 0,
+        video_start_timestamp: int = 0,
+        video_cover: Union[str, BinaryIO] = None,
         thumb: Union[str, BinaryIO] = None,
         file_name: str = None,
         supports_streaming: bool = True,
@@ -1193,6 +1195,15 @@ class Story(Object, Update):
 
             height (``int``, *optional*):
                 Video height.
+
+            video_start_timestamp (``int``, *optional*):
+                Video startpoint, in seconds.
+
+            video_cover (``str`` | ``BinaryIO``, *optional*):
+                Video cover.
+                Pass a file_id as string to attach a photo that exists on the Telegram servers,
+                pass a file path as string to upload a new photo civer that exists on your local machine, or
+                pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
             thumb (``str`` | ``BinaryIO``, *optional*):
                 Thumbnail of the video sent.
@@ -1260,6 +1271,8 @@ class Story(Object, Update):
             duration=duration,
             width=width,
             height=height,
+            video_start_timestamp=video_start_timestamp,
+            video_cover=video_cover,
             thumb=thumb,
             file_name=file_name,
             supports_streaming=supports_streaming,
