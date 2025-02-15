@@ -184,7 +184,7 @@ class SendVoice:
                 await app.send_voice("me", "voice.ogg", duration=20)
 
                 # Send self-destructing voice note
-                await app.send_voice("me", "voice.ogg", ttl_seconds=(1 << 31) - 1)
+                await app.send_voice("me", "voice.ogg", view_once=True)
         """
         file = None
 

@@ -19,7 +19,7 @@
 from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, enums
+from pyrogram import enums, raw
 
 
 class SendPaidReaction:
@@ -65,8 +65,6 @@ class SendPaidReaction:
             is_queryable = privacy in [enums.PaidReactionPrivacy.CHAT]
 
             privacy = privacy.value(peer=await self.resolve_peer(send_as)) if is_queryable else privacy.value()
-        else:
-            privacy = None
 
         rpc = raw.functions.messages.SendPaidReaction(
             peer=await self.resolve_peer(chat_id),
