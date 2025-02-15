@@ -127,6 +127,7 @@ class SendVideo:
             video_cover (``str`` | ``BinaryIO``, *optional*):
                 Video cover.
                 Pass a file_id as string to attach a photo that exists on the Telegram servers,
+                pass a HTTP URL as a string for Telegram to get a video from the Internet,
                 pass a file path as string to upload a new photo civer that exists on your local machine, or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
@@ -265,7 +266,14 @@ class SendVideo:
                             )
                         )
                     elif re.match("^https?://", video_cover):
-                        raise ValueError("Video cover can't be a URL")
+                        vcover_media = await self.invoke(
+                            raw.functions.messages.UploadMedia(
+                                peer=peer,
+                                media=raw.types.InputMediaPhotoExternal(
+                                    url=video_cover
+                                )
+                            )
+                        )
                     else:
                         vcover_file = utils.get_input_media_from_file_id(video_cover, FileType.PHOTO).id
                 else:
