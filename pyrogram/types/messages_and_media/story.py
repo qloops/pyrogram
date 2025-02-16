@@ -1129,7 +1129,7 @@ class Story(Object, Update):
         duration: int = 0,
         width: int = 0,
         height: int = 0,
-        video_start_timestamp: int = 0,
+        video_start_timestamp: int = None,
         video_cover: Union[str, BinaryIO] = None,
         thumb: Union[str, BinaryIO] = None,
         file_name: str = None,
