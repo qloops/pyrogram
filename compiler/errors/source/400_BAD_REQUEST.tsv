@@ -455,6 +455,7 @@ STARGIFT_ALREADY_UPGRADED	This star gift was already upgraded before
 STARGIFT_INVALID	The specified gift is invalid
 STARGIFT_NOT_FOUND	The specified star gift was not found
 STARGIFT_SLUG_INVALID	The provided star gift slug is invalid (must match the format CollectionName-123)
+STARGIFT_UPGRADE_UNAVAILABLE	Gift is not available for upgrade yet.
 STARGIFT_USAGE_LIMITED	The star gift usage is limited
 START_PARAM_EMPTY	The start parameter is empty
 START_PARAM_INVALID	The start parameter is invalid
