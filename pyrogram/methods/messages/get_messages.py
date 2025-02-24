@@ -93,7 +93,7 @@ class GetMessages:
         Raises:
             ValueError: In case of invalid arguments.
         """
-        is_iterable = not isinstance(message_ids, (int, str))
+        is_iterable = not isinstance(message_ids, (int, str)) if message_ids is not None else False
         ids = None if message_ids is None else list(message_ids) if is_iterable else [message_ids]
         _type = raw.types.InputMessageReplyTo if reply else raw.types.InputMessageID
 
