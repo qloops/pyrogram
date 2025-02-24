@@ -1130,7 +1130,7 @@ class Message(Object, Update):
                                 video_note = types.VideoNote._parse(client, doc, video_attributes, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO_NOTE
                             else:
-                                video = types.Video._parse(client, doc, video_attributes, file_name, media.ttl_seconds)
+                                video = types.Video._parse(client, doc, video_attributes, file_name, media.ttl_seconds, media.video_cover, media.video_timestamp)
                                 media_type = enums.MessageMediaType.VIDEO
                                 has_media_spoiler = media.spoiler
 

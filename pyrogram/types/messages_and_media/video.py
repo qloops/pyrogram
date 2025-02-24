@@ -69,6 +69,12 @@ class Video(Object):
 
         thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
             Video thumbnails.
+
+        video_cover (:obj:`~pyrogram.types.Photo`, *optional*):
+            Video cover.
+
+        video_start_timestamp (``int``, *optional*):
+            Video startpoint, in seconds.
     """
 
     def __init__(
@@ -87,7 +93,9 @@ class Video(Object):
         supports_streaming: bool = None,
         ttl_seconds: int = None,
         date: datetime = None,
-        thumbs: List["types.Thumbnail"] = None
+        thumbs: List["types.Thumbnail"] = None,
+        video_cover: "types.Photo" = None,
+        video_start_timestamp: int = None,
     ):
         super().__init__(client)
 
@@ -104,6 +112,8 @@ class Video(Object):
         self.ttl_seconds = ttl_seconds
         self.date = date
         self.thumbs = thumbs
+        self.video_cover = video_cover
+        self.video_start_timestamp = video_start_timestamp
 
     @staticmethod
     def _parse(
@@ -111,7 +121,9 @@ class Video(Object):
         video: "raw.types.Document",
         video_attributes: "raw.types.DocumentAttributeVideo",
         file_name: str = None,
-        ttl_seconds: int = None
+        ttl_seconds: int = None,
+        video_cover = None,
+        video_start_timestamp: int = None
     ) -> "Video":
         return Video(
             file_id=FileId(
@@ -136,5 +148,7 @@ class Video(Object):
             date=utils.timestamp_to_datetime(video.date),
             ttl_seconds=ttl_seconds,
             thumbs=types.Thumbnail._parse(client, video),
+            video_cover=types.Photo._parse(client, video_cover),
+            video_start_timestamp=video_start_timestamp,
             client=client
         )
