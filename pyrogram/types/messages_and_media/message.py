@@ -4477,7 +4477,8 @@ class Message(Object, Update):
         hide_sender_name: bool = None,
         hide_captions: bool = None,
         schedule_date: datetime = None,
-        allow_paid_broadcast: bool = None
+        allow_paid_broadcast: bool = None,
+        video_start_timestamp: int = None
     ) -> Union["types.Message", List["types.Message"]]:
         """Bound method *forward* of :obj:`~pyrogram.types.Message`.
 
@@ -4525,6 +4526,9 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
+            video_start_timestamp (``int``, *optional*):
+                Video startpoint, in seconds.
+
         Returns:
             On success, the forwarded Message is returned.
 
@@ -4540,7 +4544,8 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             hide_sender_name=hide_sender_name,
             hide_captions=hide_captions,
-            allow_paid_broadcast=allow_paid_broadcast
+            allow_paid_broadcast=allow_paid_broadcast,
+            video_start_timestamp=video_start_timestamp
         )
 
     async def copy(

@@ -36,7 +36,8 @@ class ForwardMessages:
         hide_sender_name: bool = None,
         hide_captions: bool = None,
         protect_content: bool = None,
-        allow_paid_broadcast: bool = None
+        allow_paid_broadcast: bool = None,
+        video_start_timestamp: int = None
     ) -> Union["types.Message", List["types.Message"]]:
         """Forward messages of any kind.
 
@@ -82,6 +83,9 @@ class ForwardMessages:
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
+            video_start_timestamp (``int``, *optional*):
+                Video startpoint, in seconds.
+
         Returns:
             :obj:`~pyrogram.types.Message` | List of :obj:`~pyrogram.types.Message`: In case *message_ids* was not
             a list, a single message is returned, otherwise a list of messages is returned.
@@ -111,7 +115,8 @@ class ForwardMessages:
                 drop_media_captions=hide_captions,
                 noforwards=protect_content,
                 allow_paid_floodskip=allow_paid_broadcast,
-                top_msg_id=message_thread_id
+                top_msg_id=message_thread_id,
+                video_timestamp=video_start_timestamp
             )
         )
 
