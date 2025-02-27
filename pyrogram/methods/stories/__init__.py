@@ -29,6 +29,7 @@ from .get_archived_stories import GetArchivedStories
 from .get_chat_stories import GetChatStories
 from .get_pinned_stories import GetPinnedStories
 from .get_stories import GetStories
+from .get_story_views import GetStoryViews
 from .hide_chat_stories import HideChatStories
 from .pin_chat_stories import PinChatStories
 from .read_chat_stories import ReadChatStories
@@ -51,6 +52,7 @@ class Stories(
     GetChatStories,
     GetPinnedStories,
     GetStories,
+    GetStoryViews,
     HideChatStories,
     PinChatStories,
     ReadChatStories,

@@ -59,6 +59,7 @@ from .screenshot_taken import ScreenshotTaken
 from .gift_attribute import GiftAttribute
 from .gift import Gift
 from .sticker import Sticker
+from .story_view import StoryView
 from .story import Story
 from .stripped_thumbnail import StrippedThumbnail
 from .successful_payment import SuccessfulPayment
@@ -115,6 +116,7 @@ __all__ = [
     "GiftAttribute",
     "Gift",
     "Sticker",
+    "StoryView",
     "Story",
     "StrippedThumbnail",
     "SuccessfulPayment",

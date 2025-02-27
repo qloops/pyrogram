@@ -434,6 +434,7 @@ def pyrogram_api():
             read_chat_stories
             send_story
             enable_stealth_mode
+            get_story_views
         """,
         premium="""
         Premium
@@ -581,6 +582,7 @@ def pyrogram_api():
             ScreenshotTaken
             WriteAccessAllowed
             GiftAttribute
+            StoryView
         """,
         bot_keyboards="""
         Bot keyboards
