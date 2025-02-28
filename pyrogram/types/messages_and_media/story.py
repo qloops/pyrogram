@@ -258,7 +258,7 @@ class Story(Object, Update):
 
         if isinstance(story, raw.types.StoryItemDeleted):
             return Story(client=client, id=story.id, deleted=True, from_user=from_user, sender_chat=sender_chat, chat=chat)
-        if isinstance(story, raw.types.StoryItemSkipped):
+        if client.fetch_stories and isinstance(story, raw.types.StoryItemSkipped):
             try:
                 r = await client.invoke(
                     raw.functions.stories.GetStoriesByID(
@@ -279,25 +279,26 @@ class Story(Object, Update):
                 return Story(client=client, id=story.id, from_user=from_user, sender_chat=sender_chat, chat=chat)
 
             if not getattr(story, "story", None):
-                try:
-                    r = await client.invoke(
-                        raw.functions.stories.GetStoriesByID(
-                            peer=await client.resolve_peer(chat.id),
-                            id=[story.id]
+                if client.fetch_stories:
+                    try:
+                        r = await client.invoke(
+                            raw.functions.stories.GetStoriesByID(
+                                peer=await client.resolve_peer(chat.id),
+                                id=[story.id]
+                            )
                         )
-                    )
 
-                    users.update({i.id: i for i in r.users})
-                    chats.update({i.id: i for i in r.chats})
+                        users.update({i.id: i for i in r.users})
+                        chats.update({i.id: i for i in r.chats})
 
-                    if r.stories:
-                        story = r.stories[0]
-                except (ChannelPrivate, ChannelInvalid):
-                    pass
+                        if r.stories:
+                            story = r.stories[0]
+                    except (ChannelPrivate, ChannelInvalid):
+                        pass
             else:
                 story = story.story
 
-        if getattr(story, "min", None):
+        if client.fetch_stories and getattr(story, "min", None):
             try:
                 r = await client.invoke(
                     raw.functions.stories.GetStoriesByID(

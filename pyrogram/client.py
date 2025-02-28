@@ -207,6 +207,18 @@ class Client(Methods):
             The platform where this client is running.
             Defaults to 'other'
 
+        fetch_replies (``bool``, *optional*):
+            Pass True to automatically fetch replies for messages.
+            Defaults to True.
+
+        fetch_topics (``bool``, *optional*):
+            Pass True to automatically fetch forum topics.
+            Defaults to True.
+
+        fetch_stories (``bool``, *optional*):
+            Pass True to automatically fetch stories if they are missing.
+            Defaults to True.
+
         init_connection_params (:obj:`~pyrogram.raw.base.JSONValue`, *optional*):
             Additional initConnection parameters.
             For now, only the tz_offset field is supported, for specifying timezone offset in seconds.
@@ -268,6 +280,9 @@ class Client(Methods):
         max_message_cache_size: int = MAX_MESSAGE_CACHE_SIZE,
         storage_engine: Optional[Storage] = None,
         client_platform: "enums.ClientPlatform" = enums.ClientPlatform.OTHER,
+        fetch_replies: Optional[bool] = True,
+        fetch_topics: Optional[bool] = True,
+        fetch_stories: Optional[bool] = True,
         init_connection_params: Optional["raw.base.JSONValue"] = None,
         connection_factory: Type[Connection] = Connection,
         protocol_factory: Type[TCP] = TCPAbridged
@@ -304,6 +319,9 @@ class Client(Methods):
         self.max_concurrent_transmissions = max_concurrent_transmissions
         self.max_message_cache_size = max_message_cache_size
         self.client_platform = client_platform
+        self.fetch_replies = fetch_replies
+        self.fetch_topics = fetch_topics
+        self.fetch_stories = fetch_stories
         self.init_connection_params = init_connection_params
         self.connection_factory = connection_factory
         self.protocol_factory = protocol_factory

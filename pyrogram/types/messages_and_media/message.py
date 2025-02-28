@@ -981,20 +981,23 @@ class Message(Object, Update):
             )
 
             if isinstance(action, raw.types.MessageActionPinMessage):
-                try:
-                    parsed_message.pinned_message = await client.get_messages(
-                        chat_id=parsed_message.chat.id,
-                        pinned=True,
-                        replies=0
-                    )
+                parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
 
-                    parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
-                except (MessageIdsEmpty, ChannelPrivate):
-                    pass
+                if client.fetch_replies:
+                    try:
+                        parsed_message.pinned_message = await client.get_messages(
+                            chat_id=parsed_message.chat.id,
+                            pinned=True,
+                            replies=0
+                        )
+
+                    except (MessageIdsEmpty, ChannelPrivate):
+                        pass
             elif isinstance(action, raw.types.MessageActionGameScore):
                 parsed_message.game_high_score = types.GameHighScore._parse_action(client, message, users)
+                parsed_message.service = enums.MessageServiceType.GAME_HIGH_SCORE
 
-                if message.reply_to and replies:
+                if client.fetch_replies and message.reply_to and replies:
                     try:
                         parsed_message.reply_to_message = await client.get_messages(
                             chat_id=parsed_message.chat.id,
@@ -1002,8 +1005,6 @@ class Message(Object, Update):
                             reply=True,
                             replies=0
                         )
-
-                        parsed_message.service = enums.MessageServiceType.GAME_HIGH_SCORE
                     except (MessageIdsEmpty, ChannelPrivate):
                         pass
 
@@ -1360,7 +1361,7 @@ class Message(Object, Update):
 
                             reply_to_message = client.message_cache[key]
 
-                            if not reply_to_message:
+                            if client.fetch_replies and not reply_to_message:
                                 try:
                                     reply_to_message = await client.get_messages(
                                         replies=replies - 1,
@@ -1371,20 +1372,21 @@ class Message(Object, Update):
 
                             parsed_message.reply_to_message = reply_to_message
                         elif isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
-                            if client.me and not client.me.is_bot:
+                            if client.fetch_stories and client.me and not client.me.is_bot:
                                 parsed_message.reply_to_story = await client.get_stories(
                                     utils.get_peer_id(message.reply_to.peer),
                                     message.reply_to.story_id
                                 )
 
             if not parsed_message.topic and parsed_message.chat.is_forum and client.me and not client.me.is_bot:
-                try:
-                    parsed_message.topic = await client.get_forum_topics_by_id(
-                        chat_id=parsed_message.chat.id,
-                        topic_ids=parsed_message.message_thread_id or 1
-                    )
-                except (ChannelPrivate, ChannelForumMissing):
-                    pass
+                if client.fetch_topics:
+                    try:
+                        parsed_message.topic = await client.get_forum_topics_by_id(
+                            chat_id=parsed_message.chat.id,
+                            topic_ids=parsed_message.message_thread_id or 1
+                        )
+                    except (ChannelPrivate, ChannelForumMissing):
+                        pass
 
             if not parsed_message.poll:  # Do not cache poll messages
                 client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
