@@ -254,6 +254,10 @@ class Chat(Object):
         bot_verification (:obj:`~pyrogram.types.BotVerification`, *optional*):
             Information about bot verification.
 
+        settings (:obj:`~pyrogram.types.ChatSettings`, *optional*):
+            Chat settings.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
         raw (:obj:`~pyrogram.raw.base.Chat` | :obj:`~pyrogram.raw.base.User` | :obj:`~pyrogram.raw.base.ChatFull` | :obj:`~pyrogram.raw.base.UserFull`, *optional*):
             The raw chat or user object, as received from the Telegram API.
 
@@ -334,6 +338,7 @@ class Chat(Object):
         reactions_limit: int = None,
         gifts_count: int = None,
         bot_verification: "types.BotVerification" = None,
+        settings: "types.ChatSettings" = None,
         raw: Union["raw.base.Chat", "raw.base.User", "raw.base.ChatFull", "raw.base.UserFull"] = None
     ):
         super().__init__(client)
@@ -407,6 +412,7 @@ class Chat(Object):
         self.reactions_limit = reactions_limit
         self.gifts_count = gifts_count
         self.bot_verification = bot_verification
+        self.settings = settings
         self.raw = raw
 
     @staticmethod
@@ -580,6 +586,7 @@ class Chat(Object):
                 getattr(full_user, "bot_verification", None),
                 users
             )
+            parsed_chat.settings = types.ChatSettings._parse(client, getattr(full_user, "settings", None), users)
             parsed_chat.raw = full_user
 
             if full_user.pinned_msg_id:

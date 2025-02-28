@@ -38,6 +38,7 @@ from .chat_permissions import ChatPermissions
 from .chat_photo import ChatPhoto
 from .chat_privileges import ChatPrivileges
 from .chat_reactions import ChatReactions
+from .chat_settings import ChatSettings
 from .dialog import Dialog
 from .emoji_status import EmojiStatus
 from .folder import Folder
@@ -95,5 +96,6 @@ __all__ = [
     "Folder",
     "FoundContacts",
     "GroupCallMember",
-    "ChatReactions"
+    "ChatReactions",
+    "ChatSettings"
 ]

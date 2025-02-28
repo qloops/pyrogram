@@ -272,6 +272,7 @@ def pyrogram_api():
             toggle_folder_tags
             set_chat_ttl
             get_personal_channels
+            get_chat_settings
         """,
         users="""
         Users
@@ -520,6 +521,7 @@ def pyrogram_api():
             PrivacyRule
             StoriesStealthMode
             BotVerification
+            ChatSettings
         """,
         messages_media="""
         Messages & Media
