@@ -561,7 +561,7 @@ class Chat(Object):
             return Chat._parse_channel_chat(client, chats[peer.channel_id])
 
     @staticmethod
-    async def _parse_full(client, chat_full: Union[raw.types.messages.ChatFull, raw.types.users.UserFull]) -> "Chat":
+    async def _parse_full(client: "pyrogram.Client", chat_full: Union[raw.types.messages.ChatFull, raw.types.users.UserFull]) -> "Chat":
         users = {u.id: u for u in chat_full.users}
         chats = {c.id: c for c in chat_full.chats}
 
@@ -585,7 +585,7 @@ class Chat(Object):
             if full_user.pinned_msg_id:
                 parsed_chat.pinned_message = await client.get_messages(
                     chat_id=parsed_chat.id,
-                    message_ids=full_user.pinned_msg_id
+                    pinned=True
                 )
 
             if full_user.personal_channel_id:
