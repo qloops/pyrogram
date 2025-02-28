@@ -492,7 +492,6 @@ def pyrogram_api():
         Users & Chats
             Birthday
             BusinessConnection
-            BusinessInfo
             BusinessIntro
             BusinessRecipients
             BusinessWeeklyOpen
