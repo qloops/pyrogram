@@ -63,6 +63,11 @@ class Run:
         loop = asyncio.get_event_loop()
         run = loop.run_until_complete
 
-        run(self.start(use_qr=use_qr, except_ids=except_ids))
-        run(idle())
-        run(self.stop())
+        if inspect.iscoroutinefunction(self.start):
+            run(self.start(use_qr=use_qr, except_ids=except_ids))
+            run(idle())
+            run(self.stop())
+        else:
+            self.start(use_qr=use_qr, except_ids=except_ids)
+            run(idle())
+            self.stop()
