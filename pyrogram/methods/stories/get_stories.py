@@ -28,7 +28,7 @@ class GetStories:
         self: "pyrogram.Client",
         chat_id: Optional[Union[int, str]] = None,
         story_ids: Optional[Union[int, Iterable[int]]] = None,
-    ) -> Union["types.Story", List["types.Story"]] :
+    ) -> Optional[Union["types.Story", List["types.Story"]]]:
         """Get one or more stories from a chat by using stories identifiers.
 
         .. include:: /_includes/usable-by/users.rst
@@ -39,7 +39,7 @@ class GetStories:
                 For your personal story you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            story_ids (``int`` | Iterable of ``int``):
+            story_ids (``int`` | Iterable of ``int`` | ``str``, *optional*):
                 Pass a single story identifier or an iterable of story ids (as integers)
                 or link to get the content of the story themselves.
 
@@ -55,9 +55,11 @@ class GetStories:
 
                 for story in stories:
                     print(story)
+
+        Raises:
+            ValueError: In case of invalid arguments.
         """
         is_iterable = not isinstance(story_ids, (int, str)) if story_ids is not None else False
-        ids = list(story_ids) if is_iterable else [story_ids]
         ids = None if story_ids is None else list(story_ids) if is_iterable else [story_ids]
 
         if isinstance(story_ids, str):
@@ -83,7 +85,7 @@ class GetStories:
             )
         )
 
-        stories = []
+        stories = types.List()
 
         users = {i.id: i for i in r.users}
         chats = {i.id: i for i in r.chats}
@@ -99,4 +101,4 @@ class GetStories:
                 )
             )
 
-        return types.List(stories) if is_iterable else stories[0] if stories else None
+        return stories if is_iterable else stories[0] if stories else None
