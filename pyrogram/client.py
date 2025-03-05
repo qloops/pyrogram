@@ -219,6 +219,9 @@ class Client(Methods):
             Pass True to automatically fetch stories if they are missing.
             Defaults to True.
 
+        loop (:py:class:`asyncio.AbstractEventLoop`, *optional*):
+            Event loop.
+
         init_connection_params (:obj:`~pyrogram.raw.base.JSONValue`, *optional*):
             Additional initConnection parameters.
             For now, only the tz_offset field is supported, for specifying timezone offset in seconds.
@@ -285,7 +288,8 @@ class Client(Methods):
         fetch_stories: Optional[bool] = True,
         init_connection_params: Optional["raw.base.JSONValue"] = None,
         connection_factory: Type[Connection] = Connection,
-        protocol_factory: Type[TCP] = TCPAbridged
+        protocol_factory: Type[TCP] = TCPAbridged,
+        loop: Optional[asyncio.AbstractEventLoop] = None
     ):
         super().__init__()
 
@@ -376,7 +380,13 @@ class Client(Methods):
         self.updates_watchdog_event = asyncio.Event()
         self.last_update_time = datetime.now()
 
-        self.loop = asyncio.get_event_loop()
+        if isinstance(loop, asyncio.AbstractEventLoop):
+            self.loop = loop
+        else:
+            try:
+                self.loop = asyncio.get_running_loop()
+            except RuntimeError:
+                self.loop = asyncio.new_event_loop()
 
     def __enter__(self):
         return self.start()
@@ -420,12 +430,12 @@ class Client(Methods):
             try:
                 if not self.phone_number:
                     while True:
-                        value = await ainput("Enter phone number or bot token: ")
+                        value = await ainput("Enter phone number or bot token: ", loop=self.loop)
 
                         if not value:
                             continue
 
-                        confirm = (await ainput(f'Is "{value}" correct? (y/N): ')).lower()
+                        confirm = (await ainput(f'Is "{value}" correct? (y/N): ', loop=self.loop)).lower()
 
                         if confirm == "y":
                             break
@@ -457,7 +467,7 @@ class Client(Methods):
 
         while True:
             if not self.phone_code:
-                self.phone_code = await ainput("Enter confirmation code: ")
+                self.phone_code = await ainput("Enter confirmation code: ", loop=self.loop)
 
             try:
                 signed_in = await self.sign_in(self.phone_number, sent_code.phone_code_hash, self.phone_code)
@@ -471,18 +481,18 @@ class Client(Methods):
                     print("Password hint: {}".format(await self.get_password_hint()))
 
                     if not self.password:
-                        self.password = await ainput("Enter password (empty to recover): ", hide=self.hide_password)
+                        self.password = await ainput("Enter password (empty to recover): ", hide=self.hide_password, loop=self.loop)
 
                     try:
                         if not self.password:
-                            confirm = await ainput("Confirm password recovery (y/n): ")
+                            confirm = await ainput("Confirm password recovery (y/n): ", loop=self.loop)
 
                             if confirm == "y":
                                 email_pattern = await self.send_recovery_code()
                                 print(f"The recovery code has been sent to {email_pattern}")
 
                                 while True:
-                                    recovery_code = await ainput("Enter recovery code: ")
+                                    recovery_code = await ainput("Enter recovery code: ", loop=self.loop)
 
                                     try:
                                         return await self.recover_password(recovery_code)
@@ -505,8 +515,8 @@ class Client(Methods):
             return signed_in
 
         while True:
-            first_name = await ainput("Enter first name: ")
-            last_name = await ainput("Enter last name (empty to skip): ")
+            first_name = await ainput("Enter first name: ", loop=self.loop)
+            last_name = await ainput("Enter last name (empty to skip): ", loop=self.loop)
 
             try:
                 signed_up = await self.sign_up(
@@ -555,7 +565,7 @@ class Client(Methods):
             except SessionPasswordNeeded:
                 print(f"Password hint: {await self.get_password_hint()}")
                 return await self.check_password(
-                    await ainput("Enter 2FA password: ", hide=self.hide_password)
+                    await ainput("Enter 2FA password: ", hide=self.hide_password, loop=self.loop)
                 )
 
     def set_parse_mode(self, parse_mode: Optional["enums.ParseMode"]):
@@ -873,13 +883,13 @@ class Client(Methods):
                 else:
                     while True:
                         try:
-                            value = int(await ainput("Enter the api_id part of the API key: "))
+                            value = int(await ainput("Enter the api_id part of the API key: ", loop=self.loop))
 
                             if value <= 0:
                                 print("Invalid value")
                                 continue
 
-                            confirm = (await ainput(f'Is "{value}" correct? (y/N): ')).lower()
+                            confirm = (await ainput(f'Is "{value}" correct? (y/N): ', loop=self.loop)).lower()
 
                             if confirm == "y":
                                 await self.storage.api_id(value)
@@ -1261,7 +1271,7 @@ class Client(Methods):
     def guess_mime_type(self, filename: Union[str, BytesIO]) -> Optional[str]:
         if isinstance(filename, BytesIO):
             return self.mimetypes.guess_type(filename.name)[0]
-            
+
         return self.mimetypes.guess_type(filename)[0]
 
     def guess_extension(self, mime_type: str) -> Optional[str]:

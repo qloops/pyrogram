@@ -27,7 +27,7 @@ class GetStories:
     async def get_stories(
         self: "pyrogram.Client",
         chat_id: Optional[Union[int, str]] = None,
-        story_ids: Optional[Union[int, Iterable[int]]] = None,
+        story_ids: Optional[Union[int, Iterable[int], str]] = None,
     ) -> Optional[Union["types.Story", List["types.Story"]]]:
         """Get one or more stories from a chat by using stories identifiers.
 

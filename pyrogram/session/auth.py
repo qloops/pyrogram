@@ -50,6 +50,7 @@ class Auth:
         self.proxy = client.proxy
         self.connection_factory = client.connection_factory
         self.protocol_factory = client.protocol_factory
+        self.loop = client.loop
 
         self.connection: Optional[Connection] = None
 
@@ -90,7 +91,8 @@ class Auth:
                 ipv6=self.ipv6,
                 proxy=self.proxy,
                 media=False,
-                protocol_factory=self.protocol_factory
+                protocol_factory=self.protocol_factory,
+                loop=self.loop
             )
 
             try:
