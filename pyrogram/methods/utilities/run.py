@@ -60,8 +60,7 @@ class Run:
                 ...  # Set handlers up
                 app.run()
         """
-        loop = asyncio.get_event_loop()
-        run = loop.run_until_complete
+        run = self.loop.run_until_complete
 
         if inspect.iscoroutinefunction(self.start):
             run(self.start(use_qr=use_qr, except_ids=except_ids))
