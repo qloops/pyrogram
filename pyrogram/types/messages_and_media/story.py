@@ -455,7 +455,12 @@ class Story(Object, Update):
         disable_notification: bool = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
-        reply_markup=None
+        reply_markup: Union[
+            "types.InlineKeyboardMarkup",
+            "types.ReplyKeyboardMarkup",
+            "types.ReplyKeyboardRemove",
+            "types.ForceReply"
+        ] = None
     ) -> "types.Message":
         """Bound method *reply_text* of :obj:`~pyrogram.types.Story`.
 
@@ -520,6 +525,7 @@ class Story(Object, Update):
             reply_to_story_id=self.id,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -655,6 +661,7 @@ class Story(Object, Update):
             file_name=file_name,
             disable_notification=disable_notification,
             reply_to_story_id=self.id,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -785,6 +792,7 @@ class Story(Object, Update):
             file_name=file_name,
             disable_notification=disable_notification,
             reply_to_story_id=self.id,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -858,6 +866,7 @@ class Story(Object, Update):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             reply_to_story_id=self.id,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -909,6 +918,7 @@ class Story(Object, Update):
             chat_id=self.chat.id,
             media=media,
             disable_notification=disable_notification,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_to_story_id=self.id
         )
 
@@ -1026,6 +1036,7 @@ class Story(Object, Update):
             view_once=view_once,
             disable_notification=disable_notification,
             reply_to_story_id=self.id,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1113,6 +1124,7 @@ class Story(Object, Update):
             chat_id=self.chat.id,
             sticker=sticker,
             disable_notification=disable_notification,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_to_story_id=self.id,
             reply_markup=reply_markup,
             progress=progress,
@@ -1281,6 +1293,7 @@ class Story(Object, Update):
             disable_notification=disable_notification,
             no_sound=no_sound,
             reply_to_story_id=self.id,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1390,6 +1403,7 @@ class Story(Object, Update):
             disable_notification=disable_notification,
             reply_to_story_id=self.id,
             view_once=view_once,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1502,6 +1516,7 @@ class Story(Object, Update):
             disable_notification=disable_notification,
             reply_to_story_id=self.id,
             view_once=view_once,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1800,7 +1815,8 @@ class Story(Object, Update):
         chat_id: Union[int, str],
         message_thread_id: int = None,
         disable_notification: bool = None,
-        schedule_date: datetime = None
+        schedule_date: datetime = None,
+        paid_message_star_count: int = None,
     ) -> Optional["types.Message"]:
         """Bound method *forward* of :obj:`~pyrogram.types.Story`.
 
@@ -1836,6 +1852,9 @@ class Story(Object, Update):
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
         Returns:
             On success, the forwarded Message is returned.
 
@@ -1848,7 +1867,8 @@ class Story(Object, Update):
             story_id=self.id,
             message_thread_id=message_thread_id,
             disable_notification=disable_notification,
-            schedule_date=schedule_date
+            schedule_date=schedule_date,
+            paid_message_star_count=paid_message_star_count,
         )
 
     async def download(

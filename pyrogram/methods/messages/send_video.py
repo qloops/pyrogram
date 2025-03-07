@@ -60,6 +60,7 @@ class SendVideo:
         no_sound: bool = True,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -193,6 +194,9 @@ class SendVideo:
                 Ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -369,6 +373,7 @@ class SendVideo:
                             schedule_date=utils.datetime_to_timestamp(schedule_date),
                             noforwards=protect_content,
                             allow_paid_floodskip=allow_paid_broadcast,
+                            allow_paid_stars=paid_message_star_count,
                             reply_markup=await reply_markup.write(self) if reply_markup else None,
                             effect=effect_id,
                             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)

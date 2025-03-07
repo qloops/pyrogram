@@ -48,6 +48,7 @@ class SendWebPage:
         protect_content: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -135,6 +136,9 @@ class SendWebPage:
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -152,7 +156,6 @@ class SendWebPage:
                 await app.send_web_page("me", "https://docs.pyrogram.org", prefer_large_media=True)
 
         """
-
         message, entities = (await utils.parse_text_entities(self, text, parse_mode, entities)).values()
 
         quote_text, quote_entities = (await utils.parse_text_entities(self, quote_text, parse_mode, quote_entities)).values()
@@ -194,6 +197,7 @@ class SendWebPage:
                 ),
                 invert_media=show_caption_above_media,
                 allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=paid_message_star_count,
                 entities=entities,
                 noforwards=protect_content,
                 effect=effect_id

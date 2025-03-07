@@ -142,6 +142,9 @@ class Gift(Object):
         is_birthday (``bool``, *optional*):
             True, if the gift is a birthday gift.
 
+        is_pinned (``bool``, *optional*):
+            True, if the gift is pinned.
+
         raw (:obj:`~pyrogram.raw.base.StarGift`, *optional*):
             The raw object as received from the server.
 
@@ -189,6 +192,7 @@ class Gift(Object):
         is_refunded: Optional[bool] = None,
         is_transferred: Optional[bool] = None,
         is_birthday: Optional[bool] = None,
+        is_pinned: Optional[bool] = None,
         raw: Optional["raw.base.StarGift"] = None
     ):
         super().__init__(client)
@@ -228,6 +232,7 @@ class Gift(Object):
         self.is_refunded = is_refunded
         self.is_transferred = is_transferred
         self.is_birthday = is_birthday
+        self.is_pinned = is_pinned
         self.raw = raw
 
     @staticmethod
@@ -314,6 +319,7 @@ class Gift(Object):
         parsed_gift.is_name_hidden = getattr(saved_gift, "name_hidden", None)
         parsed_gift.is_saved = not saved_gift.unsaved if getattr(saved_gift, "unsaved", None) else None
         parsed_gift.is_refunded = getattr(saved_gift, "refunded", None)
+        parsed_gift.is_pinned = getattr(saved_gift, "pinned_to_top", None)
         parsed_gift.can_upgrade = getattr(saved_gift, "can_upgrade", None)
         parsed_gift.from_user = types.User._parse(client, users.get(utils.get_raw_peer_id(getattr(saved_gift, "from_id", None)), None))
         parsed_gift.caption = caption

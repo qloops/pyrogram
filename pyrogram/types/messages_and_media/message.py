@@ -448,8 +448,8 @@ class Message(Object, Update):
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this message.
 
-        paid_message_stars (``int``, *optional*):
-            Number of stars for a paid message.
+        send_paid_messages_stars (``int``, *optional*):
+            The number of Telegram Stars the sender paid to send the message.
 
         raw (:obj:`~pyrogram.raw.types.Message`, *optional*):
             The raw message object, as received from the Telegram API.
@@ -587,7 +587,7 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         reactions: List["types.Reaction"] = None,
-        paid_message_stars: int = None,
+        send_paid_messages_stars: int = None,
         raw: "raw.types.Message" = None
     ):
         super().__init__(client)
@@ -707,7 +707,7 @@ class Message(Object, Update):
         self.connected_website = connected_website
         self.contact_registered = contact_registered
         self.reactions = reactions
-        self.paid_message_stars = paid_message_stars
+        self.send_paid_messages_stars = send_paid_messages_stars
         self.raw = raw
 
     @staticmethod
@@ -1292,7 +1292,7 @@ class Message(Object, Update):
                 reply_markup=reply_markup,
                 reactions=reactions,
                 from_offline=getattr(message, "offline", None),
-                paid_message_stars=getattr(message, "paid_message_stars", None),
+                send_paid_messages_stars=getattr(message, "paid_message_stars", None),
                 raw=message,
                 client=client
             )
@@ -1578,6 +1578,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -1768,6 +1769,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1948,6 +1950,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -2071,6 +2074,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -2251,6 +2255,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -2441,6 +2446,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -2548,7 +2554,7 @@ class Message(Object, Update):
         reply_to_message_id: int = None,
         quote_text: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
-        quote_entities: List["types.MessageEntity"] = None
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_inline_bot_result* of :obj:`~pyrogram.types.Message`.
 
@@ -2624,7 +2630,8 @@ class Message(Object, Update):
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             parse_mode=parse_mode,
-            quote_entities=quote_entities
+            quote_entities=quote_entities,
+            paid_message_star_count=self.chat.paid_message_star_count,
         )
 
     async def reply_location(
@@ -2740,6 +2747,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -2848,6 +2856,7 @@ class Message(Object, Update):
             parse_mode=parse_mode,
             quote_entities=quote_entities,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             business_connection_id=business_connection_id
         )
 
@@ -3026,6 +3035,7 @@ class Message(Object, Update):
             view_once=view_once,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -3243,6 +3253,7 @@ class Message(Object, Update):
             business_connection_id=business_connection_id,
             options_parse_mode=options_parse_mode,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -3403,6 +3414,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -3550,6 +3562,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -3770,6 +3783,7 @@ class Message(Object, Update):
             no_sound=no_sound,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -3946,6 +3960,7 @@ class Message(Object, Update):
             view_once=view_once,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -4114,6 +4129,7 @@ class Message(Object, Update):
             view_once=view_once,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -4277,6 +4293,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=self.chat.paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -4486,7 +4503,8 @@ class Message(Object, Update):
         hide_captions: bool = None,
         schedule_date: datetime = None,
         allow_paid_broadcast: bool = None,
-        video_start_timestamp: int = None
+        video_start_timestamp: int = None,
+        paid_message_star_count: int = None
     ) -> Union["types.Message", List["types.Message"]]:
         """Bound method *forward* of :obj:`~pyrogram.types.Message`.
 
@@ -4537,6 +4555,9 @@ class Message(Object, Update):
             video_start_timestamp (``int``, *optional*):
                 Video startpoint, in seconds.
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
         Returns:
             On success, the forwarded Message is returned.
 
@@ -4553,7 +4574,8 @@ class Message(Object, Update):
             hide_sender_name=hide_sender_name,
             hide_captions=hide_captions,
             allow_paid_broadcast=allow_paid_broadcast,
-            video_start_timestamp=video_start_timestamp
+            video_start_timestamp=video_start_timestamp,
+            paid_message_star_count=paid_message_star_count
         )
 
     async def copy(
@@ -4574,6 +4596,7 @@ class Message(Object, Update):
         show_caption_above_media: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -4654,6 +4677,9 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -4691,6 +4717,7 @@ class Message(Object, Update):
                 protect_content=protect_content,
                 business_connection_id=business_connection_id,
                 allow_paid_broadcast=allow_paid_broadcast,
+                paid_message_star_count=paid_message_star_count,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
         elif self.media:
@@ -4709,6 +4736,7 @@ class Message(Object, Update):
                 show_caption_above_media=self.show_caption_above_media if show_caption_above_media is None else show_caption_above_media,
                 business_connection_id=business_connection_id,
                 allow_paid_broadcast=allow_paid_broadcast,
+                paid_message_star_count=paid_message_star_count,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
 
@@ -4739,6 +4767,7 @@ class Message(Object, Update):
                     message_thread_id=message_thread_id,
                     schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     business_connection_id=business_connection_id
                 )
             elif self.location:
@@ -4750,6 +4779,7 @@ class Message(Object, Update):
                     message_thread_id=message_thread_id,
                     schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     business_connection_id=business_connection_id
                 )
             elif self.venue:
@@ -4765,6 +4795,7 @@ class Message(Object, Update):
                     message_thread_id=message_thread_id,
                     schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     business_connection_id=business_connection_id
                 )
             elif self.poll:
@@ -4776,6 +4807,7 @@ class Message(Object, Update):
                     message_thread_id=message_thread_id,
                     schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     business_connection_id=business_connection_id
                 )
             elif self.game:
@@ -4825,6 +4857,8 @@ class Message(Object, Update):
         quote_offset: int = None,
         schedule_date: datetime = None,
         show_caption_above_media: bool = None,
+        allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None
     ) -> List["types.Message"]:
         """Bound method *copy_media_group* of :obj:`~pyrogram.types.Message`.
 
@@ -4894,6 +4928,15 @@ class Message(Object, Update):
             show_caption_above_media (``bool``, *optional*):
                 Pass True, if the caption must be shown above the message media.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                If True, you will be allowed to send up to 1000 messages per second.
+                Ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+                The relevant Stars will be withdrawn from the bot's balance.
+                For bots only.
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
         Returns:
             List of :obj:`~pyrogram.types.Message`: On success, a list of copied messages is returned.
         """
@@ -4913,7 +4956,9 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             quote_offset=quote_offset,
             schedule_date=schedule_date,
-            show_caption_above_media=show_caption_above_media
+            show_caption_above_media=show_caption_above_media,
+            allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count
         )
 
     async def delete(self, revoke: bool = True):

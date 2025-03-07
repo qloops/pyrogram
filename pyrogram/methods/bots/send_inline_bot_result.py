@@ -39,6 +39,7 @@ class SendInlineBotResult:
         parse_mode: Optional["enums.ParseMode"] = None,
         quote_entities: Optional[List["types.MessageEntity"]] = None,
         quote_offset: Optional[int] = None,
+        paid_message_star_count: int = None,
         schedule_date: datetime = None,
     ) -> "types.Message":
         """Send an inline bot result.
@@ -91,6 +92,9 @@ class SendInlineBotResult:
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the sent message is returned or False if no message was sent.
 
@@ -118,6 +122,7 @@ class SendInlineBotResult:
                     quote_offset=quote_offset,
                 ),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
+                allow_paid_stars=paid_message_star_count
             )
         )
 

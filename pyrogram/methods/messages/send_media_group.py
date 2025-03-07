@@ -57,7 +57,8 @@ class SendMediaGroup:
         protect_content: bool = None,
         show_caption_above_media: bool = None,
         business_connection_id: str = None,
-        allow_paid_broadcast: bool = None
+        allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
     ) -> List["types.Message"]:
         """Send a group of photos or videos as an album.
 
@@ -123,6 +124,9 @@ class SendMediaGroup:
                 Ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
         Returns:
             List of :obj:`~pyrogram.types.Message`: On success, a list of the sent messages is returned.
@@ -476,6 +480,7 @@ class SendMediaGroup:
                 noforwards=protect_content,
                 invert_media=show_caption_above_media,
                 allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=paid_message_star_count,
                 effect=effect_id,
             ),
             sleep_threshold=60,

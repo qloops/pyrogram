@@ -36,7 +36,8 @@ class ForwardMediaGroup:
         hide_sender_name: bool = None,
         hide_captions: bool = None,
         protect_content: bool = None,
-        allow_paid_broadcast: bool = None
+        allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None
     ) -> List["types.Message"]:
         """Forward a media group by providing one of the message ids.
 
@@ -82,6 +83,9 @@ class ForwardMediaGroup:
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
         Returns:
             List of :obj:`~pyrogram.types.Message`: On success, a list of forwarded messages is returned.
 
@@ -105,7 +109,8 @@ class ForwardMediaGroup:
                 drop_media_captions=hide_captions,
                 noforwards=protect_content,
                 allow_paid_floodskip=allow_paid_broadcast,
-                top_msg_id=message_thread_id
+                top_msg_id=message_thread_id,
+                allow_paid_stars=paid_message_star_count
             )
         )
 

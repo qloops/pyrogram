@@ -45,6 +45,7 @@ class CopyMessage:
         show_caption_above_media: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -118,6 +119,14 @@ class CopyMessage:
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
+            If True, you will be allowed to send up to 1000 messages per second.
+                Ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+                The relevant Stars will be withdrawn from the bot's balance.
+                For bots only.
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the copied message is returned.
 
@@ -144,6 +153,7 @@ class CopyMessage:
             has_spoiler=has_spoiler,
             show_caption_above_media=show_caption_above_media,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             business_connection_id=business_connection_id
         )

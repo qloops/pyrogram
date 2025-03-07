@@ -42,6 +42,8 @@ class CopyMediaGroup:
         quote_offset: int = None,
         schedule_date: datetime = None,
         show_caption_above_media: bool = None,
+        allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None
     ) -> List["types.Message"]:
         """Copy a media group by providing one of the message ids.
 
@@ -105,6 +107,15 @@ class CopyMediaGroup:
 
             show_caption_above_media (``bool``, *optional*):
                 Pass True, if the caption must be shown above the message media.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                If True, you will be allowed to send up to 1000 messages per second.
+                Ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
+                The relevant Stars will be withdrawn from the bot's balance.
+                For bots only.
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
         Returns:
             List of :obj:`~pyrogram.types.Message`: On success, a list of copied messages is returned.
@@ -177,7 +188,9 @@ class CopyMediaGroup:
                     quote_offset=quote_offset,
                 ),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
-                invert_media=show_caption_above_media
+                invert_media=show_caption_above_media,
+                allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=paid_message_star_count
             ),
             sleep_threshold=60
         )

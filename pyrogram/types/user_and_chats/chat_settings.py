@@ -85,13 +85,13 @@ class ChatSettings(Object):
         registration_date (``str``, *optional*):
             Date when the user registered on Telegram, in format MM.YYYY.
 
-        phone_country (``str``, *optional*):
-            Country code of the user's phone number.
+        phone_number_country_code (``str``, *optional*):
+            A two-letter ISO 3166-1 alpha-2 country code based on the phone number of the user
 
-        name_change_date (:py:obj:`~datetime.datetime`, *optional*):
+        last_name_change_date (:py:obj:`~datetime.datetime`, *optional*):
             Date when the user's name was changed.
 
-        photo_change_date (:py:obj:`~datetime.datetime`, *optional*):
+        last_photo_change_date (:py:obj:`~datetime.datetime`, *optional*):
             Date when the user's photo was changed.
     """
 
@@ -116,9 +116,9 @@ class ChatSettings(Object):
         business_bot_manage_url: Optional[str] = None,
         charge_paid_message_stars: Optional[int] = None,
         registration_date: Optional[str] = None,
-        phone_country: Optional[str] = None,
-        name_change_date: Optional[datetime] = None,
-        photo_change_date: Optional[datetime] = None
+        phone_number_country_code: Optional[str] = None,
+        last_name_change_date: Optional[datetime] = None,
+        last_photo_change_date: Optional[datetime] = None
     ):
         super().__init__()
 
@@ -140,9 +140,9 @@ class ChatSettings(Object):
         self.business_bot_manage_url = business_bot_manage_url
         self.charge_paid_message_stars = charge_paid_message_stars
         self.registration_date = registration_date
-        self.phone_country = phone_country
-        self.name_change_date = name_change_date
-        self.photo_change_date = photo_change_date
+        self.phone_number_country_code = phone_number_country_code
+        self.last_name_change_date = last_name_change_date
+        self.last_photo_change_date = last_photo_change_date
 
     @staticmethod
     def _parse(client, chat_settings: "raw.types.PeerSettings", users) -> Optional["ChatSettings"]:
@@ -168,7 +168,7 @@ class ChatSettings(Object):
             business_bot_manage_url=getattr(chat_settings, "business_bot_manage_url", None),
             charge_paid_message_stars=getattr(chat_settings, "charge_paid_message_stars", None),
             registration_date=getattr(chat_settings, "registration_month", None),
-            phone_country=getattr(chat_settings, "phone_country", None),
-            name_change_date=utils.timestamp_to_datetime(getattr(chat_settings, "name_change_date", None)),
-            photo_change_date=utils.timestamp_to_datetime(getattr(chat_settings, "photo_change_date", None)),
+            phone_number_country_code=getattr(chat_settings, "phone_country", None),
+            last_name_change_date=utils.timestamp_to_datetime(getattr(chat_settings, "name_change_date", None)),
+            last_photo_change_date=utils.timestamp_to_datetime(getattr(chat_settings, "photo_change_date", None)),
         )
