@@ -432,6 +432,13 @@ class Chat(Object):
             Invoking this method will update the value of this flag.
             Returned only in :meth:`~pyrogram.Client.get_chat`
 
+        send_paid_messages_stars (``int``, *optional*):
+            The number of stars you need to pay to send a message to this chat.
+
+        is_paid_messages_available (``bool``, *optional*):
+            True, if paid messages are available in this chat.
+            Returned only in :meth:`~pyrogram.Client.get_chat`
+
         raw (:obj:`~pyrogram.raw.types.UserFull` | :obj:`~pyrogram.raw.types.ChatFull` | :obj:`~pyrogram.raw.types.ChannelFull`, *optional*):
             The raw chat or user object, as received from the Telegram API.
 
@@ -556,6 +563,8 @@ class Chat(Object):
         theme_emoji: Optional[str] = None,
         unread_count: Optional[int] = None,
         view_forum_as_messages: Optional[bool] = None,
+        send_paid_messages_stars: Optional[int] = None,
+        is_paid_messages_available: Optional[bool] = None,
         raw: Optional[Union["raw.types.UserFull", "raw.types.ChatFull", "raw.types.ChannelFull"]] = None
     ):
         super().__init__(client)
@@ -673,10 +682,12 @@ class Chat(Object):
         self.theme_emoji = theme_emoji
         self.unread_count = unread_count
         self.view_forum_as_messages = view_forum_as_messages
+        self.send_paid_messages_stars = send_paid_messages_stars
+        self.is_paid_messages_available = is_paid_messages_available
         self.raw = raw
 
     @staticmethod
-    def _parse_user_chat(client, user: raw.types.User) -> Optional["Chat"]:
+    def _parse_user_chat(client, user: "raw.types.User") -> Optional["Chat"]:
         if user is None or isinstance(user, raw.types.UserEmpty):
             return None
 
@@ -702,12 +713,13 @@ class Chat(Object):
             dc_id=getattr(getattr(user, "photo", None), "dc_id", None),
             reply_color=types.ChatColor._parse(getattr(user, "color", None)),
             profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
+            send_paid_messages_stars=getattr(user, "send_paid_messages_stars", None),
             raw=user,
             client=client
         )
 
     @staticmethod
-    def _parse_chat_chat(client, chat: raw.types.Chat) -> Optional["Chat"]:
+    def _parse_chat_chat(client, chat: "raw.types.Chat") -> Optional["Chat"]:
         if chat is None or isinstance(chat, raw.types.ChatEmpty):
             return None
 
@@ -745,7 +757,7 @@ class Chat(Object):
         )
 
     @staticmethod
-    def _parse_channel_chat(client, channel: raw.types.Channel) -> Optional["Chat"]:
+    def _parse_channel_chat(client, channel: "raw.types.Channel") -> Optional["Chat"]:
         if channel is None:
             return None
 
@@ -793,6 +805,7 @@ class Chat(Object):
             reply_color=types.ChatColor._parse(getattr(channel, "color", None)),
             profile_color=types.ChatColor._parse(getattr(channel, "profile_color", None)),
             subscription_until_date=utils.timestamp_to_datetime(getattr(channel, "subscription_until_date", None)),
+            send_paid_messages_stars=getattr(channel, "send_paid_messages_stars", None),
             raw=channel,
             client=client
         )
@@ -800,7 +813,7 @@ class Chat(Object):
     @staticmethod
     def _parse(
         client,
-        message: Union[raw.types.Message, raw.types.MessageService],
+        message: Union["raw.types.Message", "raw.types.MessageService"],
         users: dict,
         chats: dict,
         is_chat: bool
@@ -907,6 +920,7 @@ class Chat(Object):
             getattr(user, "bot_verification", None),
             users
         )
+        parsed_chat.send_paid_messages_stars = getattr(user, "send_paid_messages_stars", None)
 
         return parsed_chat
 
@@ -1048,6 +1062,7 @@ class Chat(Object):
         )
         parsed_chat.gifts_count = getattr(channel, "stargifts_count", None)
         parsed_chat.sticker_set_name = getattr(channel.stickerset, "short_name", None)
+        parsed_chat.is_paid_messages_available = getattr(channel, "paid_messages_available", None)
 
         return parsed_chat
 

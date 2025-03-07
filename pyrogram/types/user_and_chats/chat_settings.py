@@ -78,6 +78,21 @@ class ChatSettings(Object):
 
         business_bot_manage_url (``str``, *optional*):
             Contains a deep link used to open a management menu in the business bot.
+
+        charge_paid_message_stars (``int``, *optional*):
+            Number of stars for the paid message.
+
+        registration_date (``str``, *optional*):
+            Date when the user registered on Telegram, in format MM.YYYY.
+
+        phone_country (``str``, *optional*):
+            Country code of the user's phone number.
+
+        name_change_date (:py:obj:`~datetime.datetime`, *optional*):
+            Date when the user's name was changed.
+
+        photo_change_date (:py:obj:`~datetime.datetime`, *optional*):
+            Date when the user's photo was changed.
     """
 
     def __init__(
@@ -98,7 +113,12 @@ class ChatSettings(Object):
         request_chat_title: Optional[str] = None,
         request_chat_date: Optional[datetime] = None,
         business_bot: Optional["types.User"] = None,
-        business_bot_manage_url: Optional[str] = None
+        business_bot_manage_url: Optional[str] = None,
+        charge_paid_message_stars: Optional[int] = None,
+        registration_date: Optional[str] = None,
+        phone_country: Optional[str] = None,
+        name_change_date: Optional[datetime] = None,
+        photo_change_date: Optional[datetime] = None
     ):
         super().__init__()
 
@@ -118,6 +138,11 @@ class ChatSettings(Object):
         self.request_chat_date = request_chat_date
         self.business_bot = business_bot
         self.business_bot_manage_url = business_bot_manage_url
+        self.charge_paid_message_stars = charge_paid_message_stars
+        self.registration_date = registration_date
+        self.phone_country = phone_country
+        self.name_change_date = name_change_date
+        self.photo_change_date = photo_change_date
 
     @staticmethod
     def _parse(client, chat_settings: "raw.types.PeerSettings", users) -> Optional["ChatSettings"]:
@@ -140,5 +165,10 @@ class ChatSettings(Object):
             request_chat_title=getattr(chat_settings, "request_chat_title", None),
             request_chat_date=utils.timestamp_to_datetime(getattr(chat_settings, "request_chat_date", None)),
             business_bot=types.User._parse(client, users.get(getattr(chat_settings, "business_bot_id", None))),
-            business_bot_manage_url=getattr(chat_settings, "business_bot_manage_url", None)
+            business_bot_manage_url=getattr(chat_settings, "business_bot_manage_url", None),
+            charge_paid_message_stars=getattr(chat_settings, "charge_paid_message_stars", None),
+            registration_date=getattr(chat_settings, "registration_month", None),
+            phone_country=getattr(chat_settings, "phone_country", None),
+            name_change_date=utils.timestamp_to_datetime(getattr(chat_settings, "name_change_date", None)),
+            photo_change_date=utils.timestamp_to_datetime(getattr(chat_settings, "photo_change_date", None)),
         )

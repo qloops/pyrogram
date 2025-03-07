@@ -191,6 +191,9 @@ class User(Object, Update):
         has_main_web_app (``bool``, *optional*):
             True, if the bot has a main Web App. Returned only in get_me.
 
+        send_paid_messages_stars (``int``, *optional*):
+            The number of stars you need to pay to send a message to this user.
+
         raw (:obj:`~pyrogram.raw.base.User` | :obj:`~pyrogram.raw.base.UserStatus`, *optional*):
             The raw user or user status object, as received from the Telegram API.
 
@@ -249,6 +252,7 @@ class User(Object, Update):
         can_join_groups: bool = None,
         can_read_all_group_messages: bool = None,
         has_main_web_app: bool = None,
+        send_paid_messages_stars: int = None,
         raw: Union["raw.base.User", "raw.base.UserStatus"] = None
     ):
         super().__init__(client)
@@ -294,6 +298,7 @@ class User(Object, Update):
         self.can_join_groups = can_join_groups
         self.can_read_all_group_messages = can_read_all_group_messages
         self.has_main_web_app = has_main_web_app
+        self.send_paid_messages_stars = send_paid_messages_stars
         self.raw = raw
 
     @property
@@ -353,6 +358,7 @@ class User(Object, Update):
             can_join_groups=getattr(user, "bot_nochats", None),
             can_read_all_group_messages=getattr(user, "bot_chat_history", None),
             has_main_web_app=getattr(user, "bot_has_main_app", None),
+            send_paid_messages_stars=getattr(user, "send_paid_messages_stars", None),
             raw=user,
             client=client
         )

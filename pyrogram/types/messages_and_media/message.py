@@ -448,6 +448,9 @@ class Message(Object, Update):
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this message.
 
+        paid_message_stars (``int``, *optional*):
+            Number of stars for a paid message.
+
         raw (:obj:`~pyrogram.raw.types.Message`, *optional*):
             The raw message object, as received from the Telegram API.
 
@@ -584,6 +587,7 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         reactions: List["types.Reaction"] = None,
+        paid_message_stars: int = None,
         raw: "raw.types.Message" = None
     ):
         super().__init__(client)
@@ -703,6 +707,7 @@ class Message(Object, Update):
         self.connected_website = connected_website
         self.contact_registered = contact_registered
         self.reactions = reactions
+        self.paid_message_stars = paid_message_stars
         self.raw = raw
 
     @staticmethod
@@ -1287,6 +1292,7 @@ class Message(Object, Update):
                 reply_markup=reply_markup,
                 reactions=reactions,
                 from_offline=getattr(message, "offline", None),
+                paid_message_stars=getattr(message, "paid_message_stars", None),
                 raw=message,
                 client=client
             )
