@@ -119,7 +119,8 @@ class CopyMessage:
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
-            If True, you will be allowed to send up to 1000 messages per second.
+            allow_paid_broadcast (``bool``, *optional*):
+                If True, you will be allowed to send up to 1000 messages per second.
                 Ignoring broadcasting limits for a fee of 0.1 Telegram Stars per message.
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
