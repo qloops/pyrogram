@@ -936,6 +936,7 @@ def pyrogram_api():
             UserStatus
             GiftAttributeType
             MediaAreaType
+            PrivacyRuleType
         """,
     )
 

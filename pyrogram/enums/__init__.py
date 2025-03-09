@@ -35,6 +35,7 @@ from .parse_mode import ParseMode
 from .phone_call_discard_reason import PhoneCallDiscardReason
 from .poll_type import PollType
 from .privacy_key import PrivacyKey
+from .privacy_rule_type import PrivacyRuleType
 from .profile_color import ProfileColor
 from .reply_color import ReplyColor
 from .sent_code_type import SentCodeType
@@ -63,6 +64,7 @@ __all__ = [
     'PhoneCallDiscardReason',
     'PollType',
     'PrivacyKey',
+    'PrivacyRuleType',
     'ProfileColor',
     'ReplyColor',
     'SentCodeType',
