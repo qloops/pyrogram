@@ -42,6 +42,7 @@ from .dialog import Dialog
 from .emoji_status import EmojiStatus
 from .folder import Folder
 from .found_contacts import FoundContacts
+from .global_privacy_settings import GlobalPrivacySettings
 from .group_call_member import GroupCallMember
 from .invite_link_importer import InviteLinkImporter
 from .phone_call_ended import PhoneCallEnded
@@ -93,6 +94,7 @@ __all__ = [
     "EmojiStatus",
     "Folder",
     "FoundContacts",
+    "GlobalPrivacySettings",
     "GroupCallMember",
     "ChatReactions",
     "ChatSettings"

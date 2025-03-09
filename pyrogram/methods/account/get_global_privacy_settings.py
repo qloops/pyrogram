@@ -16,19 +16,24 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .get_account_ttl import GetAccountTTL
-from .get_global_privacy_settings import GetGlobalPrivacySettings
-from .get_privacy import GetPrivacy
-from .set_account_ttl import SetAccountTTL
-from .set_global_privacy_settings import SetGlobalPrivacySettings
-from .set_privacy import SetPrivacy
+import pyrogram
+from pyrogram import raw, types
 
-class Account(
-    GetAccountTTL,
-    GetGlobalPrivacySettings,
-    GetPrivacy,
-    SetAccountTTL,
-    SetGlobalPrivacySettings,
-    SetPrivacy
-):
-    pass
+
+class GetGlobalPrivacySettings:
+    async def get_global_privacy_settings(self: "pyrogram.Client") -> "types.GlobalPrivacySettings":
+        """Get account global privacy settings.
+
+        .. include:: /_includes/usable-by/users.rst
+
+        Returns:
+            :obj:`~pyrogram.types.GlobalPrivacySettings`: On success, the global privacy settings is returned.
+
+        Example:
+            .. code-block:: python
+
+                await app.get_global_privacy_settings()
+        """
+        r = await self.invoke(raw.functions.account.GetGlobalPrivacySettings())
+
+        return types.GlobalPrivacySettings._parse(r)

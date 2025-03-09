@@ -449,6 +449,8 @@ def pyrogram_api():
             set_account_ttl
             set_privacy
             get_privacy
+            set_global_privacy_settings
+            get_global_privacy_settings
         """
     )
 
@@ -521,6 +523,7 @@ def pyrogram_api():
             StoriesStealthMode
             BotVerification
             ChatSettings
+            GlobalPrivacySettings
         """,
         messages_media="""
         Messages & Media
@@ -676,15 +679,19 @@ def pyrogram_api():
         """,
         input_privacy_rule="""
         InputPrivacyRule
+            InputPrivacyRule
             InputPrivacyRuleAllowAll
+            InputPrivacyRuleAllowBots
+            InputPrivacyRuleAllowChats
+            InputPrivacyRuleAllowCloseFriends
             InputPrivacyRuleAllowContacts
             InputPrivacyRuleAllowPremium
             InputPrivacyRuleAllowUsers
-            InputPrivacyRuleAllowChats
             InputPrivacyRuleDisallowAll
+            InputPrivacyRuleDisallowBots
+            InputPrivacyRuleDisallowChats
             InputPrivacyRuleDisallowContacts
             InputPrivacyRuleDisallowUsers
-            InputPrivacyRuleDisallowChats
         """
     )
 
