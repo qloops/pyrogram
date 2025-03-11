@@ -1460,7 +1460,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup=None
     ) -> "Message":
         """Bound method *reply_text* of :obj:`~pyrogram.types.Message`.
@@ -1540,8 +1540,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -1582,7 +1582,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -1604,7 +1604,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1708,8 +1708,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -1777,7 +1777,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1802,7 +1802,7 @@ class Message(Object, Update):
         quote_entities: List["types.MessageEntity"] = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1895,8 +1895,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -1962,7 +1962,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1982,7 +1982,7 @@ class Message(Object, Update):
         quote_entities: List["types.MessageEntity"] = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2052,8 +2052,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2090,7 +2090,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -2158,7 +2158,7 @@ class Message(Object, Update):
         quote_entities: List["types.MessageEntity"] = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2235,8 +2235,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2275,7 +2275,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -2299,7 +2299,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2402,8 +2402,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2470,7 +2470,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -2579,7 +2579,7 @@ class Message(Object, Update):
         quote_text: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         quote_entities: List["types.MessageEntity"] = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
     ) -> "Message":
         """Bound method *reply_inline_bot_result* of :obj:`~pyrogram.types.Message`.
 
@@ -2631,8 +2631,8 @@ class Message(Object, Update):
             quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
         Returns:
             On success, the sent Message is returned.
@@ -2659,7 +2659,7 @@ class Message(Object, Update):
             quote_text=quote_text,
             parse_mode=parse_mode,
             quote_entities=quote_entities,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
         )
 
     async def reply_location(
@@ -2675,7 +2675,7 @@ class Message(Object, Update):
         quote_entities: List["types.MessageEntity"] = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2742,8 +2742,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2779,7 +2779,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -2795,7 +2795,7 @@ class Message(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         quote_entities: List["types.MessageEntity"] = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         business_connection_id: str = None
     ) -> List["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
@@ -2856,8 +2856,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
@@ -2892,7 +2892,7 @@ class Message(Object, Update):
             parse_mode=parse_mode,
             quote_entities=quote_entities,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             business_connection_id=business_connection_id
         )
 
@@ -2915,7 +2915,7 @@ class Message(Object, Update):
         view_once: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3008,8 +3008,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -3075,7 +3075,7 @@ class Message(Object, Update):
             view_once=view_once,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -3111,7 +3111,7 @@ class Message(Object, Update):
         business_connection_id: str = None,
         options_parse_mode: List["types.MessageEntity"] = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3243,8 +3243,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -3297,7 +3297,7 @@ class Message(Object, Update):
             business_connection_id=business_connection_id,
             options_parse_mode=options_parse_mode,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -3317,7 +3317,7 @@ class Message(Object, Update):
         quote_entities: List["types.MessageEntity"] = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3398,8 +3398,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -3462,7 +3462,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -3486,7 +3486,7 @@ class Message(Object, Update):
         quote_entities: List["types.MessageEntity"] = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3572,8 +3572,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -3614,7 +3614,7 @@ class Message(Object, Update):
             quote_entities=quote_entities,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup
         )
 
@@ -3644,7 +3644,7 @@ class Message(Object, Update):
         no_sound: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3765,8 +3765,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -3839,7 +3839,7 @@ class Message(Object, Update):
             no_sound=no_sound,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -3863,7 +3863,7 @@ class Message(Object, Update):
         view_once: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3954,8 +3954,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -4020,7 +4020,7 @@ class Message(Object, Update):
             view_once=view_once,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -4043,7 +4043,7 @@ class Message(Object, Update):
         view_once: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -4128,8 +4128,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -4193,7 +4193,7 @@ class Message(Object, Update):
             view_once=view_once,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -4222,7 +4222,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
-        allow_paid_message: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -4317,8 +4317,8 @@ class Message(Object, Update):
                 The relevant Stars will be withdrawn from the bot's balance.
                 For bots only.
 
-            allow_paid_message (``bool``, *optional*):
-                If True, message will be sent if it's a paid message and you have enough Stars.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -4361,7 +4361,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=self.chat.paid_message_star_count if allow_paid_message else None,
+            paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup
         )
 
