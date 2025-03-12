@@ -350,6 +350,7 @@ def pyrogram_api():
             set_chat_ttl
             get_personal_channels
             get_chat_settings
+            transfer_chat_ownership
         """,
         users="""
         Users

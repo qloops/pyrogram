@@ -69,6 +69,7 @@ from .set_slow_mode import SetSlowMode
 from .toggle_folder_tags import ToggleFolderTags
 from .toggle_forum_topics import ToggleForumTopics
 from .toggle_join_to_send import ToggleJoinToSend
+from .transfer_chat_ownership import TransferChatOwnership
 from .unarchive_chats import UnarchiveChats
 from .unban_chat_member import UnbanChatMember
 from .unpin_all_chat_messages import UnpinAllChatMessages
@@ -131,6 +132,7 @@ class Chats(
     ToggleFolderTags,
     ToggleForumTopics,
     ToggleJoinToSend,
+    TransferChatOwnership,
     DeleteUserHistory,
     UnpinAllChatMessages,
     MarkChatUnread,
