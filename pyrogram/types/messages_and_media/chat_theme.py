@@ -16,14 +16,24 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from pyrogram import raw
+
 from ..object import Object
 
 
-class GeneralForumTopicUnhidden(Object):
-    """A service message about a general topic unhidden in the chat.
+class ChatTheme(Object):
+    """A theme in the chat has been changed.
 
-    Currently holds no information.
+    Parameters:
+        name (``str``):
+            Theme name.
     """
 
-    def __init__(self):
+    def __init__(self, *, name: str):
         super().__init__()
+
+        self.name = name
+
+    @staticmethod
+    def _parse(action: "raw.types.MessageActionSetChatTheme") -> "ChatTheme":
+        return ChatTheme(name=action.emoticon)

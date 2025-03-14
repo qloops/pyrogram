@@ -44,6 +44,7 @@ from .folder import Folder
 from .found_contacts import FoundContacts
 from .global_privacy_settings import GlobalPrivacySettings
 from .group_call_member import GroupCallMember
+from .history_cleared import HistoryCleared
 from .invite_link_importer import InviteLinkImporter
 from .phone_call_ended import PhoneCallEnded
 from .phone_call_started import PhoneCallStarted
@@ -96,6 +97,7 @@ __all__ = [
     "FoundContacts",
     "GlobalPrivacySettings",
     "GroupCallMember",
+    "HistoryCleared",
     "ChatReactions",
     "ChatSettings"
 ]

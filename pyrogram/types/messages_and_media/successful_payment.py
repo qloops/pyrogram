@@ -17,11 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
-from pyrogram import utils
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types, utils
+
 from ..object import Object
 
 
@@ -93,7 +92,7 @@ class SuccessfulPayment(Object):
 
     @staticmethod
     def _parse(
-        successful_payment: Union[
+        payment: Union[
             "raw.types.MessageActionPaymentSent",
             "raw.types.MessageActionPaymentSentMe"
         ]) -> "SuccessfulPayment":
@@ -103,45 +102,45 @@ class SuccessfulPayment(Object):
         shipping_option_id = None
         order_info = None
 
-        if isinstance(successful_payment, raw.types.MessageActionPaymentSentMe):
+        if isinstance(payment, raw.types.MessageActionPaymentSentMe):
             # Try to decode invoice payload into string. If that fails, fallback to bytes instead of decoding by
             # ignoring/replacing errors, this way, button clicks will still work.
             try:
-                invoice_payload = successful_payment.payload.decode()
+                invoice_payload = payment.payload.decode()
             except (UnicodeDecodeError, AttributeError):
-                invoice_payload = successful_payment.payload
+                invoice_payload = payment.payload
 
-            telegram_payment_charge_id = successful_payment.charge.id
-            provider_payment_charge_id = successful_payment.charge.provider_charge_id
-            shipping_option_id = getattr(successful_payment, "shipping_option_id")
+            telegram_payment_charge_id = payment.charge.id
+            provider_payment_charge_id = payment.charge.provider_charge_id
+            shipping_option_id = getattr(payment, "shipping_option_id")
 
-            if successful_payment.info:
-                payment_info = successful_payment.info
+            if payment.info:
+                payment_info = payment.info
 
                 order_info = types.OrderInfo(
                     name=getattr(payment_info, "name", None),
                     phone_number=getattr(payment_info, "phone", None),
                     email=getattr(payment_info, "email", None),
                     shipping_address=types.ShippingAddress(
-                        country_code=successful_payment.info.shipping_address.country_iso2,
-                        state=successful_payment.info.shipping_address.state,
-                        city=successful_payment.info.shipping_address.city,
-                        street_line1=successful_payment.info.shipping_address.street_line1,
-                        street_line2=successful_payment.info.shipping_address.street_line2,
-                        post_code=successful_payment.info.shipping_address.post_code
+                        country_code=payment.info.shipping_address.country_iso2,
+                        state=payment.info.shipping_address.state,
+                        city=payment.info.shipping_address.city,
+                        street_line1=payment.info.shipping_address.street_line1,
+                        street_line2=payment.info.shipping_address.street_line2,
+                        post_code=payment.info.shipping_address.post_code
                     )
                 )
 
         return SuccessfulPayment(
-            currency=successful_payment.currency,
-            total_amount=successful_payment.total_amount,
+            currency=payment.currency,
+            total_amount=payment.total_amount,
             invoice_payload=invoice_payload,
             telegram_payment_charge_id=telegram_payment_charge_id,
             provider_payment_charge_id=provider_payment_charge_id,
             shipping_option_id=shipping_option_id,
             order_info=order_info,
-            is_recurring=getattr(successful_payment, "recurring_used", None),
-            is_first_recurring=getattr(successful_payment, "recurring_init", None),
-            invoice_slug=getattr(successful_payment, "invoice_slug", None),
-            subscription_expiration_date=utils.timestamp_to_datetime(successful_payment.subscription_until_date),
+            is_recurring=getattr(payment, "recurring_used", None),
+            is_first_recurring=getattr(payment, "recurring_init", None),
+            invoice_slug=getattr(payment, "invoice_slug", None),
+            subscription_expiration_date=utils.timestamp_to_datetime(payment.subscription_until_date),
         )

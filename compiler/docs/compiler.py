@@ -602,6 +602,7 @@ def pyrogram_api():
             BotVerification
             ChatSettings
             GlobalPrivacySettings
+            HistoryCleared
         """,
         messages_media="""
         Messages & Media
@@ -614,11 +615,14 @@ def pyrogram_api():
             Audio
             AvailableEffect
             Document
+            FactCheck
             ForumTopic
             ForumTopicClosed
             ForumTopicCreated
             ForumTopicEdited
             ForumTopicReopened
+            GeneralForumTopicHidden
+            GeneralForumTopicUnhidden
             Animation
             Video
             Voice
@@ -631,10 +635,11 @@ def pyrogram_api():
             Game
             WebPage
             Poll
+            ProximityAlertTriggered
             PollOption
             Dice
             Reaction
-            RefundedPayment
+            RestrictionReason
             Gift
             VideoChatScheduled
             VideoChatStarted
@@ -650,11 +655,13 @@ def pyrogram_api():
             BoostsStatus
             Giveaway
             GiveawayCreated
+            GiveawayPrizeStars
             GiveawayCompleted
             GiveawayWinners
             Invoice
             GiftCode
             CheckedGiftCode
+            RefundedPayment
             SuccessfulPayment
             PaidMediaInfo
             PaidMediaPreview
@@ -665,6 +672,10 @@ def pyrogram_api():
             WriteAccessAllowed
             GiftAttribute
             StoryView
+            GiftedPremium
+            ChatBackground
+            ChatTheme
+            GiftedStars
         """,
         bot_keyboards="""
         Bot keyboards
@@ -684,10 +695,9 @@ def pyrogram_api():
             MenuButtonWebApp
             MenuButtonDefault
             SentWebAppMessage
-            RequestChannelInfo
-            RequestChatInfo
-            RequestUserInfo
-            RequestPollInfo
+            KeyboardButtonRequestChat
+            KeyboardButtonRequestUsers
+            KeyboardButtonPollType
             OrderInfo
             PreCheckoutQuery
             ShippingAddress
@@ -697,6 +707,8 @@ def pyrogram_api():
             ChatBoostUpdated
             ShippingOption
             PurchasedPaidMedia
+            ChatShared
+            UsersShared
         """,
         bot_commands="""
         Bot commands

@@ -117,7 +117,7 @@ class Chat(Object):
         stories (List of :obj:`~pyrogram.types.Story`, *optional*):
             The list of chat's stories if available.
 
-        wallpaper (:obj:`~pyrogram.types.Document`, *optional*):
+        chat_background (:obj:`~pyrogram.types.ChatBackground`, *optional*):
             Chat wallpaper.
 
         bio (``str``, *optional*):
@@ -479,7 +479,7 @@ class Chat(Object):
         last_name: Optional[str] = None,
         photo: Optional["types.ChatPhoto"] = None,
         stories: Optional[List["types.Story"]] = None,
-        wallpaper: Optional["types.Document"] = None,
+        chat_background: Optional["types.ChatBackground"] = None,
         bio: Optional[str] = None,
         description: Optional[str] = None,
         dc_id: Optional[int] = None,
@@ -598,7 +598,7 @@ class Chat(Object):
         self.last_name = last_name
         self.photo = photo
         self.stories = stories
-        self.wallpaper = wallpaper
+        self.chat_background = chat_background
         self.bio = bio
         self.description = description
         self.dc_id = dc_id
@@ -885,9 +885,8 @@ class Chat(Object):
         parsed_chat.bot_group_admin_rights = types.ChatPrivileges._parse(getattr(user, "bot_group_admin_rights", None))
         parsed_chat.bot_broadcast_admin_rights = types.ChatPrivileges._parse(getattr(user, "bot_broadcast_admin_rights", None))
         # parsed_chat.premium_gifts
+        parsed_chat.chat_background = types.ChatBackground._parse(client, getattr(user, "wallpaper", None))
 
-        if user.wallpaper and isinstance(user.wallpaper, raw.types.WallPaper):
-            parsed_chat.wallpaper = types.Document._parse(client, user.wallpaper.document, "wallpaper.jpg")
 
         if user.stories:
             parsed_chat.stories = types.List(
@@ -1049,9 +1048,7 @@ class Chat(Object):
                 ]
             ) or None
 
-        if channel.wallpaper and isinstance(channel.wallpaper, raw.types.WallPaper):
-            parsed_chat.wallpaper = types.Document._parse(client, channel.wallpaper.document, "wallpaper.jpg")
-
+        parsed_chat.chat_background = types.ChatBackground._parse(client, getattr(channel, "wallpaper", None))
         parsed_chat.boosts_applied = getattr(channel, "boosts_applied", None)
         parsed_chat.unrestrict_boost_count = getattr(channel, "boosts_unrestrict", None)
         parsed_chat.custom_emoji_sticker_set_name = getattr(channel.emojiset, "short_name", None)
