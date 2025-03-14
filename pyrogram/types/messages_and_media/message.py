@@ -767,8 +767,8 @@ class Message(Object, Update):
         self.suggest_profile_photo = suggest_profile_photo
         self.users_shared = users_shared
         self.chat_shared = chat_shared
-        self.payment_successful = successful_payment
-        self.payment_refunded = refunded_payment
+        self.successful_payment = successful_payment
+        self.refunded_payment = refunded_payment
         self.giveaway_created = giveaway_created
         self.chat_set_theme = chat_set_theme
         self.chat_set_background = chat_set_background

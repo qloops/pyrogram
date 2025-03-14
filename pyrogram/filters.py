@@ -813,7 +813,7 @@ video_chat_members_invited = create(video_chat_members_invited_filter)
 
 # region successful_payment_filter
 async def successful_payment_filter(_, __, m: Message):
-    return bool(m.payment_successful)
+    return bool(m.successful_payment)
 
 
 successful_payment = create(successful_payment_filter)
