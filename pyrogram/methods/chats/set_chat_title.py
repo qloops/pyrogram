@@ -19,7 +19,7 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw
+from pyrogram import raw, types
 
 
 class SetChatTitle:
@@ -27,7 +27,7 @@ class SetChatTitle:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         title: str
-    ) -> bool:
+    ) -> "types.Message":
         """Change the title of a chat.
         Titles can't be changed for private chats.
         You must be an administrator in the chat for this to work and must have the appropriate admin rights.
@@ -47,7 +47,7 @@ class SetChatTitle:
                 New chat title, 1-255 characters.
 
         Returns:
-            ``bool``: True on success.
+            :obj:`~pyrogram.types.Message`: On success, the sent service message is returned.
 
         Raises:
             ValueError: In case a chat id belongs to user.
@@ -60,14 +60,14 @@ class SetChatTitle:
         peer = await self.resolve_peer(chat_id)
 
         if isinstance(peer, raw.types.InputPeerChat):
-            await self.invoke(
+            r = await self.invoke(
                 raw.functions.messages.EditChatTitle(
                     chat_id=peer.chat_id,
                     title=title
                 )
             )
         elif isinstance(peer, raw.types.InputPeerChannel):
-            await self.invoke(
+            r = await self.invoke(
                 raw.functions.channels.EditTitle(
                     channel=peer,
                     title=title
@@ -75,5 +75,16 @@ class SetChatTitle:
             )
         else:
             raise ValueError(f'The chat_id "{chat_id}" belongs to a user')
-
-        return True
+        
+        for i in r.updates:
+            if isinstance(i, (raw.types.UpdateNewMessage,
+                              raw.types.UpdateNewChannelMessage,
+                              raw.types.UpdateNewScheduledMessage,
+                              raw.types.UpdateBotNewBusinessMessage)):
+                return await types.Message._parse(
+                    self, i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
+                    business_connection_id=getattr(i, "connection_id", None)
+                )
