@@ -18,7 +18,7 @@
 
 import html
 import re
-from typing import Optional
+from typing import List, Optional, Tuple, Union
 
 import pyrogram
 from pyrogram.enums import MessageEntityType
@@ -66,13 +66,13 @@ class Markdown:
 
     @staticmethod
     def escape_and_create_quotes(text: str, strict: bool):
-        text_lines: list[str | None] = text.splitlines()
+        text_lines: List[Union[str, None]] = text.splitlines()
 
         # Indexes of Already escaped lines
-        html_escaped_list: list[int] = []
+        html_escaped_list: List[int] = []
 
         # Temporary Queue to hold lines to be quoted
-        to_quote_list: list[tuple[int, str]] = []
+        to_quote_list: List[Tuple[int, str]] = []
 
         def create_blockquote(expandable: bool = False) -> None:
             """
