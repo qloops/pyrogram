@@ -75,9 +75,6 @@ class Story(Object, Update):
         video (:obj:`~pyrogram.types.Video`, *optional*):
             Story is a video, information about the video.
 
-        alternative_videos (List of :obj:`~pyrogram.types.Video`, *optional*):
-            Alternative qualities of the video, if the story is a video.
-
         edited (``bool``, *optional*):
            True, if the Story has been edited.
 
@@ -161,7 +158,6 @@ class Story(Object, Update):
         has_protected_content: Optional[bool] = None,
         photo: Optional["types.Photo"] = None,
         video: Optional["types.Video"] = None,
-        alternative_videos: Optional[List["types.Video"]] = None,
         edited: Optional[bool] = None,
         pinned: Optional[bool] = None,
         public: Optional[bool] = None,
@@ -199,7 +195,6 @@ class Story(Object, Update):
         self.has_protected_content = has_protected_content
         self.photo = photo
         self.video = video
-        self.alternative_videos = alternative_videos
         self.edited = edited
         self.pinned = pinned
         self.public = public
@@ -328,7 +323,6 @@ class Story(Object, Update):
         forwards = None
         reactions = None
         reactions_count = None
-        alternative_videos = []
 
         forward_from = None
         forward_sender_name = None
@@ -363,18 +357,8 @@ class Story(Object, Update):
             doc = story.media.document
             attributes = {type(i): i for i in doc.attributes}
             video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
-            video = types.Video._parse(client, doc, video_attributes)
+            video = types.Video._parse(client, doc, video_attributes, alternative_videos=getattr(story.media, "alt_documents", []))
             media_type = enums.MessageMediaType.VIDEO
-
-            for altdoc in getattr(story.media, "alt_documents", []):
-                if isinstance(altdoc, raw.types.Document):
-                    altdoc_attributes = {type(i): i for i in altdoc.attributes}
-                    altdoc_video_attribute = altdoc_attributes.get(raw.types.DocumentAttributeVideo)
-
-                    if altdoc_video_attribute:
-                        alternative_videos.append(
-                            types.Video._parse(client, altdoc, altdoc_video_attribute)
-                        )
 
         privacy_map = {
             raw.types.PrivacyValueAllowAll: enums.StoriesPrivacyRules.PUBLIC,
@@ -412,7 +396,6 @@ class Story(Object, Update):
             has_protected_content=story.noforwards,
             photo=photo,
             video=video,
-            alternative_videos=types.List(alternative_videos) or None,
             edited=story.edited,
             pinned=story.pinned,
             public=story.public,

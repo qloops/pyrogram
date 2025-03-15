@@ -240,9 +240,6 @@ class Message(Object, Update):
         video_processing_pending (``bool``, *optional*):
             True, if the video is still processing.
 
-        alternative_videos (List of :obj:`~pyrogram.types.Video`, *optional*):
-            Alternative qualities of the video, if the message is a video.
-
         voice (:obj:`~pyrogram.types.Voice`, *optional*):
             Message is a voice message, information about the file.
 
@@ -572,7 +569,6 @@ class Message(Object, Update):
         story: "types.Story" = None,
         video: "types.Video" = None,
         video_processing_pending: bool = None,
-        alternative_videos: List["types.Video"] = None,
         voice: "types.Voice" = None,
         video_note: "types.VideoNote" = None,
         caption: Str = None,
@@ -713,7 +709,6 @@ class Message(Object, Update):
         self.story = story
         self.video = video
         self.video_processing_pending = video_processing_pending
-        self.alternative_videos = alternative_videos
         self.voice = voice
         self.video_note = video_note
         self.caption = caption
@@ -1241,7 +1236,6 @@ class Message(Object, Update):
         voice = None
         animation = None
         video = None
-        alternative_videos = None
         video_note = None
         sticker = None
         document = None
@@ -1310,29 +1304,9 @@ class Message(Object, Update):
                             video_note = types.VideoNote._parse(client, doc, video_attributes, media.ttl_seconds)
                             media_type = enums.MessageMediaType.VIDEO_NOTE
                         else:
-                            video = types.Video._parse(client, doc, video_attributes, file_name, media.ttl_seconds, media.video_cover, media.video_timestamp)
+                            video = types.Video._parse(client, doc, video_attributes, file_name, media.ttl_seconds, media.video_cover, media.video_timestamp, media.alt_documents)
                             media_type = enums.MessageMediaType.VIDEO
                             has_media_spoiler = media.spoiler
-
-                            _parsed_alt_videos = types.List()
-                            altdocs = media.alt_documents or []
-                            for altdoc in altdocs:
-                                if isinstance(altdoc, raw.types.Document):
-                                    altdoc_attributes = {type(i): i for i in altdoc.attributes}
-                                    altdoc_file_name = getattr(
-                                        altdoc_attributes.get(
-                                            raw.types.DocumentAttributeFilename, None
-                                        ), "file_name", None
-                                    )
-
-                                    altdoc_video_attribute = altdoc_attributes.get(raw.types.DocumentAttributeVideo, None)
-
-                                    if altdoc_video_attribute:
-                                        _parsed_alt_videos.append(
-                                            types.Video._parse(client, altdoc, altdoc_video_attribute, altdoc_file_name)
-                                        )
-
-                            alternative_videos = _parsed_alt_videos or None
                     elif raw.types.DocumentAttributeAudio in attributes:
                         audio_attributes = attributes[raw.types.DocumentAttributeAudio]
 
@@ -1450,7 +1424,6 @@ class Message(Object, Update):
             story=story,
             video=video,
             video_processing_pending=getattr(message, "video_processing_pending", None),
-            alternative_videos=alternative_videos,
             video_note=video_note,
             sticker=sticker,
             document=document,
