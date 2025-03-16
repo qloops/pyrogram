@@ -1487,6 +1487,8 @@ class Message(Object, Update):
                             client,
                             topics.get(parsed_message.message_thread_id), users=users, chats=chats
                         )
+
+                        client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
                 elif message.reply_to.quote:
                     quote_entities = [types.MessageEntity._parse(client, entity, users) for entity in message.reply_to.quote_entities]
                     quote_entities = types.List(filter(lambda x: x is not None, quote_entities))
@@ -1545,14 +1547,21 @@ class Message(Object, Update):
                             )
 
         if not parsed_message.topic and parsed_message.chat.is_forum and client.me and not client.me.is_bot:
-            if client.fetch_topics:
-                try:
-                    parsed_message.topic = await client.get_forum_topics_by_id(
-                        chat_id=parsed_message.chat.id,
-                        topic_ids=parsed_message.message_thread_id or 1
-                    )
-                except (ChannelPrivate, ChannelForumMissing):
-                    pass
+            parsed_topic = client.topic_cache[(parsed_message.chat.id, parsed_message.message_thread_id or 1)]
+
+            if parsed_topic:
+                parsed_message.topic = parsed_topic
+            else:
+                if client.fetch_topics:
+                    try:
+                        parsed_message.topic = await client.get_forum_topics_by_id(
+                            chat_id=parsed_message.chat.id,
+                            topic_ids=parsed_message.message_thread_id or 1
+                        )
+
+                        client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
+                    except (ChannelPrivate, ChannelForumMissing):
+                        pass
 
         if not parsed_message.poll:  # Do not cache poll messages
             client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
@@ -1590,10 +1599,6 @@ class Message(Object, Update):
                 business_connection_id=business_connection_id
             )
 
-        # TODO: Refactor topics parsing.
-        # Instead of making extra request to telegram,
-        # we can parse topics from raw.types.messages.ChannelMessages update.
-        # And maybe add cache for topics like Client.message_cache?
         if isinstance(message, raw.types.Message):
             return await types.Message._parse_message(
                 client=client,

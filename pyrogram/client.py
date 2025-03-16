@@ -199,6 +199,10 @@ class Client(Methods):
             Set the maximum size of the message cache.
             Defaults to 1000.
 
+        max_topic_cache_size (``int``, *optional*):
+            Set the maximum size of the topic cache.
+            Defaults to 1000.
+
         storage_engine (:obj:`~pyrogram.storage.Storage`, *optional*):
             Pass an instance of your own implementation of session storage engine.
             Useful when you want to store your session in databases like Mongo, Redis, etc.
@@ -246,6 +250,7 @@ class Client(Methods):
 
     MAX_CONCURRENT_TRANSMISSIONS = 1
     MAX_MESSAGE_CACHE_SIZE = 1000
+    MAX_TOPIC_CACHE_SIZE = 1000
 
     mimetypes = MimeTypes()
     mimetypes.readfp(StringIO(mime_types))
@@ -281,6 +286,7 @@ class Client(Methods):
         hide_password: Optional[bool] = False,
         max_concurrent_transmissions: int = MAX_CONCURRENT_TRANSMISSIONS,
         max_message_cache_size: int = MAX_MESSAGE_CACHE_SIZE,
+        max_topic_cache_size: int = MAX_TOPIC_CACHE_SIZE,
         storage_engine: Optional[Storage] = None,
         client_platform: "enums.ClientPlatform" = enums.ClientPlatform.OTHER,
         fetch_replies: Optional[bool] = True,
@@ -322,6 +328,7 @@ class Client(Methods):
         self.hide_password = hide_password
         self.max_concurrent_transmissions = max_concurrent_transmissions
         self.max_message_cache_size = max_message_cache_size
+        self.max_topic_cache_size = max_topic_cache_size
         self.client_platform = client_platform
         self.fetch_replies = fetch_replies
         self.fetch_topics = fetch_topics
@@ -372,6 +379,7 @@ class Client(Methods):
         self.me: Optional[User] = None
 
         self.message_cache = Cache(self.max_message_cache_size)
+        self.topic_cache = Cache(self.max_message_cache_size)
 
         # Sometimes, for some reason, the server will stop sending updates and will only respond to pings.
         # This watchdog will invoke updates.GetState in order to wake up the server and enable it sending updates again
