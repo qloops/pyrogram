@@ -1112,6 +1112,7 @@ class Message(Object, Update):
             general_forum_topic_unhidden=general_forum_topic_unhidden,
             forum_topic_reopened=forum_topic_reopened,
             web_app_data=web_app_data,
+            reactions=types.MessageReactions._parse(client, message.reactions),
             business_connection_id=business_connection_id,
             raw=message,
             client=client
