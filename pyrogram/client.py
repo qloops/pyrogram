@@ -379,7 +379,7 @@ class Client(Methods):
         self.me: Optional[User] = None
 
         self.message_cache = Cache(self.max_message_cache_size)
-        self.topic_cache = Cache(self.max_message_cache_size)
+        self.topic_cache = Cache(self.max_topic_cache_size)
 
         # Sometimes, for some reason, the server will stop sending updates and will only respond to pings.
         # This watchdog will invoke updates.GetState in order to wake up the server and enable it sending updates again
