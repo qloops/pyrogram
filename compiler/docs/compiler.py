@@ -609,6 +609,11 @@ def pyrogram_api():
             BusinessMessage
             Message
             MessageEntity
+            MessageOriginChannel
+            MessageOriginChat
+            MessageOriginHiddenUser
+            MessageOriginUser
+            MessageOrigin
             Photo
             Thumbnail
             StrippedThumbnail
@@ -663,6 +668,7 @@ def pyrogram_api():
             CheckedGiftCode
             RefundedPayment
             SuccessfulPayment
+            TextQuote
             PaidMediaInfo
             PaidMediaPreview
             PaymentForm
@@ -1012,6 +1018,7 @@ def pyrogram_api():
             FolderColor
             MessageEntityType
             MessageMediaType
+            MessageOriginType
             MessageServiceType
             MessagesFilter
             NextCodeType

@@ -49,6 +49,11 @@ from .location import Location
 from .media_area import MediaArea
 from .message import Message
 from .message_entity import MessageEntity
+from .message_origin import MessageOrigin
+from .message_origin_channel import MessageOriginChannel
+from .message_origin_chat import MessageOriginChat
+from .message_origin_hidden_user import MessageOriginHiddenUser
+from .message_origin_user import MessageOriginUser
 from .message_reactions import MessageReactions
 from .my_boost import MyBoost
 from .paid_media_info import PaidMediaInfo
@@ -71,6 +76,7 @@ from .story_view import StoryView
 from .story import Story
 from .stripped_thumbnail import StrippedThumbnail
 from .successful_payment import SuccessfulPayment
+from .text_quote import TextQuote
 from .thumbnail import Thumbnail
 from .venue import Venue
 from .video import Video
@@ -114,6 +120,11 @@ __all__ = [
     "MediaArea",
     "Message",
     "MessageEntity",
+    "MessageOrigin",
+    "MessageOriginChannel",
+    "MessageOriginChat",
+    "MessageOriginHiddenUser",
+    "MessageOriginUser",
     "MessageReactions",
     "MyBoost",
     "PaidMediaInfo",
@@ -136,6 +147,7 @@ __all__ = [
     "Story",
     "StrippedThumbnail",
     "SuccessfulPayment",
+    "TextQuote",
     "Thumbnail",
     "Venue",
     "Video",

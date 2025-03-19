@@ -96,23 +96,8 @@ class Message(Object, Update):
         topic (:obj:`~pyrogram.types.ForumTopic`, *optional*):
             Topic the message belongs to.
 
-        forward_from (:obj:`~pyrogram.types.User`, *optional*):
-            For forwarded messages, sender of the original message.
-
-        forward_sender_name (``str``, *optional*):
-            For messages forwarded from users who have hidden their accounts, name of the user.
-
-        forward_from_chat (:obj:`~pyrogram.types.Chat`, *optional*):
-            For messages forwarded from channels, information about the original channel. For messages forwarded from anonymous group administrators, information about the original supergroup.
-
-        forward_from_message_id (``int``, *optional*):
-            For messages forwarded from channels, identifier of the original message in the channel.
-
-        forward_signature (``str``, *optional*):
-            For messages forwarded from channels, signature of the post author if present.
-
-        forward_date (:py:obj:`~datetime.datetime`, *optional*):
-            For forwarded messages, date the original message was sent.
+        forward_origin (:obj:`~pyrogram.types.MessageOrigin`, *optional*):
+            Information about the original message for forwarded messages.
 
         message_thread_id (``int``, *optional*):
             Unique identifier of a message thread to which the message belongs.
@@ -190,21 +175,12 @@ class Message(Object, Update):
             *text.html* to get the marked up message text. In case there is no entity, the fields
             will contain the same text as *text*.
 
-        quote_text (``str``, *optional*):
-            For quote messages, the actual UTF-8 text of the message, 0-4096 characters.
-            If the quote contains entities (bold, italic, ...) you can access *text.markdown* or
-            *text.html* to get the marked up message text. In case there is no entity, the fields
-            will contain the same text as *text*.
-
         entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
 
         caption_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear
             in the caption.
-
-        quote_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-            For quote messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
 
         audio (:obj:`~pyrogram.types.Audio`, *optional*):
             Message is an audio file, information about the file.
@@ -340,8 +316,8 @@ class Message(Object, Update):
             Messages sent from yourself to other chats are outgoing (*outgoing* is True).
             An exception is made for your own personal chat; messages sent there will be incoming.
 
-        quote (``bool``, *optional*):
-            If True, message contains a quote.
+        quote (:obj:`~pyrogram.types.TextQuote`, *optional*):
+            Chosen quote from the replied message.
 
         matches (List of regex Matches, *optional*):
             A list containing all `Match Objects <https://docs.python.org/3/library/re.html#match-objects>`_ that match
@@ -512,134 +488,129 @@ class Message(Object, Update):
         *,
         client: "pyrogram.Client" = None,
         id: int,
-        from_user: "types.User" = None,
-        sender_chat: "types.Chat" = None,
-        sender_boost_count: int = None,
-        sender_business_bot: "types.User" = None,
-        date: datetime = None,
-        chat: "types.Chat" = None,
-        topic_message: bool = None,
-        automatic_forward: bool = None,
-        from_offline: bool = None,
-        show_caption_above_media: bool = None,
-        quote: bool = None,
-        topic: "types.ForumTopic" = None,
-        forward_from: "types.User" = None,
-        forward_sender_name: str = None,
-        forward_from_chat: "types.Chat" = None,
-        forward_from_message_id: int = None,
-        forward_signature: str = None,
-        forward_date: datetime = None,
-        message_thread_id: int = None,
-        effect_id: int = None,
-        reply_to_message_id: int = None,
-        reply_to_story_id: int = None,
-        reply_to_story_user_id: int = None,
-        reply_to_top_message_id: int = None,
-        reply_to_message: "Message" = None,
-        reply_to_story: "types.Story" = None,
-        mentioned: bool = None,
-        empty: bool = None,
-        service: "enums.MessageServiceType" = None,
-        scheduled: bool = None,
-        from_scheduled: bool = None,
-        media: "enums.MessageMediaType" = None,
-        paid_media: "types.PaidMediaInfo" = None,
-        edit_date: datetime = None,
-        edit_hidden: bool = None,
-        media_group_id: int = None,
-        author_signature: str = None,
-        has_protected_content: bool = None,
-        has_media_spoiler: bool = None,
-        text: Str = None,
-        quote_text: Str = None,
-        entities: List["types.MessageEntity"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
-        quote_entities: List["types.MessageEntity"] = None,
-        audio: "types.Audio" = None,
-        document: "types.Document" = None,
-        photo: "types.Photo" = None,
-        sticker: "types.Sticker" = None,
-        animation: "types.Animation" = None,
-        game: "types.Game" = None,
-        giveaway: "types.Giveaway" = None,
-        giveaway_winners: "types.GiveawayWinners" = None,
-        giveaway_completed: "types.GiveawayCompleted" = None,
-        invoice: "types.Invoice" = None,
-        story: "types.Story" = None,
-        video: "types.Video" = None,
-        video_processing_pending: bool = None,
-        voice: "types.Voice" = None,
-        video_note: "types.VideoNote" = None,
-        caption: Str = None,
-        contact: "types.Contact" = None,
-        location: "types.Location" = None,
-        venue: "types.Venue" = None,
-        web_page: "types.WebPage" = None,
-        poll: "types.Poll" = None,
-        dice: "types.Dice" = None,
-        new_chat_members: List["types.User"] = None,
-        left_chat_member: "types.User" = None,
-        chat_join_type: "enums.ChatJoinType" = None,
-        new_chat_title: str = None,
-        new_chat_photo: "types.Photo" = None,
-        delete_chat_photo: bool = None,
-        group_chat_created: bool = None,
-        supergroup_chat_created: bool = None,
-        channel_chat_created: bool = None,
-        migrate_to_chat_id: int = None,
-        migrate_from_chat_id: int = None,
-        pinned_message: "Message" = None,
-        game_high_score: int = None,
-        views: int = None,
-        forwards: int = None,
-        via_bot: "types.User" = None,
-        outgoing: bool = None,
-        matches: List[Match] = None,
-        command: List[str] = None,
-        forum_topic_created: "types.ForumTopicCreated" = None,
-        forum_topic_closed: "types.ForumTopicClosed" = None,
-        forum_topic_reopened: "types.ForumTopicReopened" = None,
-        forum_topic_edited: "types.ForumTopicEdited" = None,
-        general_forum_topic_hidden: "types.GeneralForumTopicHidden" = None,
-        general_forum_topic_unhidden: "types.GeneralForumTopicUnhidden" = None,
-        video_chat_scheduled: "types.VideoChatScheduled" = None,
-        history_cleared: "types.HistoryCleared" = None,
-        video_chat_started: "types.VideoChatStarted" = None,
-        video_chat_ended: "types.VideoChatEnded" = None,
-        video_chat_members_invited: "types.VideoChatMembersInvited" = None,
-        phone_call_started: "types.PhoneCallStarted" = None,
-        phone_call_ended: "types.PhoneCallEnded" = None,
-        web_app_data: "types.WebAppData" = None,
-        gift_code: "types.GiftCode" = None,
-        gifted_premium: "types.GiftedPremium" = None,
-        gifted_stars: "types.GiftedStars" = None,
-        gift: "types.Gift" = None,
-        suggest_profile_photo: "types.Photo" = None,
-        users_shared: "types.UsersShared" = None,
-        chat_shared: "types.ChatShared" = None,
-        successful_payment: "types.SuccessfulPayment" = None,
-        refunded_payment: "types.RefundedPayment" = None,
-        giveaway_created: bool = None,
-        chat_set_theme: "types.ChatTheme" = None,
-        chat_set_background: "types.ChatBackground" = None,
-        set_message_auto_delete_time: int = None,
-        chat_boost: int = None,
-        write_access_allowed: "types.WriteAccessAllowed" = None,
-        connected_website: str = None,
-        contact_registered: "types.ContactRegistered" = None,
-        proximity_alert_triggered: "types.ProximityAlertTriggered" = None,
-        giveaway_prize_stars: "types.GiveawayPrizeStars" = None,
-        screenshot_taken: "types.ScreenshotTaken" = None,
-        business_connection_id: str = None,
-        reply_markup: Union[
-            "types.InlineKeyboardMarkup",
-            "types.ReplyKeyboardMarkup",
-            "types.ReplyKeyboardRemove",
-            "types.ForceReply"
+        from_user: Optional["types.User"] = None,
+        sender_chat: Optional["types.Chat"] = None,
+        sender_boost_count: Optional[int] = None,
+        sender_business_bot: Optional["types.User"] = None,
+        date: Optional[datetime] = None,
+        chat: Optional["types.Chat"] = None,
+        topic_message: Optional[bool] = None,
+        automatic_forward: Optional[bool] = None,
+        from_offline: Optional[bool] = None,
+        show_caption_above_media: Optional[bool] = None,
+        quote: Optional["types.TextQuote"] = None,
+        topic: Optional["types.ForumTopic"] = None,
+        forward_origin: Optional["types.MessageOrigin"] = None,
+        message_thread_id: Optional[int] = None,
+        effect_id: Optional[int] = None,
+        reply_to_message_id: Optional[int] = None,
+        reply_to_story_id: Optional[int] = None,
+        reply_to_story_user_id: Optional[int] = None,
+        reply_to_top_message_id: Optional[int] = None,
+        reply_to_message: Optional["Message"] = None,
+        reply_to_story: Optional["types.Story"] = None,
+        mentioned: Optional[bool] = None,
+        empty: Optional[bool] = None,
+        service: Optional["enums.MessageServiceType"] = None,
+        scheduled: Optional[bool] = None,
+        from_scheduled: Optional[bool] = None,
+        media: Optional["enums.MessageMediaType"] = None,
+        paid_media: Optional["types.PaidMediaInfo"] = None,
+        edit_date: Optional[datetime] = None,
+        edit_hidden: Optional[bool] = None,
+        media_group_id: Optional[int] = None,
+        author_signature: Optional[str] = None,
+        has_protected_content: Optional[bool] = None,
+        has_media_spoiler: Optional[bool] = None,
+        text: Optional[Str] = None,
+        entities: Optional[List["types.MessageEntity"]] = None,
+        caption_entities: Optional[List["types.MessageEntity"]] = None,
+        audio: Optional["types.Audio"] = None,
+        document: Optional["types.Document"] = None,
+        photo: Optional["types.Photo"] = None,
+        sticker: Optional["types.Sticker"] = None,
+        animation: Optional["types.Animation"] = None,
+        game: Optional["types.Game"] = None,
+        giveaway: Optional["types.Giveaway"] = None,
+        giveaway_winners: Optional["types.GiveawayWinners"] = None,
+        giveaway_completed: Optional["types.GiveawayCompleted"] = None,
+        invoice: Optional["types.Invoice"] = None,
+        story: Optional["types.Story"] = None,
+        video: Optional["types.Video"] = None,
+        video_processing_pending: Optional[bool] = None,
+        voice: Optional["types.Voice"] = None,
+        video_note: Optional["types.VideoNote"] = None,
+        caption: Optional[Str] = None,
+        contact: Optional["types.Contact"] = None,
+        location: Optional["types.Location"] = None,
+        venue: Optional["types.Venue"] = None,
+        web_page: Optional["types.WebPage"] = None,
+        poll: Optional["types.Poll"] = None,
+        dice: Optional["types.Dice"] = None,
+        new_chat_members: Optional[List["types.User"]] = None,
+        left_chat_member: Optional["types.User"] = None,
+        chat_join_type: Optional["enums.ChatJoinType"] = None,
+        new_chat_title: Optional[str] = None,
+        new_chat_photo: Optional["types.Photo"] = None,
+        delete_chat_photo: Optional[bool] = None,
+        group_chat_created: Optional[bool] = None,
+        supergroup_chat_created: Optional[bool] = None,
+        channel_chat_created: Optional[bool] = None,
+        migrate_to_chat_id: Optional[int] = None,
+        migrate_from_chat_id: Optional[int] = None,
+        pinned_message: Optional["Message"] = None,
+        game_high_score: Optional[int] = None,
+        views: Optional[int] = None,
+        forwards: Optional[int] = None,
+        via_bot: Optional["types.User"] = None,
+        outgoing: Optional[bool] = None,
+        matches: Optional[List[Match]] = None,
+        command: Optional[List[str]] = None,
+        forum_topic_created: Optional["types.ForumTopicCreated"] = None,
+        forum_topic_closed: Optional["types.ForumTopicClosed"] = None,
+        forum_topic_reopened: Optional["types.ForumTopicReopened"] = None,
+        forum_topic_edited: Optional["types.ForumTopicEdited"] = None,
+        general_forum_topic_hidden: Optional["types.GeneralForumTopicHidden"] = None,
+        general_forum_topic_unhidden: Optional["types.GeneralForumTopicUnhidden"] = None,
+        video_chat_scheduled: Optional["types.VideoChatScheduled"] = None,
+        history_cleared: Optional["types.HistoryCleared"] = None,
+        video_chat_started: Optional["types.VideoChatStarted"] = None,
+        video_chat_ended: Optional["types.VideoChatEnded"] = None,
+        video_chat_members_invited: Optional["types.VideoChatMembersInvited"] = None,
+        phone_call_started: Optional["types.PhoneCallStarted"] = None,
+        phone_call_ended: Optional["types.PhoneCallEnded"] = None,
+        web_app_data: Optional["types.WebAppData"] = None,
+        gift_code: Optional["types.GiftCode"] = None,
+        gifted_premium: Optional["types.GiftedPremium"] = None,
+        gifted_stars: Optional["types.GiftedStars"] = None,
+        gift: Optional["types.Gift"] = None,
+        suggest_profile_photo: Optional["types.Photo"] = None,
+        users_shared: Optional["types.UsersShared"] = None,
+        chat_shared: Optional["types.ChatShared"] = None,
+        successful_payment: Optional["types.SuccessfulPayment"] = None,
+        refunded_payment: Optional["types.RefundedPayment"] = None,
+        giveaway_created: Optional[bool] = None,
+        chat_set_theme: Optional["types.ChatTheme"] = None,
+        chat_set_background: Optional["types.ChatBackground"] = None,
+        set_message_auto_delete_time: Optional[int] = None,
+        chat_boost: Optional[int] = None,
+        write_access_allowed: Optional["types.WriteAccessAllowed"] = None,
+        connected_website: Optional[str] = None,
+        contact_registered: Optional["types.ContactRegistered"] = None,
+        proximity_alert_triggered: Optional["types.ProximityAlertTriggered"] = None,
+        giveaway_prize_stars: Optional["types.GiveawayPrizeStars"] = None,
+        screenshot_taken: Optional["types.ScreenshotTaken"] = None,
+        business_connection_id: Optional[str] = None,
+        reply_markup: Optional[
+            Union[
+                "types.InlineKeyboardMarkup",
+                "types.ReplyKeyboardMarkup",
+                "types.ReplyKeyboardRemove",
+                "types.ForceReply"
+            ]
         ] = None,
-        reactions: List["types.Reaction"] = None,
-        send_paid_messages_stars: int = None,
+        reactions: Optional[List["types.Reaction"]] = None,
+        send_paid_messages_stars: Optional[int] = None,
         unread_media: Optional[bool] = None,
         silent: Optional[bool] = None,
         legacy: Optional[bool] = None,
@@ -647,7 +618,7 @@ class Message(Object, Update):
         restriction_reason: Optional[List["types.RestrictionReason"]] = None,
         fact_check: Optional["types.FactCheck"] = None,
         channel_post: Optional[bool] = None,
-        raw: "raw.types.Message" = None
+        raw: Optional["raw.types.Message"] = None
     ):
         super().__init__(client)
 
@@ -664,12 +635,7 @@ class Message(Object, Update):
         self.show_caption_above_media = show_caption_above_media
         self.quote = quote
         self.topic = topic
-        self.forward_from = forward_from
-        self.forward_sender_name = forward_sender_name
-        self.forward_from_chat = forward_from_chat
-        self.forward_from_message_id = forward_from_message_id
-        self.forward_signature = forward_signature
-        self.forward_date = forward_date
+        self.forward_origin = forward_origin
         self.message_thread_id = message_thread_id
         self.effect_id = effect_id
         self.reply_to_message_id = reply_to_message_id
@@ -692,10 +658,8 @@ class Message(Object, Update):
         self.has_protected_content = has_protected_content
         self.has_media_spoiler = has_media_spoiler
         self.text = text
-        self.quote_text = quote_text
         self.entities = entities
         self.caption_entities = caption_entities
-        self.quote_entities = quote_entities
         self.audio = audio
         self.document = document
         self.photo = photo
@@ -1150,8 +1114,10 @@ class Message(Object, Update):
             parsed_message.topic_message = True
             if message.reply_to.reply_to_top_id:
                 parsed_message.message_thread_id = message.reply_to.reply_to_top_id
+            elif message.reply_to.reply_to_msg_id:
+                parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
             else:
-                parsed_message.message_thread_id = message.reply_to.reply_to_msg_id or 1
+                parsed_message.message_thread_id = 1
 
         client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
 
@@ -1200,30 +1166,17 @@ class Message(Object, Update):
         )
 
         forward_header = message.fwd_from
+        forward_origin = None
 
         if forward_header:
-            forward_date = utils.timestamp_to_datetime(forward_header.date)
-
-            if forward_header.from_id:
-                raw_peer_id = utils.get_raw_peer_id(forward_header.from_id)
-                peer_id = utils.get_peer_id(forward_header.from_id)
-
-                if peer_id > 0:
-                    forward_from = types.User._parse(client, users[raw_peer_id])
-                else:
-                    forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
-                    forward_from_message_id = forward_header.channel_post
-                    forward_signature = forward_header.post_author
-            elif forward_header.from_name:
-                forward_sender_name = forward_header.from_name
+            forward_origin = types.MessageOrigin._parse(
+                client,
+                forward_header,
+                users,
+                chats,
+            )
 
         message_thread_id = None
-        forward_from = None
-        forward_sender_name = None
-        forward_from_chat = None
-        forward_from_message_id = None
-        forward_signature = None
-        forward_date = None
         photo = None
         location = None
         contact = None
@@ -1396,12 +1349,7 @@ class Message(Object, Update):
             author_signature=message.post_author,
             has_protected_content=message.noforwards,
             has_media_spoiler=has_media_spoiler,
-            forward_from=forward_from,
-            forward_sender_name=forward_sender_name,
-            forward_from_chat=forward_from_chat,
-            forward_from_message_id=forward_from_message_id,
-            forward_signature=forward_signature,
-            forward_date=forward_date,
+            forward_origin=forward_origin,
             mentioned=message.mentioned,
             scheduled=is_scheduled,
             from_scheduled=message.from_scheduled,
@@ -1454,9 +1402,6 @@ class Message(Object, Update):
             client=client
         )
 
-        if any((isinstance(entity, raw.types.MessageEntityBlockquote) for entity in message.entities)):
-            parsed_message.quote = True
-
         if (
             forward_header and
             forward_header.saved_from_peer and
@@ -1472,96 +1417,86 @@ class Message(Object, Update):
 
         if message.reply_to:
             if isinstance(message.reply_to, raw.types.MessageReplyHeader):
-                parsed_message.reply_to_message_id = getattr(message.reply_to, "reply_to_msg_id", None)
-                parsed_message.reply_to_top_message_id = getattr(message.reply_to, "reply_to_top_id", None)
-
                 if message.reply_to.forum_topic:
                     parsed_message.topic_message = True
+
                     if message.reply_to.reply_to_top_id:
                         parsed_message.message_thread_id = message.reply_to.reply_to_top_id
+                    elif message.reply_to.reply_to_msg_id:
+                        parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
                     else:
-                        parsed_message.message_thread_id = message.reply_to.reply_to_msg_id or 1
+                        parsed_message.message_thread_id = 1
 
-                    if topics:
-                        parsed_message.topic = types.ForumTopic._parse(
-                            client,
-                            topics.get(parsed_message.message_thread_id), users=users, chats=chats
-                        )
-
-                        client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
-                elif message.reply_to.quote:
-                    quote_entities = [types.MessageEntity._parse(client, entity, users) for entity in message.reply_to.quote_entities]
-                    quote_entities = types.List(filter(lambda x: x is not None, quote_entities))
-
-                    parsed_message.quote = message.reply_to.quote
-                    parsed_message.quote_text = (
-                        Str(message.reply_to.quote_text).init(quote_entities) or None
-                        if media is None or web_page is not None
-                        else None
-                    )
-                    parsed_message.quote_entities = (
-                        quote_entities or None
-                        if media is None or web_page is not None
-                        else None
+                if message.reply_to.quote:
+                    parsed_message.quote = types.TextQuote._parse(
+                        client,
+                        users,
+                        message.reply_to
                     )
             elif isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
                 parsed_message.reply_to_story_id = message.reply_to.story_id
                 parsed_message.reply_to_story_user_id = utils.get_peer_id(message.reply_to.peer)
 
-            if replies:
-                if raw_reply_to_message:
-                    parsed_message.reply_to_message = await types.Message._parse(
-                        client,
-                        raw_reply_to_message,
-                        users,
-                        chats,
-                        business_connection_id=business_connection_id,
-                        replies=0
+                if client.fetch_stories and client.me and not client.me.is_bot:
+                    parsed_message.reply_to_story = await client.get_stories(
+                        utils.get_peer_id(message.reply_to.peer),
+                        message.reply_to.story_id
                     )
-                else:
-                    if isinstance(message.reply_to, raw.types.MessageReplyHeader):
-                        if message.reply_to.reply_to_peer_id:
-                            key = (utils.get_peer_id(message.reply_to.reply_to_peer_id), message.reply_to.reply_to_msg_id)
-                            reply_to_params = {"chat_id": key[0], 'message_ids': key[1]}
-                        else:
-                            key = (parsed_message.chat.id, parsed_message.reply_to_message_id)
-                            reply_to_params = {'chat_id': key[0], 'message_ids': message.id, 'reply': True}
 
-                        reply_to_message = client.message_cache[key]
+            if raw_reply_to_message:
+                parsed_message.reply_to_message = await types.Message._parse(
+                    client,
+                    raw_reply_to_message,
+                    users,
+                    chats,
+                    business_connection_id=business_connection_id,
+                    replies=0
+                )
+            elif replies:
+                if isinstance(message.reply_to, raw.types.MessageReplyHeader):
+                    if message.reply_to.reply_to_peer_id:
+                        key = (utils.get_peer_id(message.reply_to.reply_to_peer_id), message.reply_to.reply_to_msg_id)
+                        reply_to_params = {"chat_id": key[0], 'message_ids': key[1]}
+                    else:
+                        key = (parsed_message.chat.id, parsed_message.reply_to_message_id)
+                        reply_to_params = {'chat_id': key[0], 'message_ids': message.id, 'reply': True}
 
-                        if client.fetch_replies and not reply_to_message:
-                            try:
-                                reply_to_message = await client.get_messages(
-                                    replies=replies - 1,
-                                    **reply_to_params
-                                )
-                            except (ChannelPrivate, MessageIdsEmpty):
-                                pass
+                    reply_to_message = client.message_cache[key]
 
-                        parsed_message.reply_to_message = reply_to_message
-                    elif isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
-                        if client.fetch_stories and client.me and not client.me.is_bot:
-                            parsed_message.reply_to_story = await client.get_stories(
-                                utils.get_peer_id(message.reply_to.peer),
-                                message.reply_to.story_id
+                    if not reply_to_message and client.fetch_replies:
+                        try:
+                            reply_to_message = await client.get_messages(
+                                replies=replies - 1,
+                                **reply_to_params
                             )
+                        except (ChannelPrivate, MessageIdsEmpty):
+                            pass
 
-        if not parsed_message.topic and parsed_message.chat.is_forum and client.me and not client.me.is_bot:
-            parsed_topic = client.topic_cache[(parsed_message.chat.id, parsed_message.message_thread_id or 1)]
+                    parsed_message.reply_to_message = reply_to_message
 
-            if parsed_topic:
-                parsed_message.topic = parsed_topic
-            else:
-                if client.fetch_topics:
-                    try:
-                        parsed_message.topic = await client.get_forum_topics_by_id(
-                            chat_id=parsed_message.chat.id,
-                            topic_ids=parsed_message.message_thread_id or 1
-                        )
+        if topics:
+            parsed_message.topic = types.ForumTopic._parse(
+                client,
+                topics.get(parsed_message.message_thread_id), users=users, chats=chats
+            )
 
-                        client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
-                    except (ChannelPrivate, ChannelForumMissing):
-                        pass
+            client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
+
+        if not parsed_message.topic and parsed_message.chat.is_forum:
+            parsed_topic = client.topic_cache[(parsed_message.chat.id, parsed_message.message_thread_id)]
+
+            if not parsed_topic and client.fetch_topics and client.me and not client.me.is_bot:
+                try:
+                    parsed_message.topic = await client.get_forum_topics_by_id(
+                        chat_id=parsed_message.chat.id,
+                        topic_ids=parsed_message.message_thread_id or 1
+                    )
+
+                    client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
+                except (ChannelPrivate, ChannelForumMissing):
+                    pass
+
+            parsed_message.topic = parsed_topic
 
         if not parsed_message.poll:  # Do not cache poll messages
             client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
@@ -1626,6 +1561,61 @@ class Message(Object, Update):
     def content(self) -> str:
         return self.text or self.caption or Str("").init([])
 
+    # region Deprecated
+    # TODO: Remove later
+
+    @property
+    def forward_from(self) -> Optional["types.User"]:
+        log.warning(
+            "`message.forward_from` is deprecated and will be removed in future updates. Use `message.forward_origin.sender_user` instead."
+        )
+        return getattr(self.forward_origin, "sender_user", None)
+
+    @property
+    def forward_sender_name(self) -> Optional[str]:
+        log.warning(
+            "`message.forward_sender_name` property is deprecated and will be removed in future updates. Use `message.forward_origin.sender_user_name` instead."
+        )
+        return getattr(self.forward_origin, "sender_user_name", None)
+
+    @property
+    def forward_from_chat(self) -> Optional["types.Chat"]:
+        log.warning(
+            "`message.forward_from_chat` property is deprecated and will be removed in future updates. Use `message.forward_origin.chat.sender_chat` instead."
+        )
+        return getattr(
+            self.forward_origin,
+            "chat",
+            getattr(
+                self.forward_origin,
+                "sender_chat",
+                None
+            )
+        )
+
+    @property
+    def forward_from_message_id(self) -> Optional[int]:
+        log.warning(
+            "`message.forward_from_message_id` property is deprecated and will be removed in future updates. Use `message.forward_origin.message_id` instead."
+        )
+        return getattr(self.forward_origin, "message_id", None)
+
+    @property
+    def forward_signature(self) -> Optional[str]:
+        log.warning(
+            "`message.forward_signature` property is deprecated and will be removed in future updates. Use `message.forward_origin.author_signature` instead."
+        )
+        return getattr(self.forward_origin, "author_signature", None)
+
+    @property
+    def forward_date(self) -> Optional[datetime]:
+        log.warning(
+            "`message.forward_date` property is deprecated and will be removed in future updates. Use `message.forward_origin.date` instead."
+        )
+        return getattr(self.forward_origin, "date", None)
+
+    # endregion
+
     async def get_media_group(self) -> List["types.Message"]:
         """Bound method *get_media_group* of :obj:`~pyrogram.types.Message`.
 
@@ -1649,7 +1639,6 @@ class Message(Object, Update):
         Raises:
             ValueError: In case the passed message id doesn't belong to a media group.
         """
-
         return await self._client.get_media_group(
             chat_id=self.chat.id,
             message_id=self.id
