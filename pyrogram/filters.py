@@ -241,7 +241,7 @@ reply = create(reply_filter)
 
 # region forwarded_filter
 async def forwarded_filter(_, __, m: Message):
-    return bool(m.forward_date)
+    return bool(m.forward_origin)
 
 
 forwarded = create(forwarded_filter)
@@ -878,7 +878,11 @@ from_scheduled = create(from_scheduled_filter)
 
 # region linked_channel_filter
 async def linked_channel_filter(_, __, m: Message):
-    return bool(m.forward_from_chat and not m.from_user)
+    return bool(
+        m.forward_origin and
+        m.forward_origin.type == enums.MessageOriginType.CHANNEL and
+        m.forward_origin.chat == m.sender_chat
+    )
 
 
 linked_channel = create(linked_channel_filter)
