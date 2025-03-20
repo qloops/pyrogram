@@ -382,13 +382,24 @@ star_gift = create(star_gift_filter)
 
 # endregion
 
-# region requested_chats_filter
-async def requested_chats_filter(_, __, m: Message):
-    return bool(m.requested_chats)
+# region users_shared_filter
+async def users_shared_filter(_, __, m: Message):
+    return bool(m.users_shared)
 
 
-requested_chats = create(requested_chats_filter)
-"""Filter service messages for request chats."""
+users_shared = create(users_shared_filter)
+"""Filter service messages for shared users."""
+
+
+# endregion
+
+# region chat_shared_filter
+async def chat_shared_filter(_, __, m: Message):
+    return bool(m.chat_shared)
+
+
+chat_shared = create(chat_shared_filter)
+"""Filter service messages for shared chat."""
 
 
 # endregion
