@@ -1229,7 +1229,7 @@ class Message(Object, Update):
                 invoice = types.Invoice._parse(client, media)
                 media_type = enums.MessageMediaType.INVOICE
             elif isinstance(media, raw.types.MessageMediaStory):
-                story = await types.Story._parse(client, media, users, chats, media.peer)
+                story = await types.Story._parse(client, media, media.peer, users, chats)
                 media_type = enums.MessageMediaType.STORY
             elif isinstance(media, raw.types.MessageMediaDocument):
                 doc = media.document

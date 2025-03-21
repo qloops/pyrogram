@@ -149,7 +149,7 @@ class Dispatcher:
 
         async def story_parser(update, users, chats):
             return (
-                await pyrogram.types.Story._parse(self.client, update.story, users, chats, update.peer),
+                await pyrogram.types.Story._parse(self.client, update.story, update.peer, users, chats),
                 StoryHandler
             )
 

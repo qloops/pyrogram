@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import BinaryIO, Callable, List, Optional, Union
+from typing import BinaryIO, Callable, Dict, List, Optional, Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
@@ -220,9 +220,9 @@ class Story(Object, Update):
     async def _parse(
         client: "pyrogram.Client",
         story: "raw.types.StoryItem",
-        users: dict,
-        chats: dict,
-        peer: Union["raw.types.PeerChannel", "raw.types.PeerUser"]
+        peer: "raw.base.Peer",
+        users: Dict[int, "raw.base.User"],
+        chats: Dict[int, "raw.base.Chat"],
     ) -> "Story":
         if isinstance(peer, raw.types.InputPeerSelf):
             if client.me:

@@ -892,7 +892,7 @@ class Chat(Object):
             parsed_chat.stories = types.List(
                 [
                     await types.Story._parse(
-                        client, story, users, chats, user.stories.peer
+                        client, story, user.stories.peer, users, chats
                     )
                     for story in user.stories.stories
                 ]

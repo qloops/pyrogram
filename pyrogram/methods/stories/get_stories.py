@@ -95,9 +95,9 @@ class GetStories:
                 await types.Story._parse(
                     self,
                     story,
+                    peer,
                     users,
-                    chats,
-                    peer
+                    chats
                 )
             )
 
