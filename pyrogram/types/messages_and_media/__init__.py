@@ -29,6 +29,7 @@ from .contact_registered import ContactRegistered
 from .contact import Contact
 from .dice import Dice
 from .document import Document
+from .external_reply_info import ExternalReplyInfo
 from .fact_check import FactCheck
 from .forum_topic import ForumTopic
 from .forum_topic_closed import ForumTopicClosed
@@ -102,6 +103,7 @@ __all__ = [
     "Contact",
     "Dice",
     "Document",
+    "ExternalReplyInfo",
     "FactCheck",
     "ForumTopic",
     "ForumTopicClosed",

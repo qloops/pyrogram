@@ -621,6 +621,7 @@ def pyrogram_api():
             Audio
             AvailableEffect
             Document
+            ExternalReplyInfo
             FactCheck
             ForumTopic
             ForumTopicClosed

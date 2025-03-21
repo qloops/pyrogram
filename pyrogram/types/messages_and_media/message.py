@@ -319,6 +319,9 @@ class Message(Object, Update):
             Messages sent from yourself to other chats are outgoing (*outgoing* is True).
             An exception is made for your own personal chat; messages sent there will be incoming.
 
+        external_reply (:obj:`~pyrogram.types.ExternalReplyInfo`, *optional*):
+            Information about the message that is being replied to, which may come from another chat or forum topic.
+
         quote (:obj:`~pyrogram.types.TextQuote`, *optional*):
             Chosen quote from the replied message.
 
@@ -501,6 +504,7 @@ class Message(Object, Update):
         automatic_forward: Optional[bool] = None,
         from_offline: Optional[bool] = None,
         show_caption_above_media: Optional[bool] = None,
+        external_reply: Optional["types.ExternalReplyInfo"] = None,
         quote: Optional["types.TextQuote"] = None,
         topic: Optional["types.ForumTopic"] = None,
         forward_origin: Optional["types.MessageOrigin"] = None,
@@ -637,6 +641,7 @@ class Message(Object, Update):
         self.automatic_forward = automatic_forward
         self.from_offline = from_offline
         self.show_caption_above_media = show_caption_above_media
+        self.external_reply = external_reply
         self.quote = quote
         self.topic = topic
         self.forward_origin = forward_origin
@@ -1223,7 +1228,7 @@ class Message(Object, Update):
                 venue = types.Venue._parse(client, media)
                 media_type = enums.MessageMediaType.VENUE
             elif isinstance(media, raw.types.MessageMediaGame):
-                game = types.Game._parse(client, message)
+                game = types.Game._parse(client, media)
                 media_type = enums.MessageMediaType.GAME
             elif isinstance(media, raw.types.MessageMediaGiveaway):
                 giveaway = types.Giveaway._parse(client, media, chats)
@@ -1419,6 +1424,13 @@ class Message(Object, Update):
                 parsed_message.automatic_forward = True
 
         if message.reply_to:
+            parsed_message.external_reply = await types.ExternalReplyInfo._parse(
+                client,
+                message.reply_to,
+                users,
+                chats
+            )
+
             if isinstance(message.reply_to, raw.types.MessageReplyHeader):
                 if message.reply_to.forum_topic:
                     parsed_message.topic_message = True
