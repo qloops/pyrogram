@@ -240,6 +240,9 @@ class Message(Object, Update):
         web_page (:obj:`~pyrogram.types.WebPage`, *optional*):
             Message was sent with a webpage preview.
 
+        link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+            Options used for link preview generation for the message.
+
         poll (:obj:`~pyrogram.types.Poll`, *optional*):
             Message is a native poll, information about the poll.
 
@@ -545,6 +548,7 @@ class Message(Object, Update):
         location: Optional["types.Location"] = None,
         venue: Optional["types.Venue"] = None,
         web_page: Optional["types.WebPage"] = None,
+        link_preview_options: Optional["types.LinkPreviewOptions"] = None,
         poll: Optional["types.Poll"] = None,
         dice: Optional["types.Dice"] = None,
         new_chat_members: Optional[List["types.User"]] = None,
@@ -680,6 +684,7 @@ class Message(Object, Update):
         self.location = location
         self.venue = venue
         self.web_page = web_page
+        self.link_preview_options = link_preview_options
         self.poll = poll
         self.dice = dice
         self.new_chat_members = new_chat_members
@@ -1194,6 +1199,7 @@ class Message(Object, Update):
         sticker = None
         document = None
         web_page = None
+        link_preview_options = None
         poll = None
         dice = None
         paid_media = None
@@ -1274,18 +1280,8 @@ class Message(Object, Update):
                         document = types.Document._parse(client, doc, file_name)
                         media_type = enums.MessageMediaType.DOCUMENT
             elif isinstance(media, raw.types.MessageMediaWebPage):
-                if isinstance(media.webpage, raw.types.WebPage):
-                    web_page = types.WebPage._parse(
-                        client,
-                        media.webpage,
-                        getattr(media, "force_large_media", None),
-                        getattr(media, "force_small_media", None),
-                        getattr(media, "manual", None),
-                        getattr(media, "safe", None)
-                    )
-                    media_type = enums.MessageMediaType.WEB_PAGE
-                else:
-                    media = None
+                media_type = enums.MessageMediaType.WEB_PAGE
+                web_page = types.WebPage._parse(client, media)
             elif isinstance(media, raw.types.MessageMediaPoll):
                 poll = types.Poll._parse(client, media)
                 media_type = enums.MessageMediaType.POLL
@@ -1297,6 +1293,12 @@ class Message(Object, Update):
                 media_type = enums.MessageMediaType.PAID_MEDIA
             else:
                 media = None
+
+        link_preview_options = types.LinkPreviewOptions._parse(
+            media,
+            getattr(getattr(media, "webpage", None), "url", utils.get_first_url(message.message)),
+            message.invert_media
+        )
 
         reply_markup = message.reply_markup
 
@@ -1377,6 +1379,7 @@ class Message(Object, Update):
             sticker=sticker,
             document=document,
             web_page=web_page,
+            link_preview_options=link_preview_options,
             poll=poll,
             dice=dice,
             views=message.views,
@@ -1650,7 +1653,7 @@ class Message(Object, Update):
         quote: bool = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
-        disable_web_page_preview: bool = None,
+        link_preview_options: "types.LinkPreviewOptions" = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
@@ -1663,7 +1666,8 @@ class Message(Object, Update):
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
-        reply_markup=None
+        reply_markup=None,
+        disable_web_page_preview: bool = None,
     ) -> "Message":
         """Bound method *reply_text* of :obj:`~pyrogram.types.Message`.
 
@@ -1700,8 +1704,8 @@ class Message(Object, Update):
             entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
-            disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message.
+            link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+                Options used for link preview generation for the message.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -1773,6 +1777,7 @@ class Message(Object, Update):
             parse_mode=parse_mode,
             entities=entities,
             disable_web_page_preview=disable_web_page_preview,
+            link_preview_options=link_preview_options,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
@@ -4572,9 +4577,10 @@ class Message(Object, Update):
         text: str,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
-        disable_web_page_preview: bool = None,
+        link_preview_options: "types.LinkPreviewOptions" = None,
         show_caption_above_media: bool = None,
-        reply_markup: "types.InlineKeyboardMarkup" = None
+        reply_markup: "types.InlineKeyboardMarkup" = None,
+        disable_web_page_preview: bool = None,
     ) -> "Message":
         """Bound method *edit_text* of :obj:`~pyrogram.types.Message`.
 
@@ -4606,8 +4612,8 @@ class Message(Object, Update):
             entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
-            disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message.
+            link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+                Options used for link preview generation for the message.
 
             show_caption_above_media (``bool``, *optional*):
                 Pass True, if the caption must be shown above the message media.
@@ -4628,6 +4634,7 @@ class Message(Object, Update):
             parse_mode=parse_mode,
             entities=entities,
             disable_web_page_preview=disable_web_page_preview,
+            link_preview_options=link_preview_options,
             show_caption_above_media=show_caption_above_media,
             reply_markup=reply_markup
         )
@@ -4976,7 +4983,7 @@ class Message(Object, Update):
                 text=self.text,
                 entities=self.entities,
                 parse_mode=enums.ParseMode.DISABLED,
-                disable_web_page_preview=not self.web_page,
+                link_preview_options=types.LinkPreviewOptions(is_disabled=not self.web_page),
                 disable_notification=disable_notification,
                 message_thread_id=message_thread_id,
                 reply_to_chat_id=reply_to_chat_id,

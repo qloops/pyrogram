@@ -665,6 +665,7 @@ def pyrogram_api():
             GiveawayCompleted
             GiveawayWinners
             Invoice
+            LinkPreviewOptions
             GiftCode
             CheckedGiftCode
             RefundedPayment

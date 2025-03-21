@@ -40,6 +40,7 @@ from .general_forum_topic_hidden import GeneralForumTopicHidden
 from .general_forum_topic_unhidden import GeneralForumTopicUnhidden
 from .gift_code import GiftCode
 from .invoice import Invoice
+from .link_preview_options import LinkPreviewOptions
 from .giveaway import Giveaway
 from .giveaway_completed import GiveawayCompleted
 from .giveaway_created import GiveawayCreated
@@ -113,6 +114,7 @@ __all__ = [
     "GiftCode",
     "Giveaway",
     "Invoice",
+    "LinkPreviewOptions",
     "GiveawayCompleted",
     "GiveawayCreated",
     "GiveawayPrizeStars",
