@@ -445,6 +445,7 @@ class Story(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+
         disable_web_page_preview: bool = None,
     ) -> "types.Message":
         """Bound method *reply_text* of :obj:`~pyrogram.types.Story`.
@@ -506,13 +507,14 @@ class Story(Object, Update):
             text=text,
             parse_mode=parse_mode,
             entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
             link_preview_options=link_preview_options,
             disable_notification=disable_notification,
             schedule_date=schedule_date,
             protect_content=protect_content,
             paid_message_star_count=paid_message_star_count,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            
+            disable_web_page_preview=disable_web_page_preview,
         )
 
     reply = reply_text

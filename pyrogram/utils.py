@@ -345,27 +345,45 @@ def get_peer_type(peer_id: int) -> str:
     raise ValueError(f"Peer id invalid: {peer_id}")
 
 
-def get_reply_to(
-    reply_to_message_id: Optional[int] = None,
+async def get_reply_to(
+    client: "pyrogram.Client",
+    reply_parameters: Optional["types.ReplyParameters"] = None,
     message_thread_id: Optional[int] = None,
-    reply_to_peer: Optional[raw.base.InputPeer] = None,
-    quote_text: Optional[str] = None,
-    quote_entities: Optional[List[raw.base.MessageEntity]] = None,
-    quote_offset: Optional[int] = None,
-    reply_to_story_id: Optional[int] = None
 ) -> Optional[Union[raw.types.InputReplyToMessage, raw.types.InputReplyToStory]]:
     """Get InputReply for reply_to argument"""
-    if all((reply_to_peer, reply_to_story_id)):
-        return raw.types.InputReplyToStory(peer=reply_to_peer, story_id=reply_to_story_id)  # type: ignore[arg-type]
+    if reply_parameters:
+        if reply_parameters.chat_id and reply_parameters.story_id:
+            return raw.types.InputReplyToStory(
+                peer=await client.resolve_peer(reply_parameters.chat_id),
+                story_id=reply_parameters.story_id
+            )
 
-    if any((reply_to_message_id, message_thread_id)):
+        if reply_parameters.message_id:
+            message = None
+            entities = None
+
+            if reply_parameters.quote:
+                message, entities = (
+                    await parse_text_entities(
+                        client,
+                        reply_parameters.quote,
+                        reply_parameters.quote_parse_mode,
+                        reply_parameters.quote_entities
+                    )
+                ).values()
+
+            return raw.types.InputReplyToMessage(
+                reply_to_msg_id=reply_parameters.message_id,
+                top_msg_id=message_thread_id,
+                reply_to_peer_id=await client.resolve_peer(reply_parameters.chat_id) if reply_parameters.chat_id else None,
+                quote_text=message,
+                quote_entities=entities,
+                quote_offset=reply_parameters.quote_position,
+            )
+
+    if message_thread_id:
         return raw.types.InputReplyToMessage(
-            reply_to_msg_id=reply_to_message_id or message_thread_id,  # type: ignore[arg-type]
-            top_msg_id=message_thread_id if reply_to_message_id else None,
-            reply_to_peer_id=reply_to_peer,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
-            quote_offset=quote_offset,
+            reply_to_msg_id=message_thread_id
         )
 
     return None

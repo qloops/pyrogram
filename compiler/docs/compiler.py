@@ -670,6 +670,7 @@ def pyrogram_api():
             GiftCode
             CheckedGiftCode
             RefundedPayment
+            ReplyParameters
             SuccessfulPayment
             TextQuote
             PaidMediaInfo

@@ -68,6 +68,7 @@ from .proximity_alert_triggered import ProximityAlertTriggered
 from .poll_option import PollOption
 from .reaction import Reaction
 from .refunded_payment import RefundedPayment
+from .reply_parameters import ReplyParameters
 from .restriction_reason import RestrictionReason
 from .screenshot_taken import ScreenshotTaken
 from .gift_attribute import GiftAttribute
@@ -142,6 +143,7 @@ __all__ = [
     "PollOption",
     "Reaction",
     "RefundedPayment",
+    "ReplyParameters",
     "RestrictionReason",
     "ScreenshotTaken",
     "GiftAttribute",

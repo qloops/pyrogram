@@ -1670,16 +1670,18 @@ class Message(Object, Update):
         message_thread_id: int = None,
         effect_id: int = None,
         show_caption_above_media: bool = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
         reply_markup=None,
+
         disable_web_page_preview: bool = None,
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_text* of :obj:`~pyrogram.types.Message`.
 
@@ -1734,14 +1736,8 @@ class Message(Object, Update):
             show_caption_above_media (``bool``, *optional*):
                 Pass True, if the caption must be shown above the message media.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -1774,8 +1770,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -1788,21 +1786,23 @@ class Message(Object, Update):
             text=text,
             parse_mode=parse_mode,
             entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
             link_preview_options=link_preview_options,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
             show_caption_above_media=show_caption_above_media,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             schedule_date=schedule_date,
             protect_content=protect_content,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+
+            disable_web_page_preview=disable_web_page_preview,
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     reply = reply_text
@@ -1832,11 +1832,13 @@ class Message(Object, Update):
         ] = None,
         message_thread_id: int = None,
         effect_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
+        progress: Callable = None,
+        progress_args: tuple = (),
+
         reply_to_message_id: int = None,
         quote_text: str = None,
         quote_entities: List["types.MessageEntity"] = None,
-        progress: Callable = None,
-        progress_args: tuple = ()
     ) -> "Message":
         """Bound method *reply_animation* :obj:`~pyrogram.types.Message`.
 
@@ -1909,14 +1911,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
@@ -1967,8 +1963,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -1991,15 +1989,17 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
-            progress_args=progress_args
+            progress_args=progress_args,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_audio(
@@ -2016,9 +2016,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
@@ -2029,7 +2027,11 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         progress: Callable = None,
-        progress_args: tuple = ()
+        progress_args: tuple = (),
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_audio* of :obj:`~pyrogram.types.Message`.
 
@@ -2096,14 +2098,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
@@ -2154,8 +2150,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -2176,15 +2174,17 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
-            progress_args=progress_args
+            progress_args=progress_args,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_cached_media(
@@ -2196,9 +2196,7 @@ class Message(Object, Update):
         caption_entities: List["types.MessageEntity"] = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
@@ -2207,7 +2205,11 @@ class Message(Object, Update):
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_cached_media* of :obj:`~pyrogram.types.Message`.
 
@@ -2253,14 +2255,8 @@ class Message(Object, Update):
                 Unique identifier of a message thread to which the message belongs.
                 For supergroups only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
@@ -2287,8 +2283,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -2304,13 +2302,15 @@ class Message(Object, Update):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_chat_action(
@@ -2371,10 +2371,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        parse_mode: Optional["enums.ParseMode"] = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
@@ -2383,7 +2380,12 @@ class Message(Object, Update):
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        parse_mode: Optional["enums.ParseMode"] = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_contact* of :obj:`~pyrogram.types.Message`.
 
@@ -2432,18 +2434,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
@@ -2470,8 +2462,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -2488,14 +2482,16 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
+            reply_parameters=reply_parameters,
+            business_connection_id=business_connection_id,
+            allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count,
+            reply_markup=reply_markup,
+
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             parse_mode=parse_mode,
             quote_entities=quote_entities,
-            business_connection_id=business_connection_id,
-            allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=paid_message_star_count,
-            reply_markup=reply_markup
         )
 
     async def reply_document(
@@ -2511,9 +2507,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         business_connection_id: str = None,
@@ -2526,7 +2520,11 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         progress: Callable = None,
-        progress_args: tuple = ()
+        progress_args: tuple = (),
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_document* of :obj:`~pyrogram.types.Message`.
 
@@ -2593,18 +2591,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -2661,8 +2649,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -2682,9 +2672,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             schedule_date=schedule_date,
             protect_content=protect_content,
             business_connection_id=business_connection_id,
@@ -2692,7 +2680,11 @@ class Message(Object, Update):
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
-            progress_args=progress_args
+            progress_args=progress_args,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_game(
@@ -2702,14 +2694,16 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         allow_paid_broadcast: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+
+        reply_to_message_id: int = None,
     ) -> "Message":
         """Bound method *reply_game* of :obj:`~pyrogram.types.Message`.
 
@@ -2748,8 +2742,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             allow_paid_broadcast (``bool``, *optional*):
                 If True, you will be allowed to send up to 1000 messages per second.
@@ -2770,8 +2764,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -2782,9 +2778,11 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
+            reply_parameters=reply_parameters,
             allow_paid_broadcast=allow_paid_broadcast,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+
+            reply_to_message_id=reply_to_message_id,
         )
 
     async def reply_inline_bot_result(
@@ -2794,11 +2792,13 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         message_thread_id: bool = None,
+        reply_parameters: "types.ReplyParameters" = None,
+        paid_message_star_count: int = None,
+
         reply_to_message_id: int = None,
         quote_text: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         quote_entities: List["types.MessageEntity"] = None,
-        paid_message_star_count: int = None,
     ) -> "Message":
         """Bound method *reply_inline_bot_result* of :obj:`~pyrogram.types.Message`.
 
@@ -2837,18 +2837,8 @@ class Message(Object, Update):
                 Unique identifier of a message thread to which the message belongs.
                 For supergroups only.
 
-            reply_to_message_id (``bool``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             paid_message_star_count (``int``, *optional*):
                 The number of Telegram Stars the user agreed to pay to send the messages.
@@ -2862,8 +2852,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -2874,11 +2866,13 @@ class Message(Object, Update):
             result_id=result_id,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
+            reply_parameters=reply_parameters,
+            paid_message_star_count=paid_message_star_count,
+
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             parse_mode=parse_mode,
             quote_entities=quote_entities,
-            paid_message_star_count=paid_message_star_count,
         )
 
     async def reply_location(
@@ -2889,9 +2883,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
@@ -2900,7 +2892,11 @@ class Message(Object, Update):
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_location* of :obj:`~pyrogram.types.Message`.
 
@@ -2943,14 +2939,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
@@ -2977,8 +2967,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -2993,13 +2985,15 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_media_group(
@@ -3009,13 +3003,15 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
+        allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
+        business_connection_id: str = None,
+
         reply_to_message_id: int = None,
         quote_text: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         quote_entities: List["types.MessageEntity"] = None,
-        allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
-        business_connection_id: str = None
     ) -> List["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
 
@@ -3056,18 +3052,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             allow_paid_broadcast (``bool``, *optional*):
                 If True, you will be allowed to send up to 1000 messages per second.
@@ -3091,8 +3077,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -3106,13 +3094,15 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
+            reply_parameters=reply_parameters,
+            allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count,
+            business_connection_id=business_connection_id,
+
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             parse_mode=parse_mode,
             quote_entities=quote_entities,
-            allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=paid_message_star_count,
-            business_connection_id=business_connection_id
         )
 
     async def reply_photo(
@@ -3128,9 +3118,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         view_once: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
@@ -3142,7 +3130,11 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         progress: Callable = None,
-        progress_args: tuple = ()
+        progress_args: tuple = (),
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_photo* of :obj:`~pyrogram.types.Message`.
 
@@ -3205,14 +3197,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             view_once (``bool``, *optional*):
                 Self-Destruct Timer.
@@ -3267,8 +3253,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -3288,16 +3276,18 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             view_once=view_once,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
-            progress_args=progress_args
+            progress_args=progress_args,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_poll(
@@ -3321,11 +3311,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_parse_mode: Optional["enums.ParseMode"] = None,
-        quote_entities: List["types.MessageEntity"] = None,
-        quote_offset: Optional[int] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
         business_connection_id: str = None,
         options_parse_mode: List["types.MessageEntity"] = None,
@@ -3336,7 +3322,13 @@ class Message(Object, Update):
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_parse_mode: Optional["enums.ParseMode"] = None,
+        quote_entities: List["types.MessageEntity"] = None,
+        quote_offset: Optional[int] = None,
     ) -> "Message":
         """Bound method *reply_poll* of :obj:`~pyrogram.types.Message`.
 
@@ -3430,21 +3422,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
-
-            quote_offset (``int``, *optional*):
-                Offset for quote in original message.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -3478,8 +3457,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -3507,17 +3488,19 @@ class Message(Object, Update):
             protect_content=protect_content,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_parse_mode=quote_parse_mode,
-            quote_entities=quote_entities,
-            quote_offset=quote_offset,
+            reply_parameters=reply_parameters,
             schedule_date=schedule_date,
             business_connection_id=business_connection_id,
             options_parse_mode=options_parse_mode,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_parse_mode=quote_parse_mode,
+            quote_entities=quote_entities,
+            quote_offset=quote_offset,
         )
 
     async def reply_sticker(
@@ -3531,9 +3514,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
@@ -3544,7 +3525,11 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         progress: Callable = None,
-        progress_args: tuple = ()
+        progress_args: tuple = (),
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_sticker* of :obj:`~pyrogram.types.Message`.
 
@@ -3599,14 +3584,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
@@ -3657,8 +3636,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -3676,15 +3657,17 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
-            progress_args=progress_args
+            progress_args=progress_args,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_venue(
@@ -3699,10 +3682,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        parse_mode: Optional["enums.ParseMode"] = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
@@ -3711,7 +3691,12 @@ class Message(Object, Update):
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        parse_mode: Optional["enums.ParseMode"] = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_venue* of :obj:`~pyrogram.types.Message`.
 
@@ -3769,18 +3754,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
@@ -3807,8 +3782,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -3827,14 +3804,16 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
+            reply_parameters=reply_parameters,
+            business_connection_id=business_connection_id,
+            allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count,
+            reply_markup=reply_markup,
+
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             parse_mode=parse_mode,
             quote_entities=quote_entities,
-            business_connection_id=business_connection_id,
-            allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=paid_message_star_count,
-            reply_markup=reply_markup
         )
 
     async def reply_video(
@@ -3857,9 +3836,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         no_sound: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
@@ -3871,7 +3848,11 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         progress: Callable = None,
-        progress_args: tuple = ()
+        progress_args: tuple = (),
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_video* of :obj:`~pyrogram.types.Message`.
 
@@ -3962,14 +3943,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             no_sound (``bool``, *optional*):
                 Pass True, if the uploaded video is a video message with no sound.
@@ -4024,8 +3999,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -4052,16 +4029,18 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             no_sound=no_sound,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
-            progress_args=progress_args
+            progress_args=progress_args,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_video_note(
@@ -4074,10 +4053,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        parse_mode: Optional["enums.ParseMode"] = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         protect_content: bool = None,
         view_once: bool = None,
         business_connection_id: str = None,
@@ -4090,7 +4066,12 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         progress: Callable = None,
-        progress_args: tuple = ()
+        progress_args: tuple = (),
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        parse_mode: Optional["enums.ParseMode"] = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_video_note* of :obj:`~pyrogram.types.Message`.
 
@@ -4144,18 +4125,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
@@ -4213,8 +4184,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -4231,10 +4204,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            parse_mode=parse_mode,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             protect_content=protect_content,
             view_once=view_once,
             business_connection_id=business_connection_id,
@@ -4242,7 +4212,12 @@ class Message(Object, Update):
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
-            progress_args=progress_args
+            progress_args=progress_args,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            parse_mode=parse_mode,
+            quote_entities=quote_entities,
         )
 
     async def reply_voice(
@@ -4256,9 +4231,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         view_once: bool = None,
         business_connection_id: str = None,
         allow_paid_broadcast: bool = None,
@@ -4270,7 +4243,11 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         progress: Callable = None,
-        progress_args: tuple = ()
+        progress_args: tuple = (),
+
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> "Message":
         """Bound method *reply_voice* of :obj:`~pyrogram.types.Message`.
 
@@ -4325,14 +4302,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             view_once (``bool``, *optional*):
                 Self-Destruct Timer.
@@ -4387,8 +4358,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -4406,16 +4379,18 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             effect_id=effect_id,
-            reply_to_message_id=reply_to_message_id,
-            quote_text=quote_text,
-            quote_entities=quote_entities,
+            reply_parameters=reply_parameters,
             view_once=view_once,
             business_connection_id=business_connection_id,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
             progress=progress,
-            progress_args=progress_args
+            progress_args=progress_args,
+
+            reply_to_message_id=reply_to_message_id,
+            quote_text=quote_text,
+            quote_entities=quote_entities,
         )
 
     async def reply_web_page(
@@ -4431,12 +4406,7 @@ class Message(Object, Update):
         message_thread_id: int = None,
         effect_id: int = None,
         show_caption_above_media: bool = None,
-        reply_to_message_id: int = None,
-        reply_to_chat_id: Union[int, str] = None,
-        reply_to_story_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
-        quote_offset: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         business_connection_id: str = None,
@@ -4447,7 +4417,14 @@ class Message(Object, Update):
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+
+        reply_to_message_id: int = None,
+        reply_to_chat_id: Union[int, str] = None,
+        reply_to_story_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
+        quote_offset: int = None,
     ) -> "types.Message":
         """Bound method *reply_web_page* of :obj:`~pyrogram.types.Message`.
 
@@ -4503,23 +4480,8 @@ class Message(Object, Update):
                 Unique identifier of the message effect.
                 For private chats only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            reply_to_chat_id (``int`` | ``str``, *optional*):
-                If the message is a reply, ID of the original chat.
-
-            reply_to_story_id (``int``, *optional*):
-                If the message is a reply, ID of the target story.
-
-            quote_text (``str``, *optional*):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
-
-            quote_offset (``int``, *optional*):
-                Offset for quote in original message.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -4549,8 +4511,10 @@ class Message(Object, Update):
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if reply_to_message_id is None and quote:
-            reply_to_message_id = self.id
+        if reply_parameters is None and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
 
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
@@ -4570,18 +4534,20 @@ class Message(Object, Update):
             message_thread_id=message_thread_id,
             effect_id=effect_id,
             show_caption_above_media=show_caption_above_media,
+            reply_parameters=reply_parameters,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
+            business_connection_id=business_connection_id,
+            allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count,
+            reply_markup=reply_markup,
+
             reply_to_message_id=reply_to_message_id,
             reply_to_chat_id=reply_to_chat_id,
             reply_to_story_id=reply_to_story_id,
             quote_text=quote_text,
             quote_entities=quote_entities,
             quote_offset=quote_offset,
-            schedule_date=schedule_date,
-            protect_content=protect_content,
-            business_connection_id=business_connection_id,
-            allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=paid_message_star_count,
-            reply_markup=reply_markup
         )
 
     async def edit_text(
@@ -4592,6 +4558,7 @@ class Message(Object, Update):
         link_preview_options: "types.LinkPreviewOptions" = None,
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
+
         disable_web_page_preview: bool = None,
     ) -> "Message":
         """Bound method *edit_text* of :obj:`~pyrogram.types.Message`.
@@ -4645,10 +4612,11 @@ class Message(Object, Update):
             text=text,
             parse_mode=parse_mode,
             entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
             link_preview_options=link_preview_options,
             show_caption_above_media=show_caption_above_media,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+
+            disable_web_page_preview=disable_web_page_preview,
         )
 
     edit = edit_text
@@ -4875,10 +4843,7 @@ class Message(Object, Update):
         caption_entities: List["types.MessageEntity"] = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
-        reply_to_chat_id: Union[int, str] = None,
-        reply_to_message_id: int = None,
-        quote_text: str = None,
-        quote_entities: List["types.MessageEntity"] = None,
+        reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         has_spoiler: bool = None,
@@ -4891,7 +4856,12 @@ class Message(Object, Update):
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = object
+        ] = object,
+
+        reply_to_chat_id: Union[int, str] = None,
+        reply_to_message_id: int = None,
+        quote_text: str = None,
+        quote_entities: List["types.MessageEntity"] = None,
     ) -> Union["types.Message", List["types.Message"]]:
         """Bound method *copy* of :obj:`~pyrogram.types.Message`.
 
@@ -4936,17 +4906,8 @@ class Message(Object, Update):
                 Unique identifier for the target message thread (topic) of the forum.
                 For supergroups only.
 
-            reply_to_chat_id (``int``, *optional*):
-                If the message is a reply, ID of the original chat.
-
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            quote_text (``str``):
-                Text of the quote to be sent.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -4998,6 +4959,7 @@ class Message(Object, Update):
                 link_preview_options=types.LinkPreviewOptions(is_disabled=not self.web_page),
                 disable_notification=disable_notification,
                 message_thread_id=message_thread_id,
+                reply_parameters=reply_parameters,
                 reply_to_chat_id=reply_to_chat_id,
                 reply_to_message_id=reply_to_message_id,
                 quote_text=quote_text,
@@ -5015,6 +4977,7 @@ class Message(Object, Update):
                 chat_id=chat_id,
                 disable_notification=disable_notification,
                 message_thread_id=message_thread_id,
+                reply_parameters=reply_parameters,
                 reply_to_message_id=reply_to_message_id,
                 reply_to_chat_id=reply_to_chat_id,
                 quote_text=quote_text,
@@ -5053,6 +5016,7 @@ class Message(Object, Update):
                     last_name=self.contact.last_name,
                     vcard=self.contact.vcard,
                     disable_notification=disable_notification,
+                    reply_parameters=reply_parameters,
                     message_thread_id=message_thread_id,
                     schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
@@ -5066,6 +5030,7 @@ class Message(Object, Update):
                     longitude=self.location.longitude,
                     disable_notification=disable_notification,
                     message_thread_id=message_thread_id,
+                    reply_parameters=reply_parameters,
                     schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
                     paid_message_star_count=paid_message_star_count,
@@ -5082,6 +5047,7 @@ class Message(Object, Update):
                     foursquare_type=self.venue.foursquare_type,
                     disable_notification=disable_notification,
                     message_thread_id=message_thread_id,
+                    reply_parameters=reply_parameters,
                     schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
                     paid_message_star_count=paid_message_star_count,
@@ -5094,6 +5060,7 @@ class Message(Object, Update):
                     options=[opt.text for opt in self.poll.options],
                     disable_notification=disable_notification,
                     message_thread_id=message_thread_id,
+                    reply_parameters=reply_parameters,
                     schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
                     paid_message_star_count=paid_message_star_count,
@@ -5105,6 +5072,7 @@ class Message(Object, Update):
                     game_short_name=self.game.short_name,
                     disable_notification=disable_notification,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     message_thread_id=message_thread_id
                 )
             else:
@@ -5137,6 +5105,12 @@ class Message(Object, Update):
         has_spoilers: Union[List[bool], bool] = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
+        schedule_date: datetime = None,
+        show_caption_above_media: bool = None,
+        allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
+
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
         reply_to_story_id: int = None,
@@ -5144,10 +5118,6 @@ class Message(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         quote_entities: List["types.MessageEntity"] = None,
         quote_offset: int = None,
-        schedule_date: datetime = None,
-        show_caption_above_media: bool = None,
-        allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None
     ) -> List["types.Message"]:
         """Bound method *copy_media_group* of :obj:`~pyrogram.types.Message`.
 
@@ -5189,27 +5159,8 @@ class Message(Object, Update):
                 Unique identifier for the target message thread (topic) of the forum.
                 For supergroups only.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            reply_to_chat_id (``int``, *optional*):
-                If the message is a reply, ID of the original chat.
-
-            reply_to_story_id (``int``, *optional*):
-                If the message is a reply, ID of the target story.
-
-            quote_text (``str``, *optional*):
-                Text of the quote to be sent.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            quote_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-                List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
-
-            quote_offset (``int``, *optional*):
-                Offset for quote in original message.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Describes reply parameters for the message that is being sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -5237,6 +5188,12 @@ class Message(Object, Update):
             has_spoilers=has_spoilers,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
+            reply_parameters=reply_parameters,
+            schedule_date=schedule_date,
+            show_caption_above_media=show_caption_above_media,
+            allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count,
+
             reply_to_message_id=reply_to_message_id,
             reply_to_chat_id=reply_to_chat_id,
             reply_to_story_id=reply_to_story_id,
@@ -5244,10 +5201,6 @@ class Message(Object, Update):
             parse_mode=parse_mode,
             quote_entities=quote_entities,
             quote_offset=quote_offset,
-            schedule_date=schedule_date,
-            show_caption_above_media=show_caption_above_media,
-            allow_paid_broadcast=allow_paid_broadcast,
-            paid_message_star_count=paid_message_star_count
         )
 
     async def delete(self, revoke: bool = True):
