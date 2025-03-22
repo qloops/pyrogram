@@ -486,7 +486,7 @@ class User(Object, Update):
         Example:
             .. code-block:: python
 
-                user.unblock()
+                await user.unblock()
 
         Returns:
             True on success.
@@ -509,7 +509,7 @@ class User(Object, Update):
         Example:
             .. code-block:: python
 
-                user.get_common_chats()
+                await user.get_common_chats()
 
         Returns:
             True on success.
