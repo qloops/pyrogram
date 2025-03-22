@@ -1432,6 +1432,9 @@ class Message(Object, Update):
             )
 
             if isinstance(message.reply_to, raw.types.MessageReplyHeader):
+                parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
+                parsed_message.reply_to_top_message_id = message.reply_to.reply_to_top_id
+
                 if message.reply_to.forum_topic:
                     parsed_message.topic_message = True
 
