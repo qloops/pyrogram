@@ -106,13 +106,15 @@ class GiftedStars(Object):
             transaction_id=getattr(action, "transaction_id", None),
             sticker=random.choice(
                 types.List(
-                    await types.Sticker._parse(
-                        client,
-                        doc,
-                        {
-                            type(i): i for i in doc.attributes
-                        }
-                    ) for doc in raw_stickers.documents
+                    [
+                        await types.Sticker._parse(
+                            client,
+                            doc,
+                            {
+                                type(i): i for i in doc.attributes
+                            }
+                        ) for doc in raw_stickers.documents
+                    ]
                 )
             )
         )
