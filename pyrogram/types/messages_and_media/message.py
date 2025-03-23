@@ -915,7 +915,8 @@ class Message(Object, Update):
                 client,
                 action,
                 gifter=users.get(from_id),
-                receiver=users.get(peer_id or from_id)
+                receiver=users.get(peer_id or from_id),
+                users=users
             )
         elif isinstance(action, raw.types.MessageActionGiftStars):
             service_type = enums.MessageServiceType.GIFTED_STARS

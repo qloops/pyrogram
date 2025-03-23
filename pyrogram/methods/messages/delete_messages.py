@@ -63,7 +63,6 @@ class DeleteMessages:
             is_scheduled (``bool``, *optional*):
                 If True, the message will be deleted from the scheduled messages.
                 For userbots only.
-                Defaults to None.
 
         Returns:
             ``int``: Amount of affected messages

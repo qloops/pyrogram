@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from pyrogram import raw, types, utils
 
@@ -90,8 +90,9 @@ class GiftedPremium(Object):
     async def _parse(
         client,
         action: "raw.types.MessageActionGiftPremium",
-        gifter: "raw.base.User" = None,
-        receiver: "raw.base.User" = None,
+        gifter: "raw.base.User",
+        receiver: "raw.base.User",
+        users: Dict[int, "raw.base.User"]
     ) -> "GiftedPremium":
         raw_stickers = await client.invoke(
             raw.functions.messages.GetStickerSet(

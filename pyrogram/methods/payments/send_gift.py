@@ -61,12 +61,9 @@ class SendGift:
             hide_my_name (``bool``, *optional*):
                 If True, your name will be hidden from visitors to the gift recipient's profile.
                 For userbots only.
-                Defaults to None.
 
             pay_for_upgrade (``bool``, *optional*):
                 If True, gift upgrade will be paid from the bot’s balance, thereby making the upgrade free for the receiver.
-                For bots only.
-                Defaults to None.
 
         Returns:
             ``bool``: On success, True is returned.
