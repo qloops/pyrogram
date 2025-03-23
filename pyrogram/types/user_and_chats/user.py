@@ -481,7 +481,7 @@ class User(Object, Update):
 
         .. code-block:: python
 
-            client.unblock_user(123456789)
+            await client.unblock_user(123456789)
 
         Example:
             .. code-block:: python
@@ -504,7 +504,7 @@ class User(Object, Update):
 
         .. code-block:: python
 
-            client.get_common_chats(123456789)
+            await client.get_common_chats(123456789)
 
         Example:
             .. code-block:: python
@@ -512,7 +512,7 @@ class User(Object, Update):
                 await user.get_common_chats()
 
         Returns:
-            True on success.
+            List of :obj:`~pyrogram.types.Chat`: On success, a list of the common chats is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
