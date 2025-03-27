@@ -371,12 +371,12 @@ gift_code = create(gift_code_filter)
 
 # endregion
 
-# region star_gift_filter
-async def star_gift_filter(_, __, m: Message):
+# region gift_filter
+async def gift_filter(_, __, m: Message):
     return bool(m.gift)
 
 
-star_gift = create(star_gift_filter)
+gift = create(gift_filter)
 """Filter messages that contain :obj:`~pyrogram.types.Gift` objects."""
 
 
