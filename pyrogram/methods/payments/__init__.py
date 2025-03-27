@@ -27,6 +27,7 @@ from .get_chat_gifts_count import GetChatGiftsCount
 from .get_chat_gifts import GetChatGifts
 from .hide_gift import HideGift
 from .send_payment_form import SendPaymentForm
+from .set_pinned_gifts import SetPinnedGifts
 from .send_gift import SendGift
 from .show_gift import ShowGift
 from .transfer_gift import TransferGift
@@ -44,6 +45,7 @@ class Payments(
     GetChatGifts,
     HideGift,
     SendPaymentForm,
+    SetPinnedGifts,
     SendGift,
     ShowGift,
     TransferGift,

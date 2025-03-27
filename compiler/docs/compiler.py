@@ -418,6 +418,7 @@ def pyrogram_api():
             transfer_gift
             upgrade_gift
             get_stars_balance
+            set_pinned_gifts
         """,
         phone="""
         Phone
