@@ -887,6 +887,17 @@ from_scheduled = create(from_scheduled_filter)
 
 # endregion
 
+# region paid_message_filter
+async def paid_message_filter(_, __, m: Message):
+    return bool(m.send_paid_messages_stars)
+
+
+paid_message = create(paid_message_filter)
+"""Filter paid messages."""
+
+
+# endregion
+
 # region linked_channel_filter
 async def linked_channel_filter(_, __, m: Message):
     return bool(
