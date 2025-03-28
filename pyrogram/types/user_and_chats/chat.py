@@ -439,6 +439,14 @@ class Chat(Object):
             True, if paid messages are available in this chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`
 
+        display_gifts_button (``bool``, *optional*):
+            True, if the gift button should be shown in the message input field for both participants in all chats.
+            Returned only in :meth:`~pyrogram.Client.get_chat`
+
+        allowed_gifts (:obj:`~pyrogram.types.AllowedGiftsSettings`, *optional*):
+            Information about gifts that can be received by the user.
+            Returned only in :meth:`~pyrogram.Client.get_chat`
+
         raw (:obj:`~pyrogram.raw.types.UserFull` | :obj:`~pyrogram.raw.types.ChatFull` | :obj:`~pyrogram.raw.types.ChannelFull`, *optional*):
             The raw chat or user object, as received from the Telegram API.
 
@@ -565,6 +573,8 @@ class Chat(Object):
         view_forum_as_messages: Optional[bool] = None,
         paid_message_star_count: Optional[int] = None,
         is_paid_messages_available: Optional[bool] = None,
+        display_gifts_button: Optional[bool] = None,
+        allowed_gifts: Optional["types.AllowedGiftsSettings"] = None,
         raw: Optional[Union["raw.types.UserFull", "raw.types.ChatFull", "raw.types.ChannelFull"]] = None
     ):
         super().__init__(client)
@@ -684,6 +694,8 @@ class Chat(Object):
         self.view_forum_as_messages = view_forum_as_messages
         self.paid_message_star_count = paid_message_star_count
         self.is_paid_messages_available = is_paid_messages_available
+        self.display_gifts_button = display_gifts_button
+        self.allowed_gifts = allowed_gifts
         self.raw = raw
 
     @staticmethod
@@ -920,6 +932,8 @@ class Chat(Object):
             users
         )
         parsed_chat.paid_message_star_count = getattr(user, "send_paid_messages_stars", None)
+        parsed_chat.display_gifts_button = user.display_gifts_button
+        parsed_chat.allowed_gifts = types.AllowedGiftsSettings._parse(getattr(user, "disallowed_gifts", None))
 
         return parsed_chat
 

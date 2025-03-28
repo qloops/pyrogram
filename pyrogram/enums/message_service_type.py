@@ -170,3 +170,9 @@ class MessageServiceType(AutoName):
 
     GIVEAWAY_PRIZE_STARS = auto()
     "Giveaway prize stars"
+
+    PAID_MESSAGES_REFUNDED = auto()
+    "Refunded paid messages"
+
+    PAID_MESSAGES_PRICE = auto()
+    "Paid messages price"

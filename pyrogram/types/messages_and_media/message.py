@@ -376,6 +376,12 @@ class Message(Object, Update):
         web_app_data (:obj:`~pyrogram.types.WebAppData`, *optional*):
             Service message: web app data sent to the bot.
 
+        paid_messages_refunded (:obj:`~pyrogram.types.PaidMessagesRefunded`, *optional*):
+            Service message: paid messages refunded.
+
+        paid_messages_price (:obj:`~pyrogram.types.PaidMessagesPrice`, *optional*):
+            Service message: paid messages price.
+
         gift_code (:obj:`~pyrogram.types.GiftCode`, *optional*):
             Service message: gift code information.
 
@@ -588,6 +594,8 @@ class Message(Object, Update):
         phone_call_started: Optional["types.PhoneCallStarted"] = None,
         phone_call_ended: Optional["types.PhoneCallEnded"] = None,
         web_app_data: Optional["types.WebAppData"] = None,
+        paid_messages_refunded: Optional["types.PaidMessagesRefunded"] = None,
+        paid_messages_price: Optional["types.PaidMessagesPrice"] = None,
         gift_code: Optional["types.GiftCode"] = None,
         gifted_premium: Optional["types.GiftedPremium"] = None,
         gifted_stars: Optional["types.GiftedStars"] = None,
@@ -729,6 +737,8 @@ class Message(Object, Update):
         self.phone_call_started = phone_call_started
         self.phone_call_ended = phone_call_ended
         self.web_app_data = web_app_data
+        self.paid_messages_refunded = paid_messages_refunded
+        self.paid_messages_price = paid_messages_price
         self.gift_code = gift_code
         self.gifted_premium = gifted_premium
         self.gifted_stars = gifted_stars
@@ -827,8 +837,8 @@ class Message(Object, Update):
         users_shared = None
         chat_shared = None
         screenshot_taken = None
-        # passport_data_send
-        # passport_data_received
+        # passport_data_send = None
+        # passport_data_received = None
         chat_set_theme = None
         chat_set_background = None
         set_message_auto_delete_time = None
@@ -841,6 +851,8 @@ class Message(Object, Update):
         general_forum_topic_unhidden = None
         forum_topic_reopened = None
         web_app_data = None
+        paid_messages_refunded = None
+        paid_messages_price = None
 
         service_type = enums.MessageServiceType.UNSUPPORTED
 
@@ -1032,6 +1044,12 @@ class Message(Object, Update):
         elif isinstance(action, (raw.types.MessageActionWebViewDataSent, raw.types.MessageActionWebViewDataSentMe)):
             service_type = enums.MessageServiceType.WEB_APP_DATA
             web_app_data = types.WebAppData._parse(action)
+        elif isinstance(action, raw.types.MessageActionPaidMessagesRefunded):
+            service_type = enums.MessageServiceType.PAID_MESSAGES_REFUNDED
+            paid_messages_refunded = types.PaidMessagesRefunded._parse(action)
+        elif isinstance(action, raw.types.MessageActionPaidMessagesPrice):
+            service_type = enums.MessageServiceType.PAID_MESSAGES_PRICE
+            paid_messages_price = types.PaidMessagesPrice._parse(action)
 
         parsed_message = Message(
             id=message.id,
@@ -1087,6 +1105,8 @@ class Message(Object, Update):
             general_forum_topic_unhidden=general_forum_topic_unhidden,
             forum_topic_reopened=forum_topic_reopened,
             web_app_data=web_app_data,
+            paid_messages_refunded=paid_messages_refunded,
+            paid_messages_price=paid_messages_price,
             reactions=types.MessageReactions._parse(client, message.reactions),
             business_connection_id=business_connection_id,
             raw=message,

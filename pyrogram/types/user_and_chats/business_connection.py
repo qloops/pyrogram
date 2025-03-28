@@ -44,6 +44,9 @@ class BusinessConnection(Object):
 
         disabled (``bool``, *optional*):
             Whether the business connection is disabled.
+
+        permissions (:obj:`~pyrogram.types.BusinessBotPermissions`, *optional*):
+            Permissions for the business bot.
     """
 
     def __init__(
@@ -54,7 +57,8 @@ class BusinessConnection(Object):
         dc_id: int,
         date: datetime,
         can_reply: bool = None,
-        disabled: bool = None
+        disabled: bool = None,
+        permissions: "types.BusinessBotPermissions" = None,
     ):
         self.id = id
         self.user = user
@@ -62,6 +66,7 @@ class BusinessConnection(Object):
         self.date = date
         self.can_reply = can_reply
         self.disabled = disabled
+        self.permissions = permissions
 
     @staticmethod
     def _parse(
@@ -78,5 +83,6 @@ class BusinessConnection(Object):
             dc_id=connection.dc_id,
             date=utils.timestamp_to_datetime(connection.date),
             can_reply=getattr(connection, "can_reply", None),
-            disabled=getattr(connection, "disabled", None)
+            disabled=getattr(connection, "disabled", None),
+            permissions=types.BusinessBotPermissions._parse(getattr(connection, "permissions", None)),
         )

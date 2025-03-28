@@ -571,6 +571,7 @@ def pyrogram_api():
     categories = dict(
         users_chats="""
         Users & Chats
+            AllowedGiftsSettings
             Birthday
             BusinessConnection
             BusinessIntro
@@ -601,6 +602,7 @@ def pyrogram_api():
             PrivacyRule
             StoriesStealthMode
             BotVerification
+            BusinessBotPermissions
             ChatSettings
             GlobalPrivacySettings
             HistoryCleared
@@ -676,6 +678,8 @@ def pyrogram_api():
             TextQuote
             PaidMediaInfo
             PaidMediaPreview
+            PaidMessagesRefunded
+            PaidMessagesPrice
             PaymentForm
             ChatBoost
             ContactRegistered

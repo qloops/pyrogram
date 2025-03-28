@@ -40,7 +40,7 @@ class GetBusinessConnection:
             .. code-block:: python
 
                 # Get a business connection information
-                app.get_business_connection(connection_id)
+                await app.get_business_connection(connection_id)
         """
         r = await self.invoke(
             raw.functions.account.GetBotBusinessConnection(

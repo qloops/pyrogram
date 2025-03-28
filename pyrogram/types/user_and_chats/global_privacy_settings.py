@@ -18,7 +18,7 @@
 
 from typing import Optional
 
-from pyrogram import raw
+from pyrogram import raw, types
 
 from ..object import Object
 
@@ -55,6 +55,12 @@ class GlobalPrivacySettings(Object):
             If positive, then allow_new_chats_from_unknown_users must be true.
             The current user will receive ``paid_message_earnings_per_mille`` Telegram Stars
             for each 1000 Telegram Stars paid for message sending.
+
+        display_gifts_button (``bool``, *optional*):
+            True, if the gift button should be shown in the message input field for both participants in all chats.
+
+        allowed_gifts (:obj:`~pyrogram.types.AllowedGiftsSettings`, *optional*):
+            Information about gifts that can be received by the user.
     """
 
     def __init__(
@@ -65,7 +71,9 @@ class GlobalPrivacySettings(Object):
         keep_chats_from_folders_archived: Optional[bool] = None,
         show_read_date: Optional[bool] = None,
         allow_new_chats_from_unknown_users: Optional[bool] = None,
-        incoming_paid_message_star_count: Optional[int] = None
+        incoming_paid_message_star_count: Optional[int] = None,
+        display_gifts_button: Optional[bool] = None,
+        allowed_gifts: Optional["types.AllowedGiftsSettings"] = None
     ):
         self.archive_and_mute_new_chats = archive_and_mute_new_chats
         self.keep_unmuted_chats_archived = keep_unmuted_chats_archived
@@ -73,6 +81,8 @@ class GlobalPrivacySettings(Object):
         self.show_read_date = show_read_date
         self.allow_new_chats_from_unknown_users = allow_new_chats_from_unknown_users
         self.incoming_paid_message_star_count = incoming_paid_message_star_count
+        self.display_gifts_button = display_gifts_button
+        self.allowed_gifts = allowed_gifts
 
     @staticmethod
     def _parse(
@@ -87,7 +97,9 @@ class GlobalPrivacySettings(Object):
             keep_chats_from_folders_archived=getattr(settings, "keep_archived_folders", None),
             show_read_date=getattr(settings, "hide_read_marks", None),
             allow_new_chats_from_unknown_users=getattr(settings, "new_noncontact_peers_require_premium", None),
-            incoming_paid_message_star_count=getattr(settings, "noncontact_peers_paid_stars", None)
+            incoming_paid_message_star_count=getattr(settings, "noncontact_peers_paid_stars", None),
+            display_gifts_button=getattr(settings, "display_gifts_button", None),
+            allowed_gifts=types.AllowedGiftsSettings._parse(getattr(settings, "disallowed_gifts", None))
         )
 
     def write(self) -> "raw.types.GlobalPrivacySettings":
@@ -97,5 +109,7 @@ class GlobalPrivacySettings(Object):
             keep_archived_folders=self.keep_chats_from_folders_archived,
             hide_read_marks=self.show_read_date,
             new_noncontact_peers_require_premium=self.allow_new_chats_from_unknown_users,
-            noncontact_peers_paid_stars=self.incoming_paid_message_star_count
+            noncontact_peers_paid_stars=self.incoming_paid_message_star_count,
+            display_gifts_button=self.display_gifts_button,
+            disallowed_gifts=self.allowed_gifts.write() if self.allowed_gifts else None
         )
