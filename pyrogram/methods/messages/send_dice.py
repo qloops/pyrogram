@@ -33,6 +33,7 @@ class SendDice:
         disable_notification: bool = None,
         message_thread_id: int = None,
         effect_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         business_connection_id: str = None,
@@ -178,10 +179,9 @@ class SendDice:
                 quote_position=quote_offset
             )
 
-        peer = await self.resolve_peer(chat_id)
         r = await self.invoke(
             raw.functions.messages.SendMedia(
-                peer=peer,
+                peer=await self.resolve_peer(chat_id),
                 media=raw.types.InputMediaDice(emoticon=emoji),
                 silent=disable_notification or None,
                 reply_to=await utils.get_reply_to(
