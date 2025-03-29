@@ -1519,7 +1519,8 @@ class Message(Object, Update):
                 topics.get(parsed_message.message_thread_id), users=users, chats=chats
             )
 
-            client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
+            if parsed_message.topic:
+                client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
 
         if not parsed_message.topic and parsed_message.chat.is_forum:
             parsed_topic = client.topic_cache[(parsed_message.chat.id, parsed_message.message_thread_id)]
@@ -1531,7 +1532,8 @@ class Message(Object, Update):
                         topic_ids=parsed_message.message_thread_id or 1
                     )
 
-                    client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
+                    if parsed_message.topic:
+                        client.topic_cache[(parsed_message.chat.id, parsed_message.topic.id)] = parsed_message.topic
                 except (ChannelPrivate, ChannelForumMissing):
                     pass
 
