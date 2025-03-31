@@ -232,6 +232,7 @@ def pyrogram_api():
             send_photo
             send_audio
             send_document
+            send_screenshot_notification
             send_sticker
             send_video
             send_animation
