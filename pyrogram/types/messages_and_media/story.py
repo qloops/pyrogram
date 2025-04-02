@@ -459,7 +459,10 @@ class Story(Object, Update):
             await client.send_message(
                 chat_id=story.chat.id,
                 text="hello",
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -503,7 +506,10 @@ class Story(Object, Update):
         """
         return await self._client.send_message(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             text=text,
             parse_mode=parse_mode,
             entities=entities,
@@ -513,7 +519,7 @@ class Story(Object, Update):
             protect_content=protect_content,
             paid_message_star_count=paid_message_star_count,
             reply_markup=reply_markup,
-            
+
             disable_web_page_preview=disable_web_page_preview,
         )
 
@@ -551,7 +557,10 @@ class Story(Object, Update):
             await client.send_animation(
                 chat_id=story.chat.id,
                 animation=animation,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -641,7 +650,10 @@ class Story(Object, Update):
         """
         return await self._client.send_animation(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             animation=animation,
             caption=caption,
             parse_mode=parse_mode,
@@ -690,7 +702,10 @@ class Story(Object, Update):
             await client.send_audio(
                 chat_id=story.chat.id,
                 audio=audio,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -777,7 +792,10 @@ class Story(Object, Update):
         """
         return await self._client.send_audio(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             audio=audio,
             caption=caption,
             parse_mode=parse_mode,
@@ -818,7 +836,10 @@ class Story(Object, Update):
             await client.send_cached_media(
                 chat_id=story.chat.id,
                 file_id=file_id,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -860,7 +881,10 @@ class Story(Object, Update):
         """
         return await self._client.send_cached_media(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             file_id=file_id,
             caption=caption,
             parse_mode=parse_mode,
@@ -890,7 +914,10 @@ class Story(Object, Update):
             await client.send_media_group(
                 chat_id=story.chat.id,
                 media=list_of_media,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -920,7 +947,10 @@ class Story(Object, Update):
         """
         return await self._client.send_media_group(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             media=media,
             disable_notification=disable_notification,
             paid_message_star_count=paid_message_star_count,
@@ -955,7 +985,10 @@ class Story(Object, Update):
             await client.send_photo(
                 chat_id=story.chat.id,
                 photo=photo,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -1035,7 +1068,10 @@ class Story(Object, Update):
         """
         return await self._client.send_photo(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             photo=photo,
             caption=caption,
             parse_mode=parse_mode,
@@ -1073,7 +1109,10 @@ class Story(Object, Update):
             await client.send_sticker(
                 chat_id=story.chat.id,
                 sticker=sticker,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -1131,7 +1170,10 @@ class Story(Object, Update):
         """
         return await self._client.send_sticker(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             sticker=sticker,
             disable_notification=disable_notification,
             paid_message_star_count=paid_message_star_count,
@@ -1177,7 +1219,10 @@ class Story(Object, Update):
             await client.send_video(
                 chat_id=story.chat.id,
                 video=video,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -1289,7 +1334,10 @@ class Story(Object, Update):
         """
         return await self._client.send_video(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             video=video,
             caption=caption,
             parse_mode=parse_mode,
@@ -1339,7 +1387,10 @@ class Story(Object, Update):
             await client.send_video_note(
                 chat_id=story.chat.id,
                 video_note=video_note,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -1413,7 +1464,10 @@ class Story(Object, Update):
         """
         return await self._client.send_video_note(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             video_note=video_note,
             duration=duration,
             length=length,
@@ -1454,7 +1508,10 @@ class Story(Object, Update):
             await client.send_voice(
                 chat_id=story.chat.id,
                 voice=voice,
-                reply_parameters=types.ReplyParameters(story_id=story.id)
+                reply_parameters=types.ReplyParameters(
+                    chat_id=chat_id,
+                    story_id=story.id
+                )
             )
 
         Example:
@@ -1529,7 +1586,10 @@ class Story(Object, Update):
         """
         return await self._client.send_voice(
             chat_id=self.chat.id,
-            reply_parameters=types.ReplyParameters(story_id=self.id),
+            reply_parameters=types.ReplyParameters(
+                chat_id=self.chat.id,
+                story_id=self.id
+            ),
             voice=voice,
             caption=caption,
             parse_mode=parse_mode,
