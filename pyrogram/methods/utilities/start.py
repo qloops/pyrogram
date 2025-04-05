@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 
 class Start:
     async def start(
-        self: "pyrogram.Client",
+        self: "pyrogram.Client", *,
         use_qr: bool = False,
         except_ids: List[int] = [],
     ):
