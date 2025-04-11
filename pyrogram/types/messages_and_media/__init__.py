@@ -61,7 +61,7 @@ from .message_reactions import MessageReactions
 from .my_boost import MyBoost
 from .paid_media_info import PaidMediaInfo
 from .paid_media_preview import PaidMediaPreview
-from .paid_messages_price import PaidMessagesPrice
+from .paid_messages_price_changed import PaidMessagesPriceChanged
 from .paid_messages_refunded import PaidMessagesRefunded
 from .payment_form import PaymentForm
 from .photo import Photo
@@ -138,7 +138,7 @@ __all__ = [
     "MyBoost",
     "PaidMediaInfo",
     "PaidMediaPreview",
-    "PaidMessagesPrice",
+    "PaidMessagesPriceChanged",
     "PaidMessagesRefunded",
     "PaymentForm",
     "Photo",

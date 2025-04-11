@@ -443,7 +443,7 @@ class Chat(Object):
             True, if the gift button should be shown in the message input field for both participants in all chats.
             Returned only in :meth:`~pyrogram.Client.get_chat`
 
-        allowed_gifts (:obj:`~pyrogram.types.AllowedGiftsSettings`, *optional*):
+        accepted_gift_types (:obj:`~pyrogram.types.AcceptedGiftTypes`, *optional*):
             Information about gifts that can be received by the user.
             Returned only in :meth:`~pyrogram.Client.get_chat`
 
@@ -574,7 +574,7 @@ class Chat(Object):
         paid_message_star_count: Optional[int] = None,
         is_paid_messages_available: Optional[bool] = None,
         display_gifts_button: Optional[bool] = None,
-        allowed_gifts: Optional["types.AllowedGiftsSettings"] = None,
+        accepted_gift_types: Optional["types.AcceptedGiftTypes"] = None,
         raw: Optional[Union["raw.types.UserFull", "raw.types.ChatFull", "raw.types.ChannelFull"]] = None
     ):
         super().__init__(client)
@@ -695,7 +695,7 @@ class Chat(Object):
         self.paid_message_star_count = paid_message_star_count
         self.is_paid_messages_available = is_paid_messages_available
         self.display_gifts_button = display_gifts_button
-        self.allowed_gifts = allowed_gifts
+        self.accepted_gift_types = accepted_gift_types
         self.raw = raw
 
     @staticmethod
@@ -933,7 +933,7 @@ class Chat(Object):
         )
         parsed_chat.paid_message_star_count = getattr(user, "send_paid_messages_stars", None)
         parsed_chat.display_gifts_button = user.display_gifts_button
-        parsed_chat.allowed_gifts = types.AllowedGiftsSettings._parse(getattr(user, "disallowed_gifts", None))
+        parsed_chat.accepted_gift_types = types.AcceptedGiftTypes._parse(getattr(user, "disallowed_gifts", None))
 
         return parsed_chat
 

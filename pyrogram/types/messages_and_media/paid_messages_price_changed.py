@@ -21,28 +21,28 @@ from pyrogram import raw
 from ..object import Object
 
 
-class PaidMessagesPrice(Object):
-    """This object contains basic information about a paid messages price.
+class PaidMessagesPriceChanged(Object):
+    """A price for paid messages was changed in the supergroup chat.
 
     Parameters:
-        stars (``int``):
-            Total amount of stars.
+        paid_message_star_count (``int``):
+            The new number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
     """
 
     def __init__(
         self,
         *,
-        stars: int
+        paid_message_star_count: int
     ):
 
         super().__init__()
 
-        self.stars = stars
+        self.paid_message_star_count = paid_message_star_count
 
     @staticmethod
     def _parse(
         action: "raw.types.MessageActionPaidMessagesPrice"
-    ) -> "PaidMessagesPrice":
-        return PaidMessagesPrice(
-            stars=action.stars
+    ) -> "PaidMessagesPriceChanged":
+        return PaidMessagesPriceChanged(
+            paid_message_star_count=action.stars
         )

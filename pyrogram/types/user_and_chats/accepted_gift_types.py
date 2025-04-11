@@ -25,47 +25,47 @@ from pyrogram import raw, types, utils
 from ..object import Object
 
 
-class AllowedGiftsSettings(Object):
+class AcceptedGiftTypes(Object):
     """Accepts gift types.
 
     Parameters:
-        limited_gifts (``bool``, *optional*):
-            True, if limited gifts are allowed.
-
         unlimited_gifts (``bool``, *optional*):
-            True, if unlimited gifts are allowed.
+            TTrue, if unlimited regular gifts are accepted.
 
-        unique_gifts (``bool``, *optional*):
-            True, if unique gifts are allowed.
+        limited_gifts (``bool``, *optional*):
+            True, if limited regular gifts are accepted.
+
+        upgraded_gifts (``bool``, *optional*):
+            True, if upgraded gifts and regular gifts that can be upgraded for free are accepted.
 
         premium_subscription (``bool``, *optional*):
-            True, if premium subscription gifts are allowed.
+            True, if Telegram Premium subscription is accepted.
     """
 
     def __init__(
         self,
         *,
-        limited_gifts: Optional[bool] = None,
         unlimited_gifts: Optional[bool] = None,
-        unique_gifts: Optional[bool] = None,
+        limited_gifts: Optional[bool] = None,
+        upgraded_gifts: Optional[bool] = None,
         premium_subscription: Optional[bool] = None,
     ):
         super().__init__()
 
-        self.limited_gifts = limited_gifts
         self.unlimited_gifts = unlimited_gifts
-        self.unique_gifts = unique_gifts
+        self.limited_gifts = limited_gifts
+        self.upgraded_gifts = upgraded_gifts
         self.premium_subscription = premium_subscription
 
     @staticmethod
-    def _parse(disallowed_gifts: "raw.types.DisallowedGiftsSettings") -> Optional["AllowedGiftsSettings"]:
+    def _parse(disallowed_gifts: "raw.types.DisallowedGiftsSettings") -> Optional["AcceptedGiftTypes"]:
         if not disallowed_gifts:
             return None
 
-        return AllowedGiftsSettings(
+        return AcceptedGiftTypes(
             limited_gifts=not disallowed_gifts.disallow_limited_stargifts,
             unlimited_gifts=not disallowed_gifts.disallow_unlimited_stargifts,
-            unique_gifts=not disallowed_gifts.disallow_unique_stargifts,
+            upgraded_gifts=not disallowed_gifts.disallow_unique_stargifts,
             premium_subscription=not disallowed_gifts.disallow_premium_gifts,
         )
 
@@ -73,6 +73,6 @@ class AllowedGiftsSettings(Object):
         return raw.types.DisallowedGiftsSettings(
             disallow_unlimited_stargifts=not self.unlimited_gifts,
             disallow_limited_stargifts=not self.limited_gifts,
-            disallow_unique_stargifts=not self.unique_gifts,
+            disallow_unique_stargifts=not self.upgraded_gifts,
             disallow_premium_gifts=not self.premium_subscription,
         )

@@ -379,7 +379,7 @@ class Message(Object, Update):
         paid_messages_refunded (:obj:`~pyrogram.types.PaidMessagesRefunded`, *optional*):
             Service message: paid messages refunded.
 
-        paid_messages_price (:obj:`~pyrogram.types.PaidMessagesPrice`, *optional*):
+        paid_messages_price (:obj:`~pyrogram.types.PaidMessagesPriceChanged`, *optional*):
             Service message: paid messages price.
 
         gift_code (:obj:`~pyrogram.types.GiftCode`, *optional*):
@@ -595,7 +595,7 @@ class Message(Object, Update):
         phone_call_ended: Optional["types.PhoneCallEnded"] = None,
         web_app_data: Optional["types.WebAppData"] = None,
         paid_messages_refunded: Optional["types.PaidMessagesRefunded"] = None,
-        paid_messages_price: Optional["types.PaidMessagesPrice"] = None,
+        paid_messages_price_changed: Optional["types.PaidMessagesPriceChanged"] = None,
         gift_code: Optional["types.GiftCode"] = None,
         gifted_premium: Optional["types.GiftedPremium"] = None,
         gifted_stars: Optional["types.GiftedStars"] = None,
@@ -738,7 +738,7 @@ class Message(Object, Update):
         self.phone_call_ended = phone_call_ended
         self.web_app_data = web_app_data
         self.paid_messages_refunded = paid_messages_refunded
-        self.paid_messages_price = paid_messages_price
+        self.paid_messages_price = paid_messages_price_changed
         self.gift_code = gift_code
         self.gifted_premium = gifted_premium
         self.gifted_stars = gifted_stars
@@ -1049,7 +1049,7 @@ class Message(Object, Update):
             paid_messages_refunded = types.PaidMessagesRefunded._parse(action)
         elif isinstance(action, raw.types.MessageActionPaidMessagesPrice):
             service_type = enums.MessageServiceType.PAID_MESSAGES_PRICE
-            paid_messages_price = types.PaidMessagesPrice._parse(action)
+            paid_messages_price = types.PaidMessagesPriceChanged._parse(action)
 
         parsed_message = Message(
             id=message.id,
@@ -1106,7 +1106,7 @@ class Message(Object, Update):
             forum_topic_reopened=forum_topic_reopened,
             web_app_data=web_app_data,
             paid_messages_refunded=paid_messages_refunded,
-            paid_messages_price=paid_messages_price,
+            paid_messages_price_changed=paid_messages_price,
             reactions=types.MessageReactions._parse(client, message.reactions),
             business_connection_id=business_connection_id,
             raw=message,

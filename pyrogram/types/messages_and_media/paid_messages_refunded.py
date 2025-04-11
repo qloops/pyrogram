@@ -22,33 +22,33 @@ from ..object import Object
 
 
 class PaidMessagesRefunded(Object):
-    """This object contains basic information about a refunded paid messages.
+    """Paid messages were refunded.
 
     Parameters:
-        count (``int``):
-            Number of messages for which stars have been refunded.
+        message_count (``int``):
+            The number of refunded messages.
 
-        stars (``int``):
-            Total amount of stars refunded.
+        star_count (``int``):
+            The number of refunded Telegram Stars.
     """
 
     def __init__(
         self,
         *,
-        count: int,
-        stars: int
+        message_count: int,
+        star_count: int
     ):
 
         super().__init__()
 
-        self.count = count
-        self.stars = stars
+        self.message_count = message_count
+        self.star_count = star_count
 
     @staticmethod
     def _parse(
         action: "raw.types.MessageActionPaidMessagesRefunded"
     ) -> "PaidMessagesRefunded":
         return PaidMessagesRefunded(
-            count=action.count,
-            stars=action.stars
+            message_count=action.count,
+            star_count=action.stars
         )

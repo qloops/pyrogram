@@ -572,7 +572,7 @@ def pyrogram_api():
     categories = dict(
         users_chats="""
         Users & Chats
-            AllowedGiftsSettings
+            AcceptedGiftTypes
             Birthday
             BusinessConnection
             BusinessIntro
@@ -680,7 +680,7 @@ def pyrogram_api():
             PaidMediaInfo
             PaidMediaPreview
             PaidMessagesRefunded
-            PaidMessagesPrice
+            PaidMessagesPriceChanged
             PaymentForm
             ChatBoost
             ContactRegistered

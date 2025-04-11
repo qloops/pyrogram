@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .allowed_gifts_settings import AllowedGiftsSettings
+from .accepted_gift_types import AcceptedGiftTypes
 from .birthday import Birthday
 from .bot_verification import BotVerification
 from .business_bot_permissions import BusinessBotPermissions
@@ -61,7 +61,7 @@ from .video_chat_scheduled import VideoChatScheduled
 from .video_chat_started import VideoChatStarted
 
 __all__ = [
-    "AllowedGiftsSettings",
+    "AcceptedGiftTypes",
     "Birthday",
     "BotVerification",
     "BusinessBotPermissions",

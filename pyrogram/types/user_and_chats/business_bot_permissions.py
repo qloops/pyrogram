@@ -26,46 +26,47 @@ class BusinessBotPermissions(Object):
 
     Parameters:
         can_reply (``bool``, *optional*):
-            True, if the bot is allowed to reply to messages in the chat.
+            True, if the bot can send and edit messages in the private chats that had incoming messages in the last 24 hours
 
         can_read_messages (``bool``, *optional*):
-            True, if the bot is allowed to mark messages as read in the chat.
+            True, if the bot can mark incoming private messages as read.
 
         can_delete_sent_messages (``bool``, *optional*):
             True, if the bot is allowed to delete sent messages.
 
-        can_delete_received_messages (``bool``, *optional*):
-            True, if the bot is allowed to delete received messages.
+        can_delete_all_messages (``bool``, *optional*):
+            True, if the bot is allowed to delete any message.
 
         can_edit_name (``bool``, *optional*):
-            True, if the bot is allowed to edit the name of the connected user.
+            True, if the bot can edit name of the business account.
 
         can_edit_bio (``bool``, *optional*):
-            True, if the bot is allowed to edit the bio of the connected user.
+            True, if the bot can edit bio of the business account.
 
         can_edit_profile_photo (``bool``, *optional*):
-            True, if the bot is allowed to edit the profile photo of the connected user.
+            True, if the bot can edit profile photo of the business account.
 
         can_edit_username (``bool``, *optional*):
-            True, if the bot is allowed to edit the username of the connected user.
+            True, if the bot can edit username of the business account.
 
-        can_view_gifts (``bool``, *optional*):
-            True, if the bot is allowed to view the gifts received by the connected user.
+        can_view_gifts_and_stars (``bool``, *optional*):
+            True, if the bot can view gifts and amount of Telegram Stars owned by the business account.
 
         can_sell_gifts (``bool``, *optional*):
-            True, if the bot is allowed to sell gifts of the connected user.
+            True, if the bot can sell regular gifts received by the business account.
 
         can_change_gift_settings (``bool``, *optional*):
-            True, if the bot is allowed to change the gifts settings of the connected user.
+            True, if the bot can change gift receiving settings of the business account.
 
         can_transfer_and_upgrade_gifts (``bool``, *optional*):
-            True, if the bot is allowed to transfer and upgrade gifts of the connected user.
+            True, if the bot can transfer and upgrade gifts received by the business account.
 
         can_transfer_stars (``bool``, *optional*):
-            True, if the bot is allowed to transfer stars of the connected user.
+            True, if the bot can transfer Telegram Stars received by the business account to account of the bot,
+            or use them to upgrade and transfer gifts.
 
         can_manage_stories (``bool``, *optional*):
-            True, if the bot is allowed to manage stories of the connected user.
+            True, if the bot can send, edit and delete stories.
     """
 
     def __init__(
@@ -74,7 +75,7 @@ class BusinessBotPermissions(Object):
         can_reply: bool = None,
         can_read_messages: bool = None,
         can_delete_sent_messages: bool = None,
-        can_delete_received_messages: bool = None,
+        can_delete_all_messages: bool = None,
         can_edit_name: bool = None,
         can_edit_bio: bool = None,
         can_edit_profile_photo: bool = None,
@@ -91,7 +92,7 @@ class BusinessBotPermissions(Object):
         self.can_reply = can_reply
         self.can_read_messages = can_read_messages
         self.can_delete_sent_messages = can_delete_sent_messages
-        self.can_delete_received_messages = can_delete_received_messages
+        self.can_delete_all_messages = can_delete_all_messages
         self.can_edit_name = can_edit_name
         self.can_edit_bio = can_edit_bio
         self.can_edit_profile_photo = can_edit_profile_photo
@@ -110,7 +111,7 @@ class BusinessBotPermissions(Object):
                 can_reply=permissions.reply,
                 can_read_messages=permissions.read_messages,
                 can_delete_sent_messages=permissions.delete_sent_messages,
-                can_delete_received_messages=permissions.delete_received_messages,
+                can_delete_all_messages=permissions.delete_received_messages,
                 can_edit_name=permissions.edit_name,
                 can_edit_bio=permissions.edit_bio,
                 can_edit_profile_photo=permissions.edit_profile_photo,
