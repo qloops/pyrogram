@@ -29,12 +29,20 @@ from pyrogram import raw
 from pyrogram.connection import Connection
 from pyrogram.crypto import mtproto
 from pyrogram.errors import (
-    RPCError, InternalServerError, AuthKeyDuplicated, FloodWait, FloodPremiumWait, ServiceUnavailable, BadMsgNotification,
-    SecurityCheckMismatch, Unauthorized
+    AuthKeyDuplicated,
+    BadMsgNotification,
+    FloodPremiumWait,
+    FloodWait,
+    InternalServerError,
+    RPCError,
+    SecurityCheckMismatch,
+    ServiceUnavailable,
+    Unauthorized,
 )
 from pyrogram.raw.all import layer
-from pyrogram.raw.core import TLObject, MsgContainer, Int, FutureSalts
-from .internals import MsgId, MsgFactory
+from pyrogram.raw.core import FutureSalts, Int, MsgContainer, TLObject
+
+from .internals import MsgFactory, MsgId
 
 log = logging.getLogger(__name__)
 
@@ -138,7 +146,7 @@ class Session:
 
                 self.ping_task = self.client.loop.create_task(self.ping_worker())
 
-                log.info("Session initialized: Layer %s", layer)
+                log.info("Session initialized: Pyrogram v%s (Layer %s)", pyrogram.__version__, layer)
                 log.info("Device: %s - %s", self.client.device_model, self.client.app_version)
                 log.info("System: %s (%s)", self.client.system_version, self.client.lang_code)
             except (AuthKeyDuplicated, Unauthorized) as e:
