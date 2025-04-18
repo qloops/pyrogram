@@ -89,7 +89,7 @@ class Animation(Object):
         self.height = height
         self.duration = duration
         self.thumbs = thumbs
-    
+
     async def add_to_gifs(
         self,
         unsave: bool = False
@@ -99,7 +99,7 @@ class Animation(Object):
         .. include:: /_includes/usable-by/users.rst
 
         Use as a shortcut for:
-        
+
         .. code-block:: python
 
             await app.add_to_gifs(message.animation.file_id)
@@ -159,7 +159,7 @@ class Animation(Object):
                 if isinstance(v, raw.types.VideoSize):
                     videos.append(v)
 
-            videos.sort(key=lambda v: v.size)
+            videos.sort(key=lambda v: v.w * v.h)
 
             main = videos[-1]
 
