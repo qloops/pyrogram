@@ -406,7 +406,7 @@ def pyrogram_api():
         Payments
             apply_gift_code
             check_gift_code
-            convert_gift
+            convert_gift_to_stars
             get_payment_form
             get_available_gifts
             get_upgraded_gift

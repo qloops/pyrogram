@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
+
 import pyrogram
 from pyrogram import raw
 
@@ -23,15 +25,19 @@ from pyrogram import raw
 class ShowGift:
     async def show_gift(
         self: "pyrogram.Client",
-        message_id: int
+        owned_gift_id: str
     ) -> bool:
-        """Display the star gift in your profile.
+        """Display gift on the current user's or the channel's profile page.
+
+        .. note::
+
+            Requires `can_post_messages` administrator right in the channel chat.
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            message_id (``int``):
-                Unique message identifier of star gift.
+            owned_gift_id (``str``):
+                Identifier of the gift.
 
         Returns:
             ``bool``: On success, True is returned.
@@ -39,14 +45,27 @@ class ShowGift:
         Example:
             .. code-block:: python
 
-                # Show gift
-                app.show_gift(message_id=123)
+                # Show gift in user profile
+                await app.show_gift(owned_gift_id="123")
+
+                # Show gift in channel (owned_gift_id packed in format chatID_savedID)
+                await app.show_gift(owned_gift_id="123_456")
         """
+        match = re.search(r"(\d+)_(\d+)", str(owned_gift_id))
+
+        if match:
+            stargift = raw.types.InputSavedStarGiftChat(
+                peer=await self.resolve_peer(match.group(1)),
+                saved_id=int(match.group(2))
+            )
+        else:
+            stargift = raw.types.InputSavedStarGiftUser(
+                msg_id=int(owned_gift_id)
+            )
+
         r = await self.invoke(
             raw.functions.payments.SaveStarGift(
-                stargift=raw.types.InputSavedStarGiftUser(
-                    msg_id=message_id
-                ),
+                stargift=stargift,
                 unsave=False
             )
         )

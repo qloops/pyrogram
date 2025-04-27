@@ -35,7 +35,7 @@ class GetAvailableGifts:
         Example:
             .. code-block:: python
 
-                app.get_available_gifts()
+                await app.get_available_gifts()
         """
         r = await self.invoke(
             raw.functions.payments.GetStarGifts(hash=0)

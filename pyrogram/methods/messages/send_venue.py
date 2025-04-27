@@ -130,7 +130,7 @@ class SendVenue:
         Example:
             .. code-block:: python
 
-                app.send_venue(
+                await app.send_venue(
                     "me", latitude, longitude,
                     "Venue title", "Venue address")
         """

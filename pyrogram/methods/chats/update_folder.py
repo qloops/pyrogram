@@ -115,7 +115,7 @@ class UpdateFolder:
             .. code-block:: python
 
                 # Create or update folder
-                app.update_folder(folder_id, title="New folder", included_chats="me")
+                await app.update_folder(folder_id, title="New folder", included_chats="me")
         """
         if not isinstance(included_chats, list):
             included_chats = [included_chats] if included_chats else []

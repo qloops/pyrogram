@@ -18,7 +18,7 @@
 
 from .apply_gift_code import ApplyGiftCode
 from .check_gift_code import CheckGiftCode
-from .convert_gift import ConvertGift
+from .convert_gift_to_stars import ConvertGiftToStars
 from .get_payment_form import GetPaymentForm
 from .get_stars_balance import GetStarsBalance
 from .get_upgraded_gift import GetUpgradedGift
@@ -36,7 +36,7 @@ from .upgrade_gift import UpgradeGift
 class Payments(
     ApplyGiftCode,
     CheckGiftCode,
-    ConvertGift,
+    ConvertGiftToStars,
     GetPaymentForm,
     GetStarsBalance,
     GetUpgradedGift,

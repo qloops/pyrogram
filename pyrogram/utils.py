@@ -204,7 +204,7 @@ async def parse_messages(
                         is_scheduled=isinstance(u, raw.types.UpdateNewScheduledMessage),
                         business_connection_id=getattr(u, "connection_id", business_connection_id),
                         raw_reply_to_message=getattr(u, "reply_to_message", None),
-                        replies=0
+                        replies=replies
                     )
                 )
 

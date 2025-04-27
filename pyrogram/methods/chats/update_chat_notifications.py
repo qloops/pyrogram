@@ -61,17 +61,17 @@ class UpdateChatNotifications:
             .. code-block:: python
 
                 # Mute a chat permanently
-                app.update_chat_notifications(chat_id, mute=True)
+                await app.update_chat_notifications(chat_id, mute=True)
 
                 # Mute a chat for 10 minutes
-                app.update_chat_notifications(
+                await app.update_chat_notifications(
                     chat_id,
                     mute=True
                     mute_until=datetime.timedelta(minutes=10)
                 )
 
                 # Unmute a chat
-                app.update_chat_notifications(chat_id, mute=False)
+                await app.update_chat_notifications(chat_id, mute=False)
         """
         if not mute_until:
             mute_until = utils.max_datetime() if mute else utils.zero_datetime()

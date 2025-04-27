@@ -43,10 +43,10 @@ class GetStarsBalance:
             .. code-block:: python
 
                 # Get stars balance
-                app.get_stars_balance()
+                await app.get_stars_balance()
 
                 # Get stars balance of a bot
-                app.get_stars_balance(chat_id="pyrogrambot")
+                await app.get_stars_balance(chat_id="pyrogrambot")
         """
         if chat_id is None:
             peer = raw.types.InputPeerSelf()

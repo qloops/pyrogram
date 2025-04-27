@@ -42,7 +42,7 @@ class CanPostStories:
             .. code-block:: python
 
                 # Check if you can send story to chat id
-                app.can_post_stories(chat_id)
+                await app.can_post_stories(chat_id)
         """
         r = await self.invoke(
             raw.functions.stories.CanSendStory(

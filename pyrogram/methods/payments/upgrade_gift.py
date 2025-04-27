@@ -16,66 +16,96 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
 from typing import Optional
 
 import pyrogram
-from pyrogram import errors, raw
+from pyrogram import errors, raw, types, utils
 
 
 class UpgradeGift:
     async def upgrade_gift(
         self: "pyrogram.Client",
-        message_id: int,
-        keep_details: Optional[bool] = None
-    ) -> bool:
-        """Upgrade star gift to unique.
+        owned_gift_id: str,
+        keep_original_details: Optional[bool] = None,
+        # star_count: int = None
+        business_connection_id: str = None
+    ) -> "types.Message":
+        """Upgrade a given regular gift to a unique gift.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. note::
+
+            Requires the `can_transfer_and_upgrade_gifts` business bot right.
+            Additionally requires the `can_transfer_stars` business bot right if the upgrade is paid.
+
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
-            message_id (``int``):
-                Unique message identifier of star gift.
+            owned_gift_id (``str``):
+                Unique identifier of the regular gift that should be upgraded to a unique one.
 
-            keep_details (``bool``):
-                Pass True if you want to keep the original details of the gift like caption.
+            keep_original_details (``bool``, *optional*):
+                Pass True to keep the original gift text, sender and receiver in the upgraded gift.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection.
+                For bots only.
 
         Returns:
-            ``bool``: On success, True is returned.
+            :obj:`~pyrogram.types.Message`: On success, the sent message is returned.
 
         Example:
             .. code-block:: python
 
                 # Upgrade gift
-                app.upgrade_gift(message_id=123)
+                await app.upgrade_gift(owned_gift_id="123")
+
+                # Upgrade gift in channel (owned_gift_id packed in format chatID_savedID)
+                await app.upgrade_gift(owned_gift_id="123_456")
         """
+        match = re.search(r"(\d+)_(\d+)", str(owned_gift_id))
+
+        if match:
+            stargift = raw.types.InputSavedStarGiftChat(
+                peer=await self.resolve_peer(match.group(1)),
+                saved_id=int(match.group(2))
+            )
+        else:
+            stargift = raw.types.InputSavedStarGiftUser(
+                msg_id=int(owned_gift_id)
+            )
+
         try:
-            await self.invoke(
+            r = await self.invoke(
                 raw.functions.payments.UpgradeStarGift(
-                    stargift=raw.types.InputSavedStarGiftUser(
-                        msg_id=message_id
-                    ),
-                    keep_original_details=keep_details
-                )
+                    stargift=stargift,
+                    keep_original_details=keep_original_details
+                ),
+                business_connection_id=business_connection_id
             )
         except errors.PaymentRequired:
             invoice = raw.types.InputInvoiceStarGiftUpgrade(
-                stargift=raw.types.InputSavedStarGiftUser(
-                    msg_id=message_id
-                ),
-                keep_original_details=keep_details
+                stargift=stargift,
+                keep_original_details=keep_original_details
             )
 
-            form = await self.invoke(
-                raw.functions.payments.GetPaymentForm(
-                    invoice=invoice
-                )
-            )
-
-            await self.invoke(
+            r = await self.invoke(
                 raw.functions.payments.SendStarsForm(
-                    form_id=form.form_id,
+                    form_id=(await self.invoke(
+                        raw.functions.payments.GetPaymentForm(
+                            invoice=invoice
+                        ),
+                        business_connection_id=business_connection_id
+                    )).form_id,
                     invoice=invoice
-                )
+                ),
+                business_connection_id=business_connection_id
             )
 
-        return True
+        return (
+            await utils.parse_messages(
+                client=self,
+                messages=r.updates if isinstance(r, raw.types.payments.PaymentResult) else r,
+                business_connection_id=business_connection_id
+            )
+        )[0]

@@ -48,13 +48,13 @@ class SetChatTTL:
             .. code-block:: python
 
                 # Set TTL for a chat to 1 day
-                app.set_chat_ttl(chat_id, 86400)
+                await app.set_chat_ttl(chat_id, 86400)
 
                 # Set TTL for a chat to 1 week
-                app.set_chat_ttl(chat_id, 604800)
+                await app.set_chat_ttl(chat_id, 604800)
 
                 # Disable TTL for this chat
-                app.set_chat_ttl(chat_id, 0)
+                await app.set_chat_ttl(chat_id, 0)
         """
         r = await self.invoke(
             raw.functions.messages.SetHistoryTTL(

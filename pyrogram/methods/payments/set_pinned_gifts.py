@@ -16,8 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-
-from typing import List
+import re
+from typing import List, Union
 
 import pyrogram
 from pyrogram import raw
@@ -26,14 +26,20 @@ from pyrogram import raw
 class SetPinnedGifts:
     async def set_pinned_gifts(
         self: "pyrogram.Client",
-        received_gift_ids: List[int],
+        owner_id: Union[int, str],
+        owned_gift_ids: List[str],
     ) -> bool:
         """Change the list of pinned gifts on the current user.
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            received_gift_ids (List of ``int``):
+            owner_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            owned_gift_ids (List of ``str``):
                 New list of pinned gifts.
                 All gifts must be upgraded and saved on the profile page first.
 
@@ -43,19 +49,33 @@ class SetPinnedGifts:
         Example:
             .. code-block:: python
 
-                # Send gift
-                await app.set_pinned_gifts(received_gift_ids=[123, 456])
+                # Set pinned gifts in user profile
+                await app.set_pinned_gifts(received_gift_ids=["123", "456"])
         """
-        # TODO: Add channels support for this and other methods
-        await self.invoke(
-            raw.functions.payments.ToggleStarGiftsPinnedToTop(
-                peer=raw.types.InputPeerSelf(),
-                stargift=[
+        stargifts = []
+
+        for gift in owned_gift_ids:
+            match = re.search(r"(\d+)_(\d+)", str(gift))
+
+            if match:
+                stargifts.append(
+                    raw.types.InputSavedStarGiftChat(
+                        peer=await self.resolve_peer(match.group(1)),
+                        saved_id=int(match.group(2))
+                    )
+                )
+            else:
+                stargifts.append(
                     raw.types.InputSavedStarGiftUser(
-                        msg_id=mid
-                    ) for mid in received_gift_ids
-                ]
+                        msg_id=int(gift)
+                    )
+                )
+
+        r = await self.invoke(
+            raw.functions.payments.ToggleStarGiftsPinnedToTop(
+                peer=await self.resolve_peer(owner_id),
+                stargift=stargifts
             )
         )
 
-        return True
+        return r

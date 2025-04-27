@@ -113,7 +113,7 @@ class SendLocation:
         Example:
             .. code-block:: python
 
-                app.send_location("me", latitude, longitude)
+                await app.send_location("me", latitude, longitude)
         """
         if any(
             (

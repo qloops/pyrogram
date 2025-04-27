@@ -391,20 +391,20 @@ class Gift(Object):
 
         .. code-block:: python
 
-            await client.show_star_gift(
-                message_id=message_id
+            await client.show_gift(
+                owned_gift_id="message_id"
             )
 
         Example:
             .. code-block:: python
 
-                await star_gift.show()
+                await gift.show()
 
         Returns:
             ``bool``: On success, True is returned.
         """
         return await self._client.show_gift(
-            message_id=self.message_id
+            owned_gift_id=str(self.message_id)
         )
 
     async def hide(self) -> bool:
@@ -414,20 +414,20 @@ class Gift(Object):
 
         .. code-block:: python
 
-            await client.hide_star_gift(
-                message_id=message_id
+            await client.hide_gift(
+                owned_gift_id="message_id"
             )
 
         Example:
             .. code-block:: python
 
-                await star_gift.hide()
+                await gift.hide()
 
         Returns:
             ``bool``: On success, True is returned.
         """
         return await self._client.hide_gift(
-            message_id=self.message_id
+            owned_gift_id=str(self.message_id)
         )
 
     async def convert(self) -> bool:
@@ -437,43 +437,44 @@ class Gift(Object):
 
         .. code-block:: python
 
-            await client.convert_star_gift(
-                message_id=message_id
+            await client.convert_gift_to_stars(
+                owned_gift_id="message_id"
             )
 
         Example:
             .. code-block:: python
 
-                await star_gift.convert()
+                await gift.convert()
 
         Returns:
             ``bool``: On success, True is returned.
         """
-        return await self._client.convert_gift(
-            message_id=self.message_id
+        return await self._client.convert_gift_to_stars(
+            owned_gift_id=str(self.message_id)
         )
 
-    async def upgrade(self) -> bool:
+    async def upgrade(self, keep_original_details: Optional[bool] = None) -> bool:
         """Bound method *upgrade* of :obj:`~pyrogram.types.Gift`.
 
         Use as a shortcut for:
 
         .. code-block:: python
 
-            await client.upgrade_star_gift(
-                message_id=message_id
+            await client.upgrade_gift(
+                owned_gift_id="message_id"
             )
 
         Example:
             .. code-block:: python
 
-                await star_gift.upgrade()
+                await gift.upgrade()
 
         Returns:
-            ``bool``: On success, True is returned.
+            :obj:`~pyrogram.types.Message`: On success, the sent message is returned.
         """
         return await self._client.upgrade_gift(
-            message_id=self.message_id
+            owned_gift_id=str(self.message_id),
+            keep_original_details=keep_original_details
         )
 
     async def transfer(self, to_chat_id: Union[int, str]) -> bool:
@@ -483,22 +484,22 @@ class Gift(Object):
 
         .. code-block:: python
 
-            await client.transfer_star_gift(
-                message_id=message_id,
-                to_chat_id=to_chat_id
+            await client.transfer_gift(
+                owned_gift_id="message_id",
+                new_owner_chat_id=to_chat_id
             )
 
         Example:
             .. code-block:: python
 
-                await star_gift.transfer(to_chat_id=123)
+                await gift.transfer(new_owner_chat_id=123)
 
         Returns:
-            ``bool``: On success, True is returned.
+            :obj:`~pyrogram.types.Message`: On success, the sent message is returned.
         """
         return await self._client.transfer_gift(
-            message_id=self.message_id,
-            to_chat_id=to_chat_id
+            owned_gift_id=str(self.message_id),
+            new_owner_chat_id=to_chat_id
         )
 
     async def wear(self) -> bool:
@@ -517,7 +518,7 @@ class Gift(Object):
         Example:
             .. code-block:: python
 
-                await star_gift.wear()
+                await gift.wear()
 
         Returns:
             ``bool``: On success, True is returned.

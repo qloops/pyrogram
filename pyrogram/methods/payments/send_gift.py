@@ -17,10 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from typing import Optional, Union, List
+from typing import List, Optional, Union
 
 import pyrogram
-from pyrogram import raw, types, enums, utils
+from pyrogram import enums, raw, types, utils
 
 
 class SendGift:
@@ -31,10 +31,10 @@ class SendGift:
         text: Optional[str] = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: Optional[List["types.MessageEntity"]] = None,
-        hide_my_name: Optional[bool] = None,
-        pay_for_upgrade: Optional[bool] = None
-    ) -> bool:
-        """Send star gift.
+        is_private: Optional[bool] = None,
+        pay_for_upgrade: Optional[bool] = None,
+    ) -> "types.Message":
+        """Send a gift to another user or channel chat. May return an error with a message "STARGIFT_USAGE_LIMITED" if the gift was sold out.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
@@ -49,7 +49,7 @@ class SendGift:
                 To get all available star gifts use :meth:`~pyrogram.Client.get_available_gifts`.
 
             text (``str``, *optional*):
-                Text of the message to be sent.
+                Text that will be shown along with the gift, 0-128 characters.
 
             parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.
@@ -58,45 +58,44 @@ class SendGift:
             entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
-            hide_my_name (``bool``, *optional*):
-                If True, your name will be hidden from visitors to the gift recipient's profile.
-                For userbots only.
+            is_private (``bool``, *optional*):
+                Pass True to show gift text and sender only to the gift receiver. Otherwise, everyone will be able to see them.
 
             pay_for_upgrade (``bool``, *optional*):
-                If True, gift upgrade will be paid from the bot’s balance, thereby making the upgrade free for the receiver.
+                Pass True to additionally pay for the gift upgrade and allow the receiver to upgrade it for free.
 
         Returns:
-            ``bool``: On success, True is returned.
+            :obj:`~pyrogram.types.Message`: On success, the sent message is returned.
 
         Example:
             .. code-block:: python
 
                 # Send gift
-                app.send_gift(chat_id=chat_id, gift_id=123)
+                await app.send_gift(chat_id=chat_id, gift_id=123)
         """
-        peer = await self.resolve_peer(chat_id)
-
         text, entities = (await utils.parse_text_entities(self, text, parse_mode, entities)).values()
 
         invoice = raw.types.InputInvoiceStarGift(
-            peer=peer,
+            peer=await self.resolve_peer(chat_id),
             gift_id=gift_id,
-            hide_name=hide_my_name,
+            hide_name=is_private,
             include_upgrade=pay_for_upgrade,
             message=raw.types.TextWithEntities(text=text, entities=entities or []) if text else None
         )
 
-        form = await self.invoke(
-            raw.functions.payments.GetPaymentForm(
-                invoice=invoice
-            )
-        )
-
-        await self.invoke(
+        r = await self.invoke(
             raw.functions.payments.SendStarsForm(
-                form_id=form.form_id,
+                form_id=(await self.invoke(
+                    raw.functions.payments.GetPaymentForm(
+                        invoice=invoice
+                    )
+                )).form_id,
                 invoice=invoice
             )
         )
 
-        return True
+        return (
+            await utils.parse_messages(
+                self, r.updates
+            )
+        )[0]

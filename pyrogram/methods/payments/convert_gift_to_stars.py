@@ -16,23 +16,33 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
 
 import pyrogram
 from pyrogram import raw
 
 
-class ConvertGift:
-    async def convert_gift(
+class ConvertGiftToStars:
+    async def convert_gift_to_stars(
         self: "pyrogram.Client",
-        message_id: int
+        owned_gift_id: str,
+        business_connection_id: str = None
     ) -> bool:
-        """Convert star gift to stars.
+        """Convert a given regular gift to Telegram Stars.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. note::
+
+            Requires the `can_convert_gifts_to_stars` business bot right.
+
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
-            message_id (``int``):
-                Unique message identifier of star gift.
+            owned_gift_id (``str``):
+                Unique identifier of the regular gift that should be converted to Telegram Stars.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection.
+                For bots only.
 
         Returns:
             ``bool``: On success, True is returned.
@@ -41,14 +51,25 @@ class ConvertGift:
             .. code-block:: python
 
                 # Convert gift
-                app.convert_gift(message_id=123)
+                await app.convert_gift_to_stars(message_id=123)
         """
+        match = re.search(r"(\d+)_(\d+)", str(owned_gift_id))
+
+        if match:
+            stargift = raw.types.InputSavedStarGiftChat(
+                peer=await self.resolve_peer(match.group(1)),
+                saved_id=int(match.group(2))
+            )
+        else:
+            stargift = raw.types.InputSavedStarGiftUser(
+                msg_id=int(owned_gift_id)
+            )
+
         r = await self.invoke(
             raw.functions.payments.ConvertStarGift(
-                stargift=raw.types.InputSavedStarGiftUser(
-                    msg_id=message_id
-                )
-            )
+                stargift=stargift
+            ),
+            business_connection_id=business_connection_id
         )
 
         return r
