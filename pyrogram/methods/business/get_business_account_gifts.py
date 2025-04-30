@@ -16,16 +16,16 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Union
+from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types
 
 
-class GetChatGifts:
-    async def get_chat_gifts(
+class GetBusinessAccountGifts:
+    async def get_business_account_gifts(
         self: "pyrogram.Client",
-        chat_id: Union[int, str],
+        business_connection_id: str,
         exclude_unsaved: Optional[bool] = None,
         exclude_saved: Optional[bool] = None,
         exclude_unlimited: Optional[bool] = None,
@@ -33,17 +33,19 @@ class GetChatGifts:
         exclude_upgraded: Optional[bool] = None,
         sort_by_price: Optional[bool] = None,
         limit: int = 0,
-        offset: str = ""
+        offset: str = "",
     ):
-        """Get all gifts owned by specified chat.
+        """Return the gifts received and owned by a managed business account.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. note::
+
+            Requires the `can_view_gifts_and_stars` business bot right.
+
+        .. include:: /_includes/usable-by/bots.rst
 
         Parameters:
-            chat_id (``int`` | ``str``):
-                Unique identifier (int) or username (str) of the target chat.
-                For your personal cloud (Saved Messages) you can simply use "me" or "self".
-                For a contact that exists in your Telegram address book you can use his phone number (str).
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which to send the request.
 
             exclude_unsaved (``bool``, *optional*):
                 Pass True to exclude gifts that aren’t saved to the account’s profile page.
@@ -75,19 +77,19 @@ class GetChatGifts:
         Example:
             .. code-block:: python
 
-                async for gift in app.get_chat_gifts(chat_id):
+                async for gift in app.get_business_account_gifts(connection_id):
                     print(gift)
         """
-        peer = await self.resolve_peer(chat_id)
-
         current = 0
         total = abs(limit) or (1 << 31) - 1
         limit = min(100, total)
 
+        connection_info = await self.get_business_connection(business_connection_id)
+
         while True:
             r = await self.invoke(
                 raw.functions.payments.GetSavedStarGifts(
-                    peer=peer,
+                    peer=await self.resolve_peer(connection_info.user.id),
                     offset=offset,
                     limit=limit,
                     exclude_unsaved=exclude_unsaved,
@@ -97,7 +99,8 @@ class GetChatGifts:
                     exclude_unique=exclude_upgraded,
                     sort_by_value=sort_by_price
                 ),
-                sleep_threshold=60
+                sleep_threshold=60,
+                business_connection_id=business_connection_id
             )
 
             users = {i.id: i for i in r.users}

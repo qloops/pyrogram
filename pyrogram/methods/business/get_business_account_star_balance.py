@@ -16,38 +16,45 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Optional, Union
+
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import raw
 
 
-class GetBusinessConnection:
-    async def get_business_connection(
+class GetBusinessAccountStarBalance:
+    async def get_business_account_star_balance(
         self: "pyrogram.Client",
-        business_connection_id: str
-    ):
-        """Use this method to get information about the connection of the bot with a business account.
+        business_connection_id: str,
+    ) -> int:
+        """Return the amount of Telegram Stars owned by a managed business account.
+
+        .. note::
+
+            Requires the `can_view_gifts_and_stars` business bot right.
 
         .. include:: /_includes/usable-by/bots.rst
 
         Parameters:
-            connection_id (``str``):
-                Unique identifier of the business connection.
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which to send the request.
 
         Returns:
-            :obj:`~pyrogram.types.BusinessConnection`: On success the business connection is returned.
+            ``int``: On success, the current stars balance is returned.
 
         Example:
             .. code-block:: python
 
-                # Get a business connection information
-                await app.get_business_connection(connection_id)
+                # Get stars balance
+                await app.get_business_account_star_balance("connection_id")
         """
+        connection_info = await self.get_business_connection(business_connection_id)
+
         r = await self.invoke(
-            raw.functions.account.GetBotBusinessConnection(
-                connection_id=business_connection_id
-            )
+            raw.functions.payments.GetStarsStatus(
+                peer=await self.resolve_peer(connection_info.user.id),
+            ),
+            business_connection_id=business_connection_id
         )
 
-        users = {i.id: i for i in r.users}
-
-        return types.BusinessConnection._parse(self, r.updates[0].connection, users)
+        return r.balance.amount

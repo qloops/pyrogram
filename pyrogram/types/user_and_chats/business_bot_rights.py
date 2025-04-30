@@ -21,12 +21,12 @@ from pyrogram import raw
 from ..object import Object
 
 
-class BusinessBotPermissions(Object):
+class BusinessBotRights(Object):
     """Describes actions that a connected business bot is allowed to take in a chat.
 
     Parameters:
         can_reply (``bool``, *optional*):
-            True, if the bot can send and edit messages in the private chats that had incoming messages in the last 24 hours
+            True, if the bot can send and edit messages in the private chats that had incoming messages in the last 24 hours.
 
         can_read_messages (``bool``, *optional*):
             True, if the bot can mark incoming private messages as read.
@@ -105,9 +105,9 @@ class BusinessBotPermissions(Object):
         self.can_manage_stories = can_manage_stories
 
     @staticmethod
-    def _parse(permissions: "raw.types.BusinessBotRights") -> "BusinessBotPermissions":
+    def _parse(permissions: "raw.types.BusinessBotRights") -> "BusinessBotRights":
         if isinstance(permissions, raw.types.BusinessBotRights):
-            return BusinessBotPermissions(
+            return BusinessBotRights(
                 can_reply=permissions.reply,
                 can_read_messages=permissions.read_messages,
                 can_delete_sent_messages=permissions.delete_sent_messages,

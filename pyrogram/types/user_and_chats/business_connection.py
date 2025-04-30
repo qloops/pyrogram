@@ -31,19 +31,16 @@ class BusinessConnection(Object):
             Unique identifier of the business connection that belongs to the user.
 
         user (:obj:`~pyrogram.types.User`):
-            User that connected to the business connection.
+            Business account user that created the business connection.
 
         dc_id (``int``):
             Datacenter identifier of the user.
 
         date (:py:obj:`~datetime.datetime`):
-            Date when the user connected to the business.
+            Date the connection was established in Unix time.
 
-        can_reply (``bool``, *optional*):
-            Whether the user can reply to the business.
-
-        disabled (``bool``, *optional*):
-            Whether the business connection is disabled.
+        is_enabled (``bool``, *optional*):
+            True, if the connection is active.
 
         permissions (:obj:`~pyrogram.types.BusinessBotPermissions`, *optional*):
             Permissions for the business bot.
@@ -56,17 +53,15 @@ class BusinessConnection(Object):
         user: "types.User",
         dc_id: int,
         date: datetime,
-        can_reply: bool = None,
-        disabled: bool = None,
-        permissions: "types.BusinessBotPermissions" = None,
+        is_enabled: bool = None,
+        rights: "types.BusinessBotRights" = None
     ):
         self.id = id
         self.user = user
         self.dc_id = dc_id
         self.date = date
-        self.can_reply = can_reply
-        self.disabled = disabled
-        self.permissions = permissions
+        self.is_enabled = is_enabled
+        self.rights = rights
 
     @staticmethod
     def _parse(
@@ -82,7 +77,6 @@ class BusinessConnection(Object):
             user=types.User._parse(client, users.get(connection.user_id)),
             dc_id=connection.dc_id,
             date=utils.timestamp_to_datetime(connection.date),
-            can_reply=getattr(connection, "can_reply", None),
-            disabled=getattr(connection, "disabled", None),
-            permissions=types.BusinessBotPermissions._parse(getattr(connection, "permissions", None)),
+            is_enabled=not connection.disabled,
+            rights=types.BusinessBotRights._parse(connection.rights)
         )

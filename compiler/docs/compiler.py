@@ -464,6 +464,8 @@ def pyrogram_api():
         """,
         business="""
         Business
+            get_business_account_gifts
+            get_business_account_star_balance
             get_business_connection
         """,
         authorization="""
@@ -603,7 +605,7 @@ def pyrogram_api():
             PrivacyRule
             StoriesStealthMode
             BotVerification
-            BusinessBotPermissions
+            BusinessBotRights
             ChatSettings
             GlobalPrivacySettings
             HistoryCleared

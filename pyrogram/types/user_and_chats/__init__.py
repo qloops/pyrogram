@@ -19,7 +19,7 @@
 from .accepted_gift_types import AcceptedGiftTypes
 from .birthday import Birthday
 from .bot_verification import BotVerification
-from .business_bot_permissions import BusinessBotPermissions
+from .business_bot_rights import BusinessBotRights
 from .business_connection import BusinessConnection
 from .business_intro import BusinessIntro
 from .business_recipients import BusinessRecipients
@@ -64,7 +64,7 @@ __all__ = [
     "AcceptedGiftTypes",
     "Birthday",
     "BotVerification",
-    "BusinessBotPermissions",
+    "BusinessBotRights",
     "BusinessConnection",
     "BusinessIntro",
     "BusinessRecipients",
