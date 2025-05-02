@@ -5,7 +5,7 @@ TAG = v$(shell grep -E '__version__ = ".*"' pyrogram/__init__.py | cut -d\" -f2)
 
 RM := rm -rf
 
-.PHONY: venv clean-build clean-api clean-docs clean api docs build
+.PHONY: venv clean-build clean-api clean-docs clean api docs build tag dtag
 
 venv:
 	$(RM) $(VENV)
@@ -23,21 +23,17 @@ clean-api:
 clean-docs:
 	$(RM) docs/build docs/source/api/bound-methods docs/source/api/methods docs/source/api/types docs/source/api/enums docs/source/telegram
 
-clean:
-	make clean-build
-	make clean-api
-	make clean-docs
+clean: clean-build clean-api clean-docs
 
 api:
 	cd compiler/api && ../../$(PYTHON) compiler.py
 	cd compiler/errors && ../../$(PYTHON) compiler.py
 
-docs:
+docs: clean-docs
 	cd compiler/docs && ../../$(PYTHON) compiler.py
 	$(VENV)/bin/sphinx-build -b dirhtml "docs/source" "docs/build/html" -j auto
 
-build:
-	make clean
+build: clean
 	$(PYTHON) setup.py sdist
 	$(PYTHON) setup.py bdist_wheel
 
