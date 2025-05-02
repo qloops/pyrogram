@@ -282,7 +282,6 @@ def pyrogram_api():
             get_custom_emoji_stickers
             send_web_page
             start_bot
-            update_color
             delete_chat_history
             send_paid_media
             send_paid_reaction
@@ -464,6 +463,7 @@ def pyrogram_api():
         """,
         business="""
         Business
+            delete_business_messages
             get_business_account_gifts
             get_business_account_star_balance
             get_business_connection
