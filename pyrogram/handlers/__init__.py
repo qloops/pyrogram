@@ -26,6 +26,7 @@ from .chosen_inline_result_handler import ChosenInlineResultHandler
 from .deleted_business_messages_handler import DeletedBusinessMessagesHandler
 from .deleted_messages_handler import DeletedMessagesHandler
 from .start_handler import StartHandler
+from .connect_handler import ConnectHandler
 from .disconnect_handler import DisconnectHandler
 from .edited_business_message_handler import EditedBusinessMessageHandler
 from .edited_message_handler import EditedMessageHandler

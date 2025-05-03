@@ -146,6 +146,12 @@ class Session:
 
                 self.ping_task = self.client.loop.create_task(self.ping_worker())
 
+                if not self.is_media and callable(self.client.connect_handler):
+                    try:
+                        await self.client.connect_handler(self.client)
+                    except Exception as e:
+                        log.exception(e)
+
                 log.info("Session initialized: Pyrogram v%s (Layer %s)", pyrogram.__version__, layer)
                 log.info("Device: %s - %s", self.client.device_model, self.client.app_version)
                 log.info("System: %s (%s)", self.client.system_version, self.client.lang_code)
