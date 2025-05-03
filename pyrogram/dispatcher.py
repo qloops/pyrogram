@@ -275,6 +275,12 @@ class Dispatcher:
                 await self.client.recover_gaps()
 
     async def stop(self, clear: bool = True):
+        if callable(self.client.stop_handler):
+            try:
+                await self.client.stop_handler(self.client)
+            except Exception as e:
+                log.exception(e)
+
         if not self.client.no_updates:
             for i in range(self.client.workers):
                 self.updates_queue.put_nowait(None)

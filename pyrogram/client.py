@@ -375,6 +375,7 @@ class Client(Methods):
         self.takeout_id = None
 
         self.start_handler = None
+        self.stop_handler = None
         self.connect_handler = None
         self.disconnect_handler = None
 
