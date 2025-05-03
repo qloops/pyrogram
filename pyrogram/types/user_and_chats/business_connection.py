@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 from pyrogram import types, raw, utils
 from ..object import Object
@@ -66,11 +66,14 @@ class BusinessConnection(Object):
     @staticmethod
     def _parse(
         client,
-        connection: "raw.types.BotBusinessConnection" = None,
+        connection: Union["raw.types.BotBusinessConnection", "raw.types.UpdateBotBusinessConnect"] = None,
         users = {}
     ) -> Optional["BusinessConnection"]:
         if not connection:
             return None
+
+        if isinstance(connection, raw.types.UpdateBotBusinessConnect):
+            connection = connection.connection
 
         return BusinessConnection(
             id=connection.connection_id,
