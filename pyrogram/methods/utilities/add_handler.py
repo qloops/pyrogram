@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import pyrogram
-from pyrogram.handlers import ConnectHandler, DisconnectHandler
+from pyrogram.handlers import StartHandler, DisconnectHandler
 from pyrogram.handlers.handler import Handler
 
 
@@ -59,8 +59,8 @@ class AddHandler:
 
                 app.run()
         """
-        if isinstance(handler, ConnectHandler):
-            self.connect_handler = handler.callback
+        if isinstance(handler, StartHandler):
+            self.start_handler = handler.callback
         elif isinstance(handler, DisconnectHandler):
             self.disconnect_handler = handler.callback
         else:
