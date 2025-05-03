@@ -35,8 +35,6 @@ class OnMessageReaction:
 
         .. include:: /_includes/usable-by/bots.rst
 
-        .. include:: /_includes/usable-by/bots.rst
-
         Parameters:
             filters (:obj:`~pyrogram.filters`, *optional*):
                 Pass one or more filters to allow only a subset of updates to be passed in your function.
