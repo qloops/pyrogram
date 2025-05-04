@@ -80,7 +80,7 @@ class SendInvoice:
                 Product name, 1-32 characters.
 
             description (``str``):
-                Product description, 1-255 characters
+                Product description, 1-255 characters.
 
             payload (``str`` | ``bytes``):
                 Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
