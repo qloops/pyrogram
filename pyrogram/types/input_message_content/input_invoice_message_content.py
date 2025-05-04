@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 import pyrogram
 from pyrogram import raw, types
@@ -98,7 +98,7 @@ class InputInvoiceMessageContent(InputMessageContent):
         description: str,
         payload: Union[str, bytes],
         currency: str,
-        prices: list["types.LabeledPrice"],
+        prices: List["types.LabeledPrice"],
         provider_token: Optional[str] = None,
         max_tip_amount: Optional[int] = None,
         suggested_tip_amounts: list[int] = None,
