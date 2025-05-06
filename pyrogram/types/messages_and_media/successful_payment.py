@@ -121,13 +121,8 @@ class SuccessfulPayment(Object):
                     name=getattr(payment_info, "name", None),
                     phone_number=getattr(payment_info, "phone", None),
                     email=getattr(payment_info, "email", None),
-                    shipping_address=types.ShippingAddress(
-                        country_code=payment.info.shipping_address.country_iso2,
-                        state=payment.info.shipping_address.state,
-                        city=payment.info.shipping_address.city,
-                        street_line1=payment.info.shipping_address.street_line1,
-                        street_line2=payment.info.shipping_address.street_line2,
-                        post_code=payment.info.shipping_address.post_code
+                    shipping_address=types.ShippingAddress._parse(
+                        payment_info.shipping_address
                     )
                 )
 
