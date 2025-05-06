@@ -23,4 +23,6 @@ from .all import objects
 
 for k, v in objects.items():
     path, name = v.rsplit(".", 1)
+
+    # TODO: possibly generate a stub file (.pyi) for this
     objects[k] = getattr(import_module(path), name)

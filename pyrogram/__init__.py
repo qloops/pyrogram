@@ -39,4 +39,6 @@ from . import raw, types, filters, handlers, emoji, enums
 from .client import Client
 from .sync import idle, compose
 
+__all__ = ["raw", "types", "filters", "handlers", "emoji", "enums", "Client", "idle", "compose"]
+
 crypto_executor = ThreadPoolExecutor(1, thread_name_prefix="CryptoWorker")

@@ -17,3 +17,5 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .connection import Connection
+
+__all__ = ["Connection"]

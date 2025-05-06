@@ -6,6 +6,8 @@ from typing import Union
 from pyrogram import raw
 from pyrogram.raw.core import TLObject
 
+__all__ = ["{name}"]
+
 # We need to dynamically set `__doc__` due to `sphinx`
 {name} = Union[{types}]
 {name}.__doc__ = """
