@@ -29,8 +29,13 @@ jobs:
       - name: Build package
         run: hatch build
 
+      - name: Get package version
+        run: |
+          echo "CURRENT_LIB_VERSION=v$(hatch version)" >> $GITHUB_ENV
+
       - name: Create and upload release
         id: upload-release-asset
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.CURRENT_LIB_VERSION }}
           files: dist/*
