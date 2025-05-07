@@ -86,30 +86,11 @@ path = "pyrogram/__init__.py"
 [tool.hatch.metadata]
 allow-direct-references = true
 
-[tool.hatch.build]
-include = ["pyrogram/py.typed"]
-exclude = [
-    "tests",
-    "docs",
-    "requirements.lock",
-    "requirements-dev.lock",
-    ".github",
-    ".gitignore",
-]
-
 [tool.hatch.build.targets.sdist]
-include = ["compiler", "pyrogram"]
 exclude = [
     ".github/",
     "docs/",
     "tests/",
-    ".editorconfig",
-    ".gitignore",
-    ".pre-commit-config.yaml",
-    "CODE_OF_CONDUCT.rst",
-    "CONTRIBUTING.rst",
-    "requirements.lock",
-    "requirements-dev.lock",
     ".gitignore",
 ]
 
