@@ -59,6 +59,8 @@ BROADCAST_CALLS_DISABLED	Broadcast calls disabled
 BROADCAST_ID_INVALID	The channel is invalid
 BROADCAST_PUBLIC_VOTERS_FORBIDDEN	Polls with public voters cannot be sent in channels
 BROADCAST_REQUIRED	The request can only be used with a channel
+BUSINESS_CONNECTION_INVALID	The business connection is invalid
+BUSINESS_CONNECTION_NOT_ALLOWED	This business connection is not allowed
 BUSINESS_PEER_INVALID	Messages can't be set to the specified peer through the current [business connection](https://core.telegram.org/api/business#connected-bots).
 BUSINESS_RECIPIENTS_EMPTY	You didn't set any flag in inputBusinessBotRecipients, thus the bot cannot work with *any* peer.
 BUSINESS_WORK_HOURS_EMPTY	No work hours were specified.

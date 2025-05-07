@@ -1,6 +1,7 @@
 id	message
 ALLOW_PAYMENT_REQUIRED_X	The user has enabled paid messages with {value} stars.
 ANONYMOUS_REACTIONS_DISABLED	Sorry, anonymous administrators cannot leave reactions or participate in polls.
+BOT_ACCESS_FORBIDDEN	You can't access this bot
 BROADCAST_FORBIDDEN	The request can't be used in channels
 CHANNEL_PUBLIC_GROUP_NA	The channel/supergroup is not available
 CHAT_ACTION_FORBIDDEN	You cannot execute this action.
