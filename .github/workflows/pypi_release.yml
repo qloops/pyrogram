@@ -1,14 +1,15 @@
+name: Upload release to PyPI
+
 on:
   push:
     tags:
       - 'v*'
   workflow_dispatch: {}
 
-permissions: write-all
+permissions: read
 
 jobs:
   build-n-publish:
-    name: Build and publish to PyPI
     runs-on: ubuntu-latest
 
     steps:
@@ -20,50 +21,16 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Build source and wheel distributions
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade build twine
-          python -m build
-          make venv
-          make api
-          twine check --strict dist/kurigram*
-      - name: Publish distribution to PyPI
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: Build package
+        run: hatch build
+
+      - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-      - name: Set the Version
-        run: |
-          grep_result=$(grep -E '__version__ = ".*"' pyrogram/__init__.py)
-          prefix="__version__ = \""
-          suffix="\""
-          final_value=${grep_result#"$prefix"}
-          final_value=${final_value%"$suffix"}
-          echo "CURRENT_LIB_VERSION=$(echo 'v'$final_value)" >> $GITHUB_ENV
-      - name: Create GitHub Release
-        id: create_release
-        uses: elgohr/Github-Release-Action@v5
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag: ${{ env.CURRENT_LIB_VERSION }}
-          title: ${{ env.CURRENT_LIB_VERSION }}
-          # draft: false
-          prerelease: false
-
-      - name: Get Asset name
-        run: |
-          export PKG=$(ls dist/ | grep tar)
-          set -- $PKG
-          echo "name=$1" >> $GITHUB_ENV
-      - name: Upload Release Asset (sdist) to GitHub
-        id: upload-release-asset
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # upload_url: ${{ steps.create_release.outputs.upload_url }}
-          tag_name: ${{ env.CURRENT_LIB_VERSION }}
-          files: dist/*
-          # asset_name: ${{ env.name }}
-          # asset_content_type: application/zip
