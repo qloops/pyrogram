@@ -410,7 +410,7 @@ class Gift(Object):
             parsed_gift.can_transfer_at = utils.timestamp_to_datetime(action.can_transfer_at)
             parsed_gift.can_resell_at = utils.timestamp_to_datetime(action.can_resell_at)
             parsed_gift.transfer_price = action.transfer_stars
-            parsed_gift.resell_price = parsed_gift.resell_price or action.resell_stars
+            parsed_gift.resell_price = parsed_gift.resell_price or action.resale_stars
             parsed_gift.upgrade_message_id = message.id
 
 
