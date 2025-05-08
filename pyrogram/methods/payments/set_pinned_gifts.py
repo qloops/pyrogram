@@ -58,20 +58,20 @@ class SetPinnedGifts:
         stargifts = []
 
         for gift in owned_gift_ids:
-            SAVED_MATCH = re.search(r"(\d+)_(\d+)", str(gift))
-            SLUG_MATCH = re.search(r"(\w+-\d+)", str(gift))
+            saved_gift_match = re.match(r"^(\d+)_(\d+)$", str(gift))
+            slug_match = self.UPGRADED_GIFT_RE.match(str(gift))
 
-            if SAVED_MATCH:
+            if saved_gift_match:
                 stargifts.append(
                     raw.types.InputSavedStarGiftChat(
-                        peer=await self.resolve_peer(SAVED_MATCH.group(1)),
-                        saved_id=int(SAVED_MATCH.group(2))
+                        peer=await self.resolve_peer(saved_gift_match.group(1)),
+                        saved_id=int(saved_gift_match.group(2))
                     )
                 )
-            elif SLUG_MATCH:
+            elif slug_match:
                 stargifts.append(
                     raw.types.InputSavedStarGiftSlug(
-                        slug=SLUG_MATCH.group(1)
+                        slug=slug_match.group(1)
                     )
                 )
             else:
