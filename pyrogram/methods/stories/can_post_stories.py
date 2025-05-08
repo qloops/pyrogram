@@ -26,7 +26,7 @@ class CanPostStories:
     async def can_post_stories(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-    ) -> bool:
+    ) -> int:
         """Check whether we can post stories as the specified chat.
 
         .. include:: /_includes/usable-by/users.rst
@@ -36,7 +36,7 @@ class CanPostStories:
                 Unique identifier (int) or username (str) of the target chat.
 
         Returns:
-            ``bool``: On success, True is returned.
+            ``int``: On success, count of remaining stories that can be posted is returned.
 
         Example:
             .. code-block:: python
@@ -50,4 +50,4 @@ class CanPostStories:
             )
         )
 
-        return r
+        return r.count_remains

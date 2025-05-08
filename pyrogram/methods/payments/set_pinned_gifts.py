@@ -42,6 +42,9 @@ class SetPinnedGifts:
             owned_gift_ids (List of ``str``):
                 New list of pinned gifts.
                 All gifts must be upgraded and saved on the profile page first.
+                For a user gift, you can use the message ID (int) of the gift message.
+                For a channel gift, you can use the packed format `chatID_savedID` (str).
+                For a upgraded gift, you can use the gift link.
 
         Returns:
             ``bool``: On success, True is returned.
@@ -55,13 +58,20 @@ class SetPinnedGifts:
         stargifts = []
 
         for gift in owned_gift_ids:
-            match = re.search(r"(\d+)_(\d+)", str(gift))
+            SAVED_MATCH = re.search(r"(\d+)_(\d+)", str(gift))
+            SLUG_MATCH = re.search(r"(\w+-\d+)", str(gift))
 
-            if match:
+            if SAVED_MATCH:
                 stargifts.append(
                     raw.types.InputSavedStarGiftChat(
-                        peer=await self.resolve_peer(match.group(1)),
-                        saved_id=int(match.group(2))
+                        peer=await self.resolve_peer(SAVED_MATCH.group(1)),
+                        saved_id=int(SAVED_MATCH.group(2))
+                    )
+                )
+            elif SLUG_MATCH:
+                stargifts.append(
+                    raw.types.InputSavedStarGiftSlug(
+                        slug=SLUG_MATCH.group(1)
                     )
                 )
             else:

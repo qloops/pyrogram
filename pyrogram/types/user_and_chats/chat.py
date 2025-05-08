@@ -454,6 +454,7 @@ class Chat(Object):
             Full name of the other party in a private chat, for private chats and bots.
     """
 
+    # TODO: autotranslation
     def __init__(
         self,
         *,

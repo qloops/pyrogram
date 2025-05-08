@@ -37,7 +37,10 @@ class HideGift:
 
         Parameters:
             owned_gift_id (``str``):
-                Identifier of the gift.
+                Unique identifier of the target gift.
+                For a user gift, you can use the message ID (str) of the gift message.
+                For a channel gift, you can use the packed format `chatID_savedID` (str).
+                For a upgraded gift, you can use the gift link.
 
         Returns:
             ``bool``: On success, True is returned.
@@ -51,12 +54,17 @@ class HideGift:
                 # Hide gift in channel (owned_gift_id packed in format chatID_savedID)
                 await app.hide_gift(owned_gift_id="123_456")
         """
-        match = re.search(r"(\d+)_(\d+)", str(owned_gift_id))
+        SAVED_MATCH = re.search(r"(\d+)_(\d+)", str(owned_gift_id))
+        SLUG_MATCH = re.search(r"(\w+-\d+)", str(owned_gift_id))
 
-        if match:
+        if SAVED_MATCH:
             stargift = raw.types.InputSavedStarGiftChat(
-                peer=await self.resolve_peer(match.group(1)),
-                saved_id=int(match.group(2))
+                peer=await self.resolve_peer(SAVED_MATCH.group(1)),
+                saved_id=int(SAVED_MATCH.group(2))
+            )
+        elif SLUG_MATCH:
+            stargift = raw.types.InputSavedStarGiftSlug(
+                slug=SLUG_MATCH.group(1)
             )
         else:
             stargift = raw.types.InputSavedStarGiftUser(
