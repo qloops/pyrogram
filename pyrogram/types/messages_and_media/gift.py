@@ -49,11 +49,10 @@ class Gift(Object):
             For unique gifts only.
 
         name (``str``, *optional*):
-            Name of the star gift.
-            For unique gifts only.
+            Unique name of the upgraded gift that can be used with :meth:`~pyrogram.Client.send_resold_gift`.
 
         title (``str``, *optional*):
-            Title of the star gift.
+            The title of the upgraded gift
 
         collectible_id (``int``, *optional*):
             Collectible number of the star gift.
@@ -99,8 +98,11 @@ class Gift(Object):
         transfer_price (``int``, *optional*):
             The number of stars you need to transfer this gift.
 
-        resell_price (``int``, *optional*):
-            The number of stars you get if you resell this gift.
+        resale_price (``int``, *optional*):
+            Number of Telegram Stars that must be paid to buy the gift and send it to someone else.
+
+        last_resale_price (``int``, *optional*):
+            Number of Telegram Stars that were paid by the sender for the gift; 0 if the gift was upgraded or transferred.
 
         number (``int``, *optional*):
             Unique number of the upgraded gift among gifts upgraded from the same gift.
@@ -189,7 +191,8 @@ class Gift(Object):
         convert_price: Optional[int] = None,
         upgrade_price: Optional[int] = None,
         transfer_price: Optional[int] = None,
-        resell_price: Optional[int] = None,
+        resale_price: Optional[int] = None,
+        last_resale_price: Optional[int] = None,
         upgrade_message_id: Optional[int] = None,
         name: Optional[str] = None,
         title: Optional[str] = None,
@@ -234,7 +237,8 @@ class Gift(Object):
         self.convert_price = convert_price
         self.upgrade_price = upgrade_price
         self.transfer_price = transfer_price
-        self.resell_price = resell_price
+        self.resale_price = resale_price
+        self.last_resale_price = last_resale_price
         self.upgrade_message_id = upgrade_message_id
         self.name = name
         self.title = title
@@ -326,7 +330,7 @@ class Gift(Object):
             owner_name=star_gift.owner_name,
             owner_address=star_gift.owner_address,
             gift_address=star_gift.gift_address,
-            resell_price=star_gift.resell_stars,
+            last_resale_price=star_gift.resell_stars,
             is_upgraded=True,
             raw=star_gift,
             client=client
@@ -410,7 +414,7 @@ class Gift(Object):
             parsed_gift.can_transfer_at = utils.timestamp_to_datetime(action.can_transfer_at)
             parsed_gift.can_resell_at = utils.timestamp_to_datetime(action.can_resell_at)
             parsed_gift.transfer_price = action.transfer_stars
-            parsed_gift.resell_price = parsed_gift.resell_price or action.resale_stars
+            parsed_gift.last_resale_star_count = action.resale_stars
             parsed_gift.upgrade_message_id = message.id
 
 

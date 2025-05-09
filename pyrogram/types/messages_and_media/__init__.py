@@ -77,6 +77,7 @@ from .gift_attribute import GiftAttribute
 from .gift import Gift
 from .gifted_premium import GiftedPremium
 from .gifted_stars import GiftedStars
+from .gifts_for_resale import GiftsForResale
 from .sticker import Sticker
 from .story_view import StoryView
 from .story import Story
@@ -84,6 +85,10 @@ from .stripped_thumbnail import StrippedThumbnail
 from .successful_payment import SuccessfulPayment
 from .text_quote import TextQuote
 from .thumbnail import Thumbnail
+from .upgraded_gift_attribute_id_backdrop import UpgradedGiftAttributeIdBackdrop
+from .upgraded_gift_attribute_id_model import UpgradedGiftAttributeIdModel
+from .upgraded_gift_attribute_id_symbol import UpgradedGiftAttributeIdSymbol
+from .upgraded_gift_attribute_id import UpgradedGiftAttributeId
 from .venue import Venue
 from .video import Video
 from .video_note import VideoNote
@@ -154,6 +159,7 @@ __all__ = [
     "Gift",
     "GiftedPremium",
     "GiftedStars",
+    "GiftsForResale",
     "Sticker",
     "StoryView",
     "Story",
@@ -161,6 +167,10 @@ __all__ = [
     "SuccessfulPayment",
     "TextQuote",
     "Thumbnail",
+    "UpgradedGiftAttributeIdBackdrop",
+    "UpgradedGiftAttributeIdModel",
+    "UpgradedGiftAttributeIdSymbol",
+    "UpgradedGiftAttributeId",
     "Venue",
     "Video",
     "VideoNote",

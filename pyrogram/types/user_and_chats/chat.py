@@ -146,6 +146,9 @@ class Chat(Object):
         has_aggressive_anti_spam_enabled (``bool``, *optional*):
             True, if aggressive anti-spam checks are enabled in the supergroup. The field is only available to chat administrators.
 
+        has_automatic_translation (``bool``, *optional*):
+            True, if automatic translation of messages is enabled in the channel.
+
         invite_link (``str``, *optional*):
             Chat invite link, for groups, supergroups and channels.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -453,8 +456,6 @@ class Chat(Object):
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
     """
-
-    # TODO: autotranslation
     def __init__(
         self,
         *,
@@ -496,6 +497,7 @@ class Chat(Object):
         has_protected_content: Optional[bool] = None,
         has_visible_history: Optional[bool] = None,
         has_aggressive_anti_spam_enabled: Optional[bool] = None,
+        has_automatic_translation: Optional[bool] = None,
         invite_link: Optional[str] = None,
         pinned_message: Optional["types.Message"] = None,
         sticker_set_name: Optional[str] = None,
@@ -617,6 +619,7 @@ class Chat(Object):
         self.has_protected_content = has_protected_content
         self.has_visible_history = has_visible_history
         self.has_aggressive_anti_spam_enabled = has_aggressive_anti_spam_enabled
+        self.has_automatic_translation = has_automatic_translation
         self.invite_link = invite_link
         self.pinned_message = pinned_message
         self.sticker_set_name = sticker_set_name
@@ -819,6 +822,7 @@ class Chat(Object):
             profile_color=types.ChatColor._parse(channel.profile_color),
             subscription_until_date=utils.timestamp_to_datetime(channel.subscription_until_date),
             paid_message_star_count=channel.send_paid_messages_stars,
+            has_automatic_translation=channel.autotranslation,
             raw=channel,
             client=client
         )

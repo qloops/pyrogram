@@ -419,6 +419,9 @@ def pyrogram_api():
             upgrade_gift
             get_stars_balance
             set_pinned_gifts
+            search_gifts_for_resale
+            send_resold_gift
+            set_gift_resale_price
         """,
         phone="""
         Phone
@@ -694,6 +697,7 @@ def pyrogram_api():
             ChatBackground
             ChatTheme
             GiftedStars
+            GiftsForResale
         """,
         bot_keyboards="""
         Bot keyboards
@@ -1050,6 +1054,7 @@ def pyrogram_api():
             GiftAttributeType
             MediaAreaType
             PrivacyRuleType
+            GiftForResaleOrder
         """,
     )
 

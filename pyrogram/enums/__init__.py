@@ -41,6 +41,7 @@ from .profile_color import ProfileColor
 from .reply_color import ReplyColor
 from .sent_code_type import SentCodeType
 from .gift_attribute_type import GiftAttributeType
+from .gift_for_resale_order import GiftForResaleOrder
 from .media_area_type import MediaAreaType
 from .stories_privacy_rules import StoriesPrivacyRules
 from .user_status import UserStatus
@@ -71,6 +72,7 @@ __all__ = [
     'ReplyColor',
     'SentCodeType',
     'GiftAttributeType',
+    'GiftForResaleOrder',
     'MediaAreaType',
     'StoriesPrivacyRules',
     'UserStatus'
