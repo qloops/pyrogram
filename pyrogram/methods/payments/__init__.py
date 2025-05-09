@@ -26,7 +26,10 @@ from .get_available_gifts import GetAvailableGifts
 from .get_chat_gifts_count import GetChatGiftsCount
 from .get_chat_gifts import GetChatGifts
 from .hide_gift import HideGift
+from .search_gifts_for_resale import SearchGiftsForResale
 from .send_payment_form import SendPaymentForm
+from .send_resold_gift import SendResoldGift
+from .set_gift_resale_price import SetGiftResalePrice
 from .set_pinned_gifts import SetPinnedGifts
 from .send_gift import SendGift
 from .show_gift import ShowGift
@@ -44,7 +47,10 @@ class Payments(
     GetChatGiftsCount,
     GetChatGifts,
     HideGift,
+    SearchGiftsForResale,
     SendPaymentForm,
+    SendResoldGift,
+    SetGiftResalePrice,
     SetPinnedGifts,
     SendGift,
     ShowGift,
