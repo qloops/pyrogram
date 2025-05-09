@@ -31,7 +31,7 @@ class SearchGiftsForResale:
         limit: int = 0,
         offset: str = ""
     ):
-        """Get all gifts owned by specified chat.
+        """Get upgraded gifts that can be bought from other owners.
 
         .. include:: /_includes/usable-by/users.rst
 
@@ -62,10 +62,9 @@ class SearchGiftsForResale:
                 async for gift in app.search_gifts_for_resale(gift_id=123456):
                     print(gift)
 
-                # Buy first gift from resale
+                # Buy first gift from resale market
                 async for gift in app.search_gifts_for_resale(gift_id=123456, limit=1):
-                    await app.send_resold_gift(gift_link=gift.link, new_owner_chat_id="me")
-
+                    await app.send_resold_gift(gift_link=gift.link, new_owner_chat_id="me") # or just use await gift.buy()
         """
         current = 0
         total = abs(limit) or (1 << 31) - 1
