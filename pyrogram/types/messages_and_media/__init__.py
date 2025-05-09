@@ -77,7 +77,6 @@ from .gift_attribute import GiftAttribute
 from .gift import Gift
 from .gifted_premium import GiftedPremium
 from .gifted_stars import GiftedStars
-from .gifts_for_resale import GiftsForResale
 from .sticker import Sticker
 from .story_view import StoryView
 from .story import Story
@@ -159,7 +158,6 @@ __all__ = [
     "Gift",
     "GiftedPremium",
     "GiftedStars",
-    "GiftsForResale",
     "Sticker",
     "StoryView",
     "Story",

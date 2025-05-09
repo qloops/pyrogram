@@ -54,13 +54,18 @@ class SearchGiftsForResale:
                 The offset from which to start returning results. Default is "" (no offset).
 
         Returns:
-            ``Generator``: A generator yielding :obj:`~pyrogram.types.GiftsForResale` objects.
+            ``Generator``: A generator yielding :obj:`~pyrogram.types.Gift` objects.
 
         Example:
             .. code-block:: python
 
-                async for gifts_for_resale in app.search_gifts_for_resale(gift_id=123456):
-                    print(gifts_for_resale)
+                async for gift in app.search_gifts_for_resale(gift_id=123456):
+                    print(gift)
+
+                # Buy first gift from resale
+                async for gift in app.search_gifts_for_resale(gift_id=123456, limit=1):
+                    await app.send_resold_gift(gift_link=gift.link, new_owner_chat_id="me")
+
         """
         current = 0
         total = abs(limit) or (1 << 31) - 1
@@ -83,19 +88,15 @@ class SearchGiftsForResale:
             users = {i.id: i for i in r.users}
             chats = {i.id: i for i in r.chats}
 
-            gifts_for_resale = [
-                await types.GiftsForResale._parse(
-                    self,
-                    r,
-                    users=users,
-                    chats=chats
-                )
+            gifts = [
+                await types.Gift._parse(self, gift, users, chats)
+                for gift in r.gifts
             ]
 
-            if not gifts_for_resale:
+            if not gifts:
                 return
 
-            for gift in gifts_for_resale:
+            for gift in gifts:
                 yield gift
 
                 current += 1

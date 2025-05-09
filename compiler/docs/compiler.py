@@ -697,7 +697,6 @@ def pyrogram_api():
             ChatBackground
             ChatTheme
             GiftedStars
-            GiftsForResale
         """,
         bot_keyboards="""
         Bot keyboards
