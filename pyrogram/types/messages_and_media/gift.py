@@ -574,3 +574,29 @@ class Gift(Object):
                 gift_id=self.id
             )
         )
+
+    async def buy(self) -> "types.Message":
+        """Bound method *buy* of :obj:`~pyrogram.types.Gift`.
+
+        .. note::
+
+            This works for gifts from market only.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await app.send_resold_gift(gift_link="https://t.me/nft/NekoHelmet-9215", new_owner_chat_id="me")
+
+        Example:
+            .. code-block:: python
+
+                await gift.buy()
+
+        Returns:
+            :obj:`~pyrogram.types.Message`: On success, the sent message is returned.
+        """
+        return self._client.send_resold_gift(
+            gift_link=self.link,
+            new_owner_chat_id="me"
+        )
