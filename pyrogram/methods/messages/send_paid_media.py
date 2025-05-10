@@ -180,6 +180,15 @@ class SendPaidMedia:
                             ),
                             spoiler=i.has_spoiler
                         )
+                    elif re.match("^https?://", i.media):
+                        media = await self.invoke(
+                            raw.functions.messages.UploadMedia(
+                                peer=await self.resolve_peer(chat_id),
+                                media=raw.types.InputMediaPhotoExternal(
+                                    url=i.media
+                                )
+                            )
+                        )
                     else:
                         media = utils.get_input_media_from_file_id(i.media, FileType.PHOTO, has_spoiler=i.has_spoiler)
                 else:
@@ -279,6 +288,17 @@ class SendPaidMedia:
                             spoiler=i.has_spoiler,
                             video_cover=vcover_file,
                             video_timestamp=i.video_start_timestamp
+                        )
+                    elif re.match("^https?://", i.media):
+                        media = await self.invoke(
+                            raw.functions.messages.UploadMedia(
+                                peer=await self.resolve_peer(chat_id),
+                                media=raw.types.InputMediaDocumentExternal(
+                                    url=i.media,
+                                    video_cover=vcover_file,
+                                    video_timestamp=i.video_start_timestamp
+                                )
+                            )
                         )
                     else:
                         media = utils.get_input_media_from_file_id(
