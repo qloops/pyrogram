@@ -5098,7 +5098,6 @@ class Message(Object, Update):
                     game_short_name=self.game.short_name,
                     disable_notification=disable_notification,
                     allow_paid_broadcast=allow_paid_broadcast,
-                    paid_message_star_count=paid_message_star_count,
                     message_thread_id=message_thread_id
                 )
             else:
