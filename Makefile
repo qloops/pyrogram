@@ -38,6 +38,7 @@ api:
 docs:
 	cd compiler/docs && ../../$(PYTHON) compiler.py
 	$(VENV)/bin/sphinx-build -b dirhtml "docs/source" "docs/build/html" -j auto
+	cd docs/build/html && zip -r ../docs.zip ./
 
 build:
 	hatch build
