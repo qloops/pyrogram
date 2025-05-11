@@ -70,8 +70,7 @@ class SetGiftResalePrice:
                 msg_id=int(owned_gift_id)
             )
 
-        # TODO:
-        r = await self.invoke(
+        await self.invoke(
             raw.functions.payments.UpdateStarGiftPrice(
                 stargift=stargift,
                 resell_stars=resale_star_count
