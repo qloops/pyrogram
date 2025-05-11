@@ -38,4 +38,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.CURRENT_LIB_VERSION }}
+          name: ${{ env.CURRENT_LIB_VERSION }}
+          generate_release_notes: true
+          make_latest: true
+          draft: false
+          prerelease: false
           files: dist/*
