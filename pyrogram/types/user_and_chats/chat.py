@@ -1090,7 +1090,7 @@ class Chat(Object):
 
     @staticmethod
     def _parse_chat(client, chat: Union[raw.types.Chat, raw.types.User, raw.types.Channel]) -> Optional["Chat"]:
-        if isinstance(chat, raw.types.Chat):
+        if isinstance(chat, (raw.types.Chat, raw.types.ChatForbidden)):
             return Chat._parse_chat_chat(client, chat)
         elif isinstance(chat, raw.types.User):
             return Chat._parse_user_chat(client, chat)
