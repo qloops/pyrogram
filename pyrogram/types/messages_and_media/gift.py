@@ -538,7 +538,7 @@ class Gift(Object):
         Example:
             .. code-block:: python
 
-                await gift.transfer(new_owner_chat_id=123)
+                await gift.transfer(to_chat_id=123)
 
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the sent message is returned.
