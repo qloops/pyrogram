@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
-from typing import Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import errors, raw, types, utils
@@ -30,7 +30,7 @@ class TransferGift:
         new_owner_chat_id: Union[int, str],
         # stars_count: int = None,
         business_connection_id: str = None
-    ) -> "types.Message":
+    ) -> Optional["types.Message"]:
         """Transfers an owned unique gift to another user.
 
         .. note::
@@ -113,10 +113,10 @@ class TransferGift:
                 business_connection_id=business_connection_id
             )
 
-        return (
-            await utils.parse_messages(
-                client=self,
-                messages=r.updates if isinstance(r, raw.types.payments.PaymentResult) else r,
-                business_connection_id=business_connection_id
-            )
-        )[0]
+        messages = await utils.parse_messages(
+            client=self,
+            messages=r.updates if isinstance(r, raw.types.payments.PaymentResult) else r,
+            business_connection_id=business_connection_id
+        )
+
+        return messages[0] if messages else None

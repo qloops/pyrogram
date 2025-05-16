@@ -30,7 +30,7 @@ class UpgradeGift:
         keep_original_details: Optional[bool] = None,
         # star_count: int = None
         business_connection_id: str = None
-    ) -> "types.Message":
+    ) -> Optional["types.Message"]:
         """Upgrade a given regular gift to a unique gift.
 
         .. note::
@@ -112,10 +112,10 @@ class UpgradeGift:
                 business_connection_id=business_connection_id
             )
 
-        return (
-            await utils.parse_messages(
-                client=self,
-                messages=r.updates if isinstance(r, raw.types.payments.PaymentResult) else r,
-                business_connection_id=business_connection_id
-            )
-        )[0]
+        messages = await utils.parse_messages(
+            client=self,
+            messages=r.updates if isinstance(r, raw.types.payments.PaymentResult) else r,
+            business_connection_id=business_connection_id
+        )
+
+        return messages[0] if messages else None

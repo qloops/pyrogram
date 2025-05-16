@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from typing import Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -28,7 +28,7 @@ class SendResoldGift:
         self: "pyrogram.Client",
         gift_link: str,
         new_owner_chat_id: Union[int, str],
-    ) -> "types.Message":
+    ) -> Optional["types.Message"]:
         """Send an upgraded gift that is available for resale to another user or channel chat.
 
         .. note::
@@ -80,9 +80,9 @@ class SendResoldGift:
             ),
         )
 
-        return (
-            await utils.parse_messages(
-                client=self,
-                messages=r.updates if isinstance(r, raw.types.payments.PaymentResult) else r
-            )
-        )[0]
+        messages = await utils.parse_messages(
+            client=self,
+            messages=r.updates if isinstance(r, raw.types.payments.PaymentResult) else r
+        )
+
+        return messages[0] if messages else None

@@ -33,7 +33,7 @@ class SendGift:
         entities: Optional[List["types.MessageEntity"]] = None,
         is_private: Optional[bool] = None,
         pay_for_upgrade: Optional[bool] = None,
-    ) -> "types.Message":
+    ) -> Optional["types.Message"]:
         """Send a gift to another user or channel chat. May return an error with a message "STARGIFT_USAGE_LIMITED" if the gift was sold out.
 
         .. include:: /_includes/usable-by/users-bots.rst
@@ -94,8 +94,6 @@ class SendGift:
             )
         )
 
-        return (
-            await utils.parse_messages(
-                self, r.updates
-            )
-        )[0]
+        messages = await utils.parse_messages(self, r.updates)
+
+        return messages[0] if messages else None
