@@ -25,8 +25,6 @@
 ## Pyrogram
 
 > [!NOTE]
-> Unfortunately, the original pyrogram is no longer supported. I will try to be your @delivrance.
-
 > Elegant, modern and asynchronous Telegram MTProto API framework in Python for users and bots
 
 ``` python
