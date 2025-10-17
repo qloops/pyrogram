@@ -47,13 +47,6 @@ app.run()
 framework. It enables you to easily interact with the main Telegram API through a user account (custom client) or a bot
 identity (bot API alternative) using Python.
 
-### Support
-
-If you'd like to support my fork, you can consider:
-
-- `kurimuzonakuma.ton` - TON
-- `TCbZ7CSpTvTJ6rno2eoWWYBx7hmYF75wk3` - USDT TRC20
-
 ### Key Features
 
 - **Ready**: Install Pyrogram with pip and start building your applications right away.
@@ -69,17 +62,17 @@ If you'd like to support my fork, you can consider:
 Stable version
 
 ``` bash
-pip3 install kurigram
+pip3 install .
 ```
 
 Dev version
 ``` bash
-pip3 install https://github.com/KurimuzonAkuma/pyrogram/archive/dev.zip --force-reinstall
+pip3 install 
 ```
 
 ### Resources
 
 - Check out the [docs](https://docs.kurigram.live) to learn more about Pyrogram, get started right
 away and discover more in-depth material for building your client applications.
-- Join the [official channel](https://t.me/kurigram_news) and stay tuned for news, updates and announcements.
-- Join the [official chat](https://t.me/kurigram_chat) to communicate with people.
+- Join the [official channel]() and stay tuned for news, updates and announcements.
+- Join the [official chat]() to communicate with people.
